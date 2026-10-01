@@ -1,0 +1,37 @@
+---
+title: InnovUI — Biblioteca de componentes React
+tableOfContents: false
+template: splash
+hero:
+  title: InnovUI
+  tagline: Componentes React, tipados e acessíveis, fiéis ao design system da Comhub.
+  actions:
+    - text: Começar
+      link: /instalacao/
+      icon: right-arrow
+      variant: primary
+    - text: Ver no GitHub
+      link: https://github.com/innovtech-developers/innovui
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+import InstallCommand from '../../components/InstallCommand.astro'
+
+<InstallCommand />
+
+<CardGrid stagger>
+	<Card title="Tipado de ponta a ponta" icon="puzzle">
+		Props de cada componente totalmente tipadas, com autocomplete de variantes no editor.
+	</Card>
+	<Card title="Funciona com Server Components" icon="rocket">
+		`"use client"` correto em cada componente interativo — sem surpresas no App Router do Next.js.
+	</Card>
+	<Card title="Acessível por padrão" icon="heart">
+		Navegação por teclado, foco visível e ARIA corretos, testados com `jest-axe` em cada componente.
+	</Card>
+	<Card title="Fiel ao design system" icon="figma">
+		Tokens extraídos diretamente do Figma da Comhub — cor, tipografia, espaçamento, raio e sombra.
+	</Card>
+</CardGrid>

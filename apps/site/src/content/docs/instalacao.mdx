@@ -1,0 +1,36 @@
+---
+title: Instalação
+description: Como instalar e usar o @innovui/react num projeto React ou Next.js.
+---
+
+import InstallCommand from '../../components/InstallCommand.astro'
+
+<InstallCommand />
+
+Depois, importe o CSS da lib uma vez, no ponto de entrada da sua aplicação:
+
+```tsx
+import '@innovui/react/styles.css'
+```
+
+- **Next.js (App Router):** importe no `app/layout.tsx`.
+- **Vite / Create React App:** importe no `main.tsx` ou `index.tsx`.
+
+E use os componentes normalmente:
+
+```tsx
+import { Button } from '@innovui/react'
+
+export function Example() {
+  return <Button>Salvar alterações</Button>
+}
+```
+
+## Requisitos
+
+- React 19 ou mais recente (`react` e `react-dom` como peer dependencies).
+- Não é necessário ter Tailwind CSS instalado no seu projeto — o CSS da lib já vem compilado.
+
+## Server Components
+
+Todo componente interativo já tem a diretiva `"use client"`, então funciona normalmente dentro de Server Components do Next.js (App Router), sem configuração adicional.

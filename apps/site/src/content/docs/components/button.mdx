@@ -1,0 +1,84 @@
+---
+title: Button
+description: O componente de ação primário do design system.
+---
+
+import '@innovui/react/styles.css'
+import { ButtonVariantsDemo, ButtonSizesDemo, ButtonLoadingDemo } from '../../../components/demos/ButtonDemo'
+
+O componente de ação primário do design system: 5 estilos × 3 tamanhos × 6 estados.
+
+```tsx
+import { Button } from '@innovui/react'
+
+<Button>Salvar alterações</Button>
+```
+
+## Estilos
+
+<ButtonVariantsDemo client:load />
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="tertiary">Tertiary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>
+```
+
+- **Primary** — ação principal, fundo sólido, alto contraste.
+- **Secondary** — ação secundária, fundo sutil.
+- **Tertiary** — borda, sem fundo.
+- **Ghost** — texto puro, sem container visual.
+- **Destructive** — vermelho, para exclusão/remoção.
+
+## Tamanhos
+
+<ButtonSizesDemo client:load />
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+## Estado de carregamento
+
+<ButtonLoadingDemo client:load />
+
+```tsx
+<Button loading={isSaving} onClick={handleSave}>
+  {isSaving ? 'Salvando…' : 'Salvar alterações'}
+</Button>
+```
+
+No estado `loading`, o botão fica desabilitado, ganha `aria-busy="true"` e o ícone (se houver) é substituído por um spinner. O texto permanece visível — troque-o você mesmo, como no exemplo acima.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'destructive'` | `'primary'` | Estilo visual do botão. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do botão. |
+| `loading` | `boolean` | `false` | Estado de carregamento: desabilita o botão, marca `aria-busy` e troca os ícones por um spinner. |
+| `leadingIcon` | `ReactNode` | — | Ícone antes do texto. Some quando `loading` está ativo. |
+| `trailingIcon` | `ReactNode` | — | Ícone depois do texto. Some quando `loading` está ativo. |
+| `disabled` | `boolean` | `false` | Desabilita o botão. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`, sem conflito. |
+
+Além dessas, o componente aceita todas as props nativas de `<button>` (`type`, `onClick`, `aria-label`, etc.) — `type` é `"button"` por padrão, para não submeter formulários sem querer.
+
+## Acessibilidade
+
+- Contraste mínimo 4.5:1 entre texto e fundo, em todos os estilos.
+- Foco visível com anel de 2px (`border/focus`).
+- Use um `aria-label` quando o botão não tiver texto visível (ex.: só um ícone).
+- No estado `loading`, o `aria-busy="true"` anuncia o carregamento para leitores de tela.
+
+### Quando usar
+
+Submissão de formulários, ações primárias em cards, CTAs em landing pages, confirmação/cancelamento em modais.
+
+### Quando não usar
+
+Navegação simples (use um link), ou ações repetitivas em listas (use Icon Button, ainda não publicado nesta versão).
