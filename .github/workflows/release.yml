@@ -39,7 +39,7 @@ jobs:
       # Quando esse PR é mergeado (sem changesets pendentes), publica no npm.
       - uses: changesets/action@v1
         with:
-          version: pnpm version
+          version: pnpm run version
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
