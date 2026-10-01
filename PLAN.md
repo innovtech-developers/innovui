@@ -18,7 +18,7 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
 
 | Risco | Impacto | Mitigação |
 |---|---|---|
-| Conflito de classes Tailwind da lib com o Tailwind do app consumidor | Estilos quebrados no app do usuário | Prefixo Tailwind v4 `iu:` nas classes da lib + CSS em `@layer innovui`; `tailwind-merge` com o mesmo prefixo |
+| Conflito de classes Tailwind da lib com o Tailwind do app consumidor | Estilos quebrados no app do usuário | Prefixo Tailwind v4 `iu:` em tudo que o Tailwind gera (classes e @theme); tokens semantic/component ficam fora do @theme, em `:root` puro, para não herdar o prefixo e quebrar as referências var() nos componentes; `tailwind-merge` com o mesmo prefixo |
 | npm Trusted Publishing exige que o pacote já exista | 1º publish automático falha | 1º publish (`0.0.1`) com `NPM_TOKEN`; depois migra para OIDC e remove o token |
 | `"use client"` perdido no bundle (o tsdown pode remover diretivas) | Erro em Server Components no Next.js | Build preserva a diretiva por arquivo (`unbundle`/preserveModules) + teste de smoke que verifica o `dist/` |
 | Starlight + LP custom no mesmo app ficarem com cara de dois sites | UX inconsistente | LP usa os mesmos tokens e componentes da lib; tema do Starlight sobrescrito pelos tokens InnovUI |
@@ -26,10 +26,10 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
 
 ## Checkpoints de verificação
 
-- **CP1 (após M0+M1):** `pnpm i && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm build` verde localmente; `dist/` com ESM + `.d.ts` + `styles.css`.
+- **CP1 (após M0+M1): ✅ feito 2026-10-01.** `pnpm i && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm build` verde; `dist/` com ESM + `.d.ts` + `styles.css` (13 arquivos, 12.91 kB).
 - **CP2 (após M3):** `pnpm --filter site build` gera site estático; `docker build` + `docker run` servindo em `localhost:8080`.
-- **CP3 (após M4):** PR de teste no GitHub passa no CI; Changesets abre PR de versão; webhook do Coolify dispara deploy.
-- **CP4 (após M2 + Button):** Button publicado como `0.1.0` instalado num app Next.js 15 limpo e num Vite + React 19, renderizando estilizado.
+- **CP3 (após M4): parcial, 2026-10-01.** CI verde em push real no GitHub (lint/typecheck/test/build). Changesets faz o bump de versão corretamente, mas a abertura do PR "Version Packages" está bloqueada por uma política de org (ver CONTRIBUTING › Setup único). Deploy do Coolify só dispara depois dos secrets serem criados (ver mesma seção).
+- **CP4 (após M2 + Button): parcial, 2026-10-01.** Button + Spinner construídos, 100% de cobertura (gate é 85%), build real verificado (ESM + .d.ts + "use client" preservado + CSS com tokens corretos). Falta: publicar no npm de verdade (depende do setup único) e instalar num app Next.js/Vite real para confirmar.
 
 ---
 
@@ -37,39 +37,39 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
 
 ### M0: Fundação do repo
 
-- [ ] **T0.1: Inicializar monorepo pnpm**
+- [x] **T0.1: Inicializar monorepo pnpm**
   - Acceptance: `git init` na branch `main`; `package.json` raiz privado com scripts da spec; `pnpm-workspace.yaml` (`apps/*`, `packages/*`); `.nvmrc` (24); `packageManager` fixado; `.gitignore`; `.editorconfig`
   - Verify: `pnpm install` sem erro
   - Files: `package.json`, `pnpm-workspace.yaml`, `.nvmrc`, `.gitignore`, `.editorconfig`
 
-- [ ] **T0.2: TypeScript base + Biome**
+- [x] **T0.2: TypeScript base + Biome**
   - Acceptance: `tsconfig.base.json` strict (`noUncheckedIndexedAccess`, `verbatimModuleSyntax`); `biome.json` com formatter + linter + organize imports
   - Verify: `pnpm lint` e `pnpm typecheck` rodam
   - Files: `tsconfig.base.json`, `biome.json`, `package.json`
 
-- [ ] **T0.3: Commits semânticos**
+- [x] **T0.3: Commits semânticos**
   - Acceptance: commitlint (`@commitlint/config-conventional`) + lefthook (`commit-msg`, e `pre-commit` com Biome nos arquivos staged)
   - Verify: `git commit -m "bad"` é rejeitado; `git commit -m "chore: init"` passa
   - Files: `commitlint.config.js`, `lefthook.yml`, `package.json`
 
-- [ ] **T0.4: Arquivos open source (pt-BR)**
+- [x] **T0.4: Arquivos open source (pt-BR)**
   - Acceptance: `README.md` (o que é, instalação, links), `CONTRIBUTING.md` (setup, fluxo de branch/PR, commits, changesets, como criar um componente, critérios de review), `CODE_OF_CONDUCT.md` (Contributor Covenant), `SECURITY.md`, `LICENSE` (MIT), templates de issue (bug/feature) e de PR
   - Verify: leitura; links relativos válidos
   - Files: arquivos raiz + `.github/ISSUE_TEMPLATE/*`, `.github/pull_request_template.md`
 
 ### M1: Esqueleto da lib `@innovui/react`
 
-- [ ] **T1.1: Pacote e build**
+- [x] **T1.1: Pacote e build**
   - Acceptance: `packages/react/package.json` com `exports` (`.` → ESM + types, `./styles.css`), `peerDependencies` React 19, `sideEffects: ["**/*.css"]`, `files: ["dist"]`; tsdown gerando ESM + `.d.ts` preservando `"use client"` por módulo
   - Verify: `pnpm --filter @innovui/react build`; inspecionar `dist/` (diretiva presente)
   - Files: `packages/react/package.json`, `tsdown.config.ts`, `tsconfig.json`, `src/index.ts`
 
-- [ ] **T1.2: Pipeline de CSS (Tailwind v4)**
+- [x] **T1.2: Pipeline de CSS (Tailwind v4)**
   - Acceptance: `src/styles/index.css` com `@import "tailwindcss" prefix(iu)` em `@layer innovui`, `@theme` com os **nomes** semânticos dos tokens (valores entram em M2), dark mode por `.dark`/`[data-theme=dark]` e `prefers-color-scheme`; build gera `dist/styles.css`; arquivo de tema importável por quem usa Tailwind
   - Verify: `dist/styles.css` contém só utilitários usados pela lib
   - Files: `src/styles/*.css`, `package.json`
 
-- [ ] **T1.3: Vitest + Testing Library + cobertura**
+- [x] **T1.3: Vitest + Testing Library + cobertura**
   - Acceptance: `vitest.config.ts` (jsdom, setup com `@testing-library/jest-dom` e `vitest-axe`), coverage v8 com thresholds 85% nas 4 métricas; `cn()` util (`clsx` + `tailwind-merge` com prefixo) com teste
   - Verify: `pnpm test:coverage` verde; baixar um teste propositalmente faz falhar o threshold
   - Files: `vitest.config.ts`, `src/test/setup.ts`, `src/utils/cn.ts`, `src/utils/cn.test.ts`
@@ -110,17 +110,17 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
 
 ### M4: CI/CD
 
-- [ ] **T4.1: CI**
+- [x] **T4.1: CI**
   - Acceptance: `.github/workflows/ci.yml` em PR e push na `main`: pnpm com cache, Node 24, `lint`, `typecheck`, `test:coverage`, `build`; resumo de cobertura no job; `concurrency` cancelando runs antigos
   - Verify: PR de teste no GitHub verde; quebrar um teste deixa vermelho
   - Files: `.github/workflows/ci.yml`
 
-- [ ] **T4.2: Release no npm**
+- [x] **T4.2: Release no npm**
   - Acceptance: Changesets configurado (`.changeset/config.json`, changelog com links do GitHub); `release.yml` com `changesets/action` abrindo o PR "Version Packages" e publicando no merge com `--provenance`; `permissions: id-token: write`
   - Verify: changeset de teste abre PR de versão; merge publica `0.0.1` (primeira vez com `NPM_TOKEN`)
   - Files: `.changeset/config.json`, `.github/workflows/release.yml`, `package.json`
 
-- [ ] **T4.3: Deploy do site no Coolify**
+- [x] **T4.3: Deploy do site no Coolify**
   - Acceptance: `deploy-site.yml` em push na `main` com `paths: apps/site/**, packages/react/**`, rodando só após o CI verde; `curl -fsS --retry 3 -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" "${{ secrets.COOLIFY_WEBHOOK }}"`; doc no CONTRIBUTING de como configurar o app no Coolify (Dockerfile path, domínio, healthcheck)
   - Verify: push na `main` dispara deploy visível no Coolify
   - Files: `.github/workflows/deploy-site.yml`, `CONTRIBUTING.md`
@@ -134,7 +134,9 @@ Cada componente da tabela de fases da spec vira uma task com este molde:
   - Verify: `pnpm test:coverage` (≥ 85%, axe sem violações) + revisão visual na doc contra o Figma
   - Files: `packages/react/src/components/<nome>/*`, `src/index.ts`, `apps/site/src/content/docs/components/<nome>.mdx`, `.changeset/*`
 
-**Ordem:** Button (piloto, fecha o CP4) → resto da Fase 1 → Fase 2 → Fase 3 → v1.0.0 → Fase 4.
+- [x] **Button (piloto):** feito em 2026-10-01, junto com o Spinner (dependência da Button para o estado loading). Falta a página de doc (depende de M3) e o publish real no npm.
+
+**Ordem:** ~~Button (piloto, fecha o CP4)~~ → resto da Fase 1 → Fase 2 → Fase 3 → v1.0.0 → Fase 4.
 
 ---
 
