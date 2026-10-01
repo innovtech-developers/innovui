@@ -1,0 +1,272 @@
+/**
+ * Design tokens do InnovUI, extraídos do Figma "Comhub Design System" (Qi9eahiHd9Zn6b0ZbffmKB).
+ * Fonte de verdade: Figma. Ver SPEC.md para o inventário completo e divergências resolvidas.
+ *
+ * Modo escuro: a estrutura semântica já existe no Figma (Light/Dark), mas os valores Dark
+ * ainda não foram lidos — ver PLAN.md (T2.1). Por ora só o modo claro é publicado.
+ */
+
+@theme {
+  /* ---- Primitives: 8 rampas de cor, 50 (claro) a 900 (escuro) ---- */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e3e8f0;
+  --color-gray-300: #ccd5e2;
+  --color-gray-400: #96a3b9;
+  --color-gray-500: #66748c;
+  --color-gray-600: #49556a;
+  --color-gray-700: #354156;
+  --color-gray-800: #20293c;
+  --color-gray-900: #10172b;
+  --color-purple-50: #faf5ff;
+  --color-purple-100: #f2e8ff;
+  --color-purple-200: #e8d5ff;
+  --color-purple-300: #d6b4ff;
+  --color-purple-400: #bd84ff;
+  --color-purple-500: #a456fb;
+  --color-purple-600: #9035ee;
+  --color-purple-700: #7b24d1;
+  --color-purple-800: #6822ab;
+  --color-purple-900: #561d89;
+  --color-blue-50: #f0f6ff;
+  --color-blue-100: #ddeaff;
+  --color-blue-200: #c2dbff;
+  --color-blue-300: #9ac5ff;
+  --color-blue-400: #6ca6fd;
+  --color-blue-500: #4b83f9;
+  --color-blue-600: #3664ef;
+  --color-blue-700: #2d50db;
+  --color-blue-800: #2841b2;
+  --color-blue-900: #1e3a8a;
+  --color-green-50: #f1fdf4;
+  --color-green-100: #dffce6;
+  --color-green-200: #c1f7cf;
+  --color-green-300: #93efaa;
+  --color-green-400: #63de7c;
+  --color-green-500: #47c559;
+  --color-green-600: #37a345;
+  --color-green-700: #2c803a;
+  --color-green-800: #256532;
+  --color-green-900: #1f532b;
+  --color-yellow-50: #fdf9c0;
+  --color-yellow-100: #fcf083;
+  --color-yellow-200: #f9df34;
+  --color-yellow-300: #f5cb00;
+  --color-yellow-400: #e5b200;
+  --color-yellow-500: #c48900;
+  --color-yellow-600: #9c6100;
+  --color-yellow-700: #814c01;
+  --color-yellow-800: #6d3f0b;
+  --color-yellow-900: #402003;
+  --color-orange-50: #fef7ed;
+  --color-orange-100: #fdedd4;
+  --color-orange-200: #fad7a7;
+  --color-orange-300: #f7b96f;
+  --color-orange-400: #f39130;
+  --color-orange-500: #f07200;
+  --color-orange-600: #e15600;
+  --color-orange-700: #ba3f00;
+  --color-orange-800: #943308;
+  --color-orange-900: #772c0c;
+  --color-red-50: #fdf2f2;
+  --color-red-100: #fce2e2;
+  --color-red-200: #facac9;
+  --color-red-300: #f5a4a4;
+  --color-red-400: #ef706f;
+  --color-red-500: #e54240;
+  --color-red-600: #d3221e;
+  --color-red-700: #b11815;
+  --color-red-800: #921916;
+  --color-red-900: #7a1c1a;
+  --color-pink-50: #fcf2f8;
+  --color-pink-100: #fae7f3;
+  --color-pink-200: #f8cfe9;
+  --color-pink-300: #f3a8d5;
+  --color-pink-400: #ec71b7;
+  --color-pink-500: #e3479a;
+  --color-pink-600: #d22477;
+  --color-pink-700: #b6145d;
+  --color-pink-800: #96154d;
+  --color-pink-900: #7d1743;
+  /* ---- Tipografia: família única Inter, 16 estilos em 4 categorias ---- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --text-heading-h1: 48px;
+  --text-heading-h1--line-height: 56px;
+  --text-heading-h1--letter-spacing: -1.5px;
+  --text-heading-h1--font-weight: 700;
+
+  --text-heading-h2: 36px;
+  --text-heading-h2--line-height: 44px;
+  --text-heading-h2--letter-spacing: -1px;
+  --text-heading-h2--font-weight: 700;
+
+  --text-heading-h3: 28px;
+  --text-heading-h3--line-height: 36px;
+  --text-heading-h3--letter-spacing: -0.5px;
+  --text-heading-h3--font-weight: 600;
+
+  --text-heading-h4: 22px;
+  --text-heading-h4--line-height: 28px;
+  --text-heading-h4--font-weight: 600;
+
+  --text-heading-h5: 18px;
+  --text-heading-h5--line-height: 24px;
+  --text-heading-h5--font-weight: 600;
+
+  --text-heading-h6: 16px;
+  --text-heading-h6--line-height: 22px;
+  --text-heading-h6--font-weight: 500;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-base: 16px;
+  --text-body-base--line-height: 24px;
+  --text-body-base--font-weight: 400;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--font-weight: 400;
+
+  --text-body-xs: 12px;
+  --text-body-xs--line-height: 16px;
+  --text-body-xs--font-weight: 400;
+
+  --text-label-lg: 16px;
+  --text-label-lg--line-height: 24px;
+  --text-label-lg--font-weight: 500;
+
+  --text-label-base: 14px;
+  --text-label-base--line-height: 20px;
+  --text-label-base--font-weight: 500;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--font-weight: 500;
+
+  --text-label-xs: 11px;
+  --text-label-xs--line-height: 14px;
+  --text-label-xs--letter-spacing: 0.5px;
+  --text-label-xs--font-weight: 500;
+
+  --text-utility-caption: 12px;
+  --text-utility-caption--line-height: 16px;
+  --text-utility-caption--letter-spacing: 0.2px;
+  --text-utility-caption--font-weight: 400;
+
+  --text-utility-overline: 11px;
+  --text-utility-overline--line-height: 16px;
+  --text-utility-overline--letter-spacing: 1.5px;
+  --text-utility-overline--font-weight: 600;
+
+  /* ---- Espaçamento: escala base 4px (idêntica à escala numérica padrão do Tailwind) ---- */
+  /* space/1=4=p-1 · space/2=8=p-2 · space/3=12=p-3 · space/4=16=p-4 · space/5=20=p-5 · space/6=24=p-6
+     space/8=32=p-8 · space/10=40=p-10 · space/12=48=p-12 · space/16=64=p-16 · space/20=80=p-20 · space/24=96=p-24
+     → nenhum token novo necessário, a escala padrão do Tailwind já é a escala do DS. */
+
+  /* ---- Radius ---- */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ---- Border ---- */
+  --border-width-default: 1px;
+  --border-width-strong: 2px;
+
+  /* ---- Elevação: sombras em 2 camadas, valores "Detalhado" (o Figma prevalece sobre o v2.1 simplificado) ---- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08);
+  --shadow-md: 0 2px 4px -2px rgb(0 0 0 / 0.06), 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 4px 6px -2px rgb(0 0 0 / 0.08), 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 8px 10px -6px rgb(0 0 0 / 0.08), 0 20px 25px -5px rgb(0 0 0 / 0.15);
+
+  /* ---- Opacidade ---- */
+  --opacity-0: 0;
+  --opacity-30: 0.3;
+  --opacity-50: 0.5;
+  --opacity-70: 0.7;
+  --opacity-100: 1;
+
+  /* ---- Breakpoints: grid responsivo (Desktop 12col / Tablet 8col / Mobile 4col) ---- */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1440px;
+}
+
+/*
+ * Semantic e Component ficam fora do @theme de propósito: só são consumidos via var()
+ * dentro dos componentes (ex. bg-[var(--color-button-primary-bg)]), nunca como utilitário
+ * Tailwind (ex. bg-button-primary). O prefix(iu) do Tailwind renomeia tudo que está dentro
+ * de @theme (viraria --iu-color-...) e quebraria essas referências; aqui ficam estáveis.
+ */
+:root {
+  /* ---- Semantic (modo claro) ---- */
+  --color-text-primary: #10172b;
+  --color-text-secondary: #49556a;
+  --color-text-tertiary: #96a3b9; /* contraste < 4.5:1, só para conteúdo não essencial */
+  --color-text-disabled: #ccd5e2;
+  --color-text-inverse: #ffffff;
+  --color-text-inverse-secondary: #96a3b9;
+  --color-text-brand: #9035ee;
+
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+  --color-bg-inverse: #10172b;
+  --color-bg-skeleton: #e3e8f0;
+
+  --color-border-default: #e3e8f0;
+  --color-border-strong: #96a3b9;
+  --color-border-focus: #bd84ff;
+
+  --color-surface-elevated: #ffffff;
+
+  --color-interactive-primary: #9035ee;
+  --color-interactive-primary-hover: #7b24d1;
+  --color-interactive-disabled: #e3e8f0;
+
+  --color-status-success-text: #37a345;
+  --color-status-success-bg: #f1fdf4;
+  --color-status-success-border: #47c559;
+  --color-status-error-text: #d3221e;
+  --color-status-error-bg: #fdf2f2;
+  --color-status-error-border: #e54240;
+  --color-status-warning-text: #9c6100;
+  --color-status-warning-bg: #fdf9c0;
+  --color-status-warning-border: #e5b200;
+  --color-status-info-text: #3664ef;
+  --color-status-info-bg: #f0f6ff;
+  --color-status-info-border: #4b83f9;
+  --color-status-neutral-text: #49556a;
+  --color-status-neutral-bg: #f8fafc;
+  --color-status-neutral-border: #e3e8f0;
+
+  /* ---- Component: Button ---- */
+  --color-button-primary-text: #ffffff;
+  --color-button-primary-bg: #9035ee;
+  --color-button-primary-bg-hover: #7b24d1;
+  --color-button-primary-bg-active: #6822ab;
+  --color-button-secondary-text: #9035ee;
+  --color-button-secondary-bg: #faf5ff;
+  --color-button-secondary-bg-hover: #f2e8ff;
+  --color-button-tertiary-text: #10172b;
+  --color-button-tertiary-border: #ccd5e2;
+  --color-button-ghost-text: #9035ee;
+  --color-button-ghost-bg-hover: #faf5ff;
+  --color-button-destructive-text: #ffffff;
+  --color-button-destructive-bg: #d3221e;
+  --color-button-destructive-bg-hover: #b11815;
+  --color-button-destructive-bg-active: #921916;
+  --color-button-disabled-bg: #e3e8f0;
+  --color-button-disabled-text: #96a3b9;
+  --color-button-disabled-text-destructive: #ccd5e2;
+  --color-button-focus-ring: #bd84ff;
+
+  /* ---- Component: Spinner ---- */
+  --color-spinner-track: #10172b;
+  --color-spinner-indicator: #10172b;
+}

@@ -1,0 +1,7 @@
+/**
+ * CSS público do @innovui/react (publicado como dist/styles.css).
+ * Prefixo `iu:` em todas as classes geradas, para não colidir com o Tailwind
+ * do projeto que consome a lib (ver cn.ts, que usa o mesmo prefixo).
+ */
+@import "tailwindcss" prefix(iu);
+@import "./tokens.css";
