@@ -1,0 +1,31 @@
+name: Bug report
+description: Reporte um comportamento inesperado no InnovUI
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: O que aconteceu?
+      description: Descreva o bug e o que você esperava que acontecesse.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Como reproduzir
+      description: Passo a passo, ou link para um reprodutível (StackBlitz/CodeSandbox).
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versão do @innovui/react
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Ambiente
+      placeholder: 'Next.js 15 / React 19 / navegador'
+    validations:
+      required: false
