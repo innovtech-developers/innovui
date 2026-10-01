@@ -42,7 +42,7 @@ Tipos aceitos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `buil
 2. Crie a pasta `packages/react/src/components/<nome>/` com `<nome>.tsx`, `<nome>.test.tsx` e `index.ts`.
 3. Props estendem o elemento HTML nativo (`ComponentProps<'button'>`, etc.), aceitam `className` (mesclado com `cn()`) e repassam `ref`.
 4. Exporte o componente no barrel `packages/react/src/index.ts`.
-5. Escreva testes (Vitest + Testing Library) cobrindo render, interação e acessibilidade (`vitest-axe`). O projeto exige 85% de cobertura mínima.
+5. Escreva testes (Vitest + Testing Library) cobrindo render, interação e acessibilidade (`jest-axe`). O projeto exige 85% de cobertura mínima.
 6. Crie a página de doc em `apps/site/src/content/docs/components/<nome>.mdx`: demo viva, tabela de props, exemplos de uso e notas de acessibilidade — em pt-BR.
 7. Rode `pnpm changeset` e descreva a mudança (tipo `minor` para componente novo, `patch` para correção).
 
@@ -52,6 +52,17 @@ Tipos aceitos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `buil
 - Composição sobre configuração (ex.: `<Dialog.Root>/<Dialog.Content>`, não uma dúzia de props booleanas).
 - Acessibilidade não é opcional: navegação por teclado, foco visível, ARIA correto, contraste mínimo AA.
 - `pnpm lint:fix` aplica a formatação (Biome) automaticamente.
+
+## Setup único do repositório (mantenedores)
+
+Passos manuais de configuração, fora do alcance do código, feitos uma vez por quem administra a org/repositório:
+
+1. **Permitir PR por Actions** — `github.com/organizations/innovtech-developers/settings/actions` → *Workflow permissions* → marcar "Allow GitHub Actions to create and approve pull requests". Sem isso, o `release.yml` falha ao tentar abrir o PR "Version Packages" (o bloqueio é uma política de org, não do repositório).
+2. **Criar a org `@innovui` no npm** — [npmjs.com](https://www.npmjs.com) → *Add Organization* → `innovui` (plano gratuito, pacotes públicos). Sem isso, não há onde publicar `@innovui/react`.
+3. **Secret `NPM_TOKEN`** — gerar um [Granular Access Token](https://docs.npmjs.com/creating-and-viewing-access-tokens) com permissão de publish em `@innovui/*`, e adicionar em `Settings → Secrets and variables → Actions` do repositório. Depois do primeiro publish, pode migrar para [Trusted Publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) e remover o token.
+4. **Secrets `COOLIFY_WEBHOOK` e `COOLIFY_TOKEN`** — no Coolify, criar a aplicação do site apontando para este repositório (`apps/site/Dockerfile`), copiar a *deploy webhook URL* e gerar um token de API; adicionar os dois como secrets do repositório.
+
+Até esses passos serem feitos, `pnpm lint/typecheck/test/build` (CI) continuam funcionando normalmente — só o publish no npm e o deploy no Coolify ficam pendentes.
 
 ## Dúvidas
 
