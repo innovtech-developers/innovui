@@ -27,7 +27,7 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
 ## Checkpoints de verificação
 
 - **CP1 (após M0+M1): ✅ feito 2026-10-01.** `pnpm i && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm build` verde; `dist/` com ESM + `.d.ts` + `styles.css` (13 arquivos, 12.91 kB).
-- **CP2 (após M3):** `pnpm --filter site build` gera site estático; `docker build` + `docker run` servindo em `localhost:8080`.
+- **CP2 (após M3): ✅ feito 2026-10-01.** `pnpm --filter site build` gera site estático (7 páginas); `docker build -f apps/site/Dockerfile .` (94.9MB) + `docker run` servindo em `localhost:8080` com 200 nas rotas, 404 correto, cache imutável em `/_astro/*` e healthcheck "healthy".
 - **CP3 (após M4): parcial, 2026-10-01.** CI verde em push real no GitHub (lint/typecheck/test/build). Changesets faz o bump de versão corretamente, mas a abertura do PR "Version Packages" está bloqueada por uma política de org (ver CONTRIBUTING › Setup único). Deploy do Coolify só dispara depois dos secrets serem criados (ver mesma seção).
 - **CP4 (após M2 + Button): parcial, 2026-10-01.** Button + Spinner construídos, 100% de cobertura (gate é 85%), build real verificado (ESM + .d.ts + "use client" preservado + CSS com tokens corretos). Falta: publicar no npm de verdade (depende do setup único) e instalar num app Next.js/Vite real para confirmar.
 
@@ -88,12 +88,12 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
 
 ### M3: Site (Astro + Starlight)
 
-- [ ] **T3.1: App Astro**
+- [x] **T3.1: App Astro**
   - Acceptance: `apps/site` com Astro + `@astrojs/react` + Starlight (`lang: pt-BR`, `site: https://innovui.innovtechsolutions.com.br`); consome `@innovui/react` via `workspace:*`; sitemap e meta OG
   - Verify: `pnpm --filter site dev` e `build`; `astro check` sem erro
   - Files: `apps/site/package.json`, `astro.config.mjs`, `tsconfig.json`, `src/content.config.ts`
 
-- [ ] **T3.2: Estrutura de docs**
+- [x] **T3.2: Estrutura de docs**
   - Acceptance: páginas "Introdução", "Instalação" (npm/pnpm/bun, Next.js e Vite), "Tema e customização", "Acessibilidade", "Contribuindo"; template MDX de componente (demo viva, código, props, a11y); componente `<PropsTable>` gerado a partir dos tipos *(ou manual na 1ª versão, ver nota)*
   - Verify: navegação e busca (Pagefind) funcionando no build
   - Files: `src/content/docs/**`, `src/components/*`
@@ -103,7 +103,7 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
   - Verify: Lighthouse ≥ 95 nas 4 categorias
   - Files: `src/pages/index.astro`, `src/components/landing/*`
 
-- [ ] **T3.4: Container de produção**
+- [x] **T3.4: Container de produção**
   - Acceptance: `apps/site/Dockerfile` multi-stage (`node:24-alpine` + corepack/pnpm com `pnpm deploy`/filter → `nginx:alpine`), `nginx.conf` com gzip, cache imutável para `/_astro/*`, 404 do Astro, headers de segurança, `HEALTHCHECK`; `.dockerignore`
   - Verify: `docker build -f apps/site/Dockerfile -t innovui-site . && docker run -p 8080:80 innovui-site`
   - Files: `apps/site/Dockerfile`, `apps/site/nginx.conf`, `.dockerignore`

@@ -5,7 +5,7 @@ FROM node:24-alpine AS build
 WORKDIR /repo
 RUN corepack enable
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY packages/react/package.json packages/react/package.json
 COPY apps/site/package.json apps/site/package.json
 RUN pnpm install --frozen-lockfile
