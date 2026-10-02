@@ -3,6 +3,8 @@ dist/
 coverage/
 .astro/
 *.tsbuildinfo
+**/.impeccable/review/
+**/.impeccable/*.cache.json
 .env
 .env.*
 !.env.example

@@ -1,0 +1,379 @@
+/**
+ * InnovUI — mundo visual "herbário de espécimes de interface".
+ * Ver apps/site/.impeccable/surfaces/apps-site-src-content-docs-index-mdx.md (direction contract).
+ *
+ * Tipografia self-hosted via fontsource (sem stylesheet externo):
+ * Fraunces (display, eixos soft/opsz) · Newsreader (corpo/prosa) · Space Mono (medidas/metadado).
+ */
+@import "@fontsource-variable/fraunces";
+@import "@fontsource/newsreader/400.css";
+@import "@fontsource/newsreader/400-italic.css";
+@import "@fontsource/newsreader/500.css";
+@import "@fontsource/newsreader/600.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+
+:root,
+[data-theme="light"] {
+  /* kraft/manila de verdade — tom saturado de papel kraft, não creme/parchment pálido
+     (todas as cores de texto abaixo foram conferidas em WCAG AA, ≥4.5:1, contra este fundo) */
+  --sl-color-bg: #dcc191;
+  --sl-color-bg-nav: #d3b57f;
+  --sl-color-bg-sidebar: #dcc191;
+  --sl-color-bg-inline-code: #d3b57f;
+  --sl-color-bg-accent: #9035ee;
+
+  --sl-color-white: #1c1509;
+  --sl-color-gray-1: #2a2112;
+  --sl-color-gray-2: #3a2f1a;
+  --sl-color-gray-3: #4a3f24;
+  --sl-color-gray-4: #5c4d2f;
+  --sl-color-gray-5: #9c875c;
+  --sl-color-gray-6: #c7ae7c;
+  --sl-color-black: #fbf7ee;
+
+  --sl-color-text: #1c1509;
+  --sl-color-text-accent: #561d89;
+  --sl-color-text-invert: #fbf7ee;
+  --sl-color-hairline: #a68f5e;
+  --sl-color-hairline-light: #4a3f24;
+  --sl-color-hairline-shade: #1c1509;
+
+  --sl-hue-purple: 272;
+  --sl-color-accent-low: #e8d5ff;
+  --sl-color-accent: #9035ee;
+  --sl-color-accent-high: #561d89;
+
+  --sl-font: "Newsreader", "Georgia", serif;
+  --sl-font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+/* mesmo mundo no modo escuro: o design system ainda não publicou tokens dark (PRODUCT.md) */
+:root[data-theme="dark"] {
+  --sl-color-bg: #dcc191;
+  --sl-color-bg-nav: #d3b57f;
+  --sl-color-bg-sidebar: #dcc191;
+  --sl-color-text: #1c1509;
+  --sl-color-accent: #9035ee;
+}
+
+/* a prancha de espécime usa transform: rotate(), cujos cantos saem levemente da caixa de
+   layout; sem isto o navegador soma uma barra de rolagem horizontal por causa desses poucos
+   pixels de rotação, mesmo sem nenhum elemento realmente mais largo que o viewport */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 20% 15%, rgb(0 0 0 / 0.05) 0, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgb(0 0 0 / 0.06) 0, transparent 50%);
+}
+
+h1,
+h2,
+h3,
+.site-title {
+  font-family: "Fraunces Variable", "Fraunces", serif;
+  /* tamanho ótico automático por font-size (nativo do eixo variável), em vez de travar
+     "opsz" num valor de display mesmo em headings pequenos — o que amolecia tudo */
+  font-optical-sizing: auto;
+  font-variation-settings: "WONK" 0;
+  letter-spacing: -0.01em;
+}
+
+code,
+pre,
+kbd {
+  font-family: "Space Mono", ui-monospace, monospace;
+}
+
+::selection {
+  background: #9035ee;
+  color: #fbf7ee;
+}
+
+/* ===== Landing page: hero ===== */
+
+.lp-hero {
+  padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+}
+
+.lp-hero__title {
+  font-size: clamp(2.75rem, 7vw, 5.5rem);
+  line-height: 0.98;
+  margin: 0.2em 0 0.3em;
+  max-width: 14ch;
+}
+
+.lp-hero__tagline {
+  font-family: "Newsreader", serif;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  color: var(--sl-color-gray-3);
+  max-width: 48ch;
+  margin: 0 0 2rem;
+}
+
+.lp-hero__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.lp-hero__layout > * {
+  min-width: 0;
+}
+
+@media (max-width: 62rem) {
+  .lp-hero__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Specimen plate ===== */
+
+.specimen-plate {
+  position: relative;
+  min-width: 0;
+  background: #f0ddb0;
+  border: 1px solid var(--sl-color-hairline);
+  padding: 2.25rem 2rem 1.75rem;
+  box-shadow:
+    0 1px 2px rgb(28 21 9 / 0.06),
+    0 18px 36px -20px rgb(28 21 9 / 0.35);
+  transform: rotate(-0.6deg);
+}
+
+.specimen-plate__tape {
+  position: absolute;
+  width: 3.5rem;
+  height: 1.25rem;
+  background: rgb(255 255 255 / 0.55);
+  border: 1px solid rgb(28 21 9 / 0.08);
+  box-shadow: 0 1px 3px rgb(28 21 9 / 0.1);
+}
+
+.specimen-plate__tape--tl {
+  top: -0.6rem;
+  left: 1.5rem;
+  transform: rotate(-8deg);
+}
+
+.specimen-plate__tape--br {
+  bottom: -0.6rem;
+  right: 1.75rem;
+  transform: rotate(6deg);
+}
+
+.specimen-plate__stamp {
+  display: inline-block;
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #6822ab;
+  border: 1.5px solid #6822ab;
+  padding: 0.2rem 0.6rem;
+  transform: rotate(-2deg);
+  margin-bottom: 1.5rem;
+}
+
+.specimen-plate__mount {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: repeating-linear-gradient(
+    0deg,
+    rgb(28 21 9 / 0.04) 0,
+    rgb(28 21 9 / 0.04) 1px,
+    transparent 1px,
+    transparent 28px
+  );
+  border-top: 1px solid var(--sl-color-hairline);
+  border-bottom: 1px solid var(--sl-color-hairline);
+}
+
+.specimen-plate__reading {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8125rem;
+}
+
+.specimen-plate__reading > div {
+  min-width: 0;
+}
+
+.specimen-plate__reading dt {
+  color: var(--sl-color-gray-4);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.specimen-plate__reading dd {
+  margin: 0.2rem 0 0;
+  color: var(--sl-color-text);
+}
+
+.specimen-plate__swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.specimen-plate__swatch-chip {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(28 21 9 / 0.25);
+  flex-shrink: 0;
+}
+
+.specimen-plate__controls {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--sl-color-hairline);
+}
+
+.specimen-plate__control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.specimen-plate__control-row legend {
+  width: 100%;
+  font-family: "Space Mono", monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sl-color-gray-4);
+  padding: 0;
+}
+
+.specimen-plate__chip {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--sl-color-hairline-light);
+  color: var(--sl-color-gray-3);
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.specimen-plate__chip:hover {
+  border-color: #9035ee;
+  color: #6822ab;
+}
+
+.specimen-plate__chip[aria-pressed="true"] {
+  background: #9035ee;
+  border-color: #9035ee;
+  color: #fff;
+}
+
+.specimen-plate__chip:focus-visible {
+  outline: 2px solid #9035ee;
+  outline-offset: 2px;
+}
+
+/* ===== Field notes (feature list — no uniform card grid) ===== */
+
+.lp-fieldnotes {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--sl-color-hairline);
+  margin-top: 1rem;
+}
+
+.lp-fieldnotes__item {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--sl-color-hairline);
+}
+
+.lp-fieldnotes__mark {
+  width: 2.75rem;
+  height: 2.75rem;
+  color: #561d89;
+}
+
+.lp-fieldnotes__title {
+  font-family: "Fraunces Variable", serif;
+  font-size: 1.375rem;
+  margin: 0 0 0.4rem;
+}
+
+.lp-fieldnotes__text {
+  color: var(--sl-color-gray-3);
+  max-width: 60ch;
+  margin: 0;
+}
+
+/* ===== Closing CTA (mesma linguagem visual do Button real — primary/ghost, radius/full) ===== */
+
+.lp-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.lp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  padding-inline: 1.25rem;
+  border-radius: 9999px;
+  font-family: "Newsreader", serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.lp-button:focus-visible {
+  outline: 2px solid #bd84ff;
+  outline-offset: 2px;
+}
+
+.lp-button--primary {
+  background: #9035ee;
+  color: #fff;
+}
+
+.lp-button--primary:hover {
+  background: #7b24d1;
+}
+
+.lp-button--ghost {
+  background: transparent;
+  color: #561d89; /* accent-high: #9035ee puro não fecha 4.5:1 em texto sobre o fundo kraft */
+  border: 1px solid #561d89;
+}
+
+.lp-button--ghost:hover {
+  background: rgb(86 29 137 / 0.08);
+}

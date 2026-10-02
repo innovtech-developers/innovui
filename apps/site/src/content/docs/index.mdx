@@ -1,37 +1,106 @@
 ---
-title: InnovUI — Biblioteca de componentes React
-tableOfContents: false
+title: InnovUI
+description: Componentes React do design system da Comhub — tipados, acessíveis e extraídos direto do Figma.
 template: splash
+tableOfContents: false
+pagefind: false
 hero:
-  title: InnovUI
-  tagline: Componentes React, tipados e acessíveis, fiéis ao design system da Comhub.
-  actions:
-    - text: Começar
-      link: /instalacao/
-      icon: right-arrow
-      variant: primary
-    - text: Ver no GitHub
-      link: https://github.com/innovtech-developers/innovui
-      icon: external
-      variant: minimal
+  tagline: >-
+    Componentes React, tipados e acessíveis, montados a partir do design system real da Comhub —
+    não um mockup inspirado nele.
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components'
-import InstallCommand from '../../components/InstallCommand.astro'
+<section class="lp-fieldnotes" aria-label="Características">
+  <div class="lp-fieldnotes__item">
+    <svg class="lp-fieldnotes__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M24 6c6 6 6 16 0 22-6-6-6-16 0-22Z" stroke="currentColor" stroke-width="1.5" />
+      <path
+        d="M24 28v14M24 14v8M18 20l6-2 6 2"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+    <div>
+      <h2 class="lp-fieldnotes__title">Tipado de ponta a ponta</h2>
+      <p class="lp-fieldnotes__text">
+        Props de cada componente totalmente tipadas, com autocomplete de variantes no editor.
+        Nenhum componente sai do Figma sem um tipo correspondente.
+      </p>
+    </div>
+  </div>
 
-<InstallCommand />
+  <div class="lp-fieldnotes__item">
+    <svg class="lp-fieldnotes__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      {/* enxerto: dois caules unidos por uma amarração — a junção cliente/servidor */}
+      <path d="M24 6v15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+      <path d="M24 42V27" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+      <path
+        d="M19 22h10M19 26h10"
+        stroke="currentColor"
+        stroke-width="1.1"
+        stroke-linecap="round"
+      />
+      <path
+        d="M24 13c3-2 6-2 8 0M24 13c-3-2-6-2-8 0M24 35c3 2 6 2 8 0M24 35c-3 2-6 2-8 0"
+        stroke="currentColor"
+        stroke-width="1.1"
+        stroke-linecap="round"
+      />
+    </svg>
+    <div>
+      <h2 class="lp-fieldnotes__title">Funciona com Server Components</h2>
+      <p class="lp-fieldnotes__text">
+        <code>"use client"</code> correto em cada componente interativo — sem surpresas no App
+        Router do Next.js.
+      </p>
+    </div>
+  </div>
 
-<CardGrid stagger>
-	<Card title="Tipado de ponta a ponta" icon="puzzle">
-		Props de cada componente totalmente tipadas, com autocomplete de variantes no editor.
-	</Card>
-	<Card title="Funciona com Server Components" icon="rocket">
-		`"use client"` correto em cada componente interativo — sem surpresas no App Router do Next.js.
-	</Card>
-	<Card title="Acessível por padrão" icon="heart">
-		Navegação por teclado, foco visível e ARIA corretos, testados com `jest-axe` em cada componente.
-	</Card>
-	<Card title="Fiel ao design system" icon="figma">
-		Tokens extraídos diretamente do Figma da Comhub — cor, tipografia, espaçamento, raio e sombra.
-	</Card>
-</CardGrid>
+  <div class="lp-fieldnotes__item">
+    <svg class="lp-fieldnotes__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      {/* lupa de naturalista sobre uma folha com nervuras — todo detalhe é examinável */}
+      <path
+        d="M18 30c-5-4-5-13 0-18 5-4 12-4 16 0"
+        stroke="currentColor"
+        stroke-width="1.1"
+        stroke-linecap="round"
+      />
+      <path
+        d="M14 21c3 1 8 1 12-2"
+        stroke="currentColor"
+        stroke-width="1.1"
+        stroke-linecap="round"
+      />
+      <circle cx="21" cy="21" r="10" stroke="currentColor" stroke-width="1.75" />
+      <path d="m28 28 9 9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+    </svg>
+    <div>
+      <h2 class="lp-fieldnotes__title">Acessível por padrão</h2>
+      <p class="lp-fieldnotes__text">
+        Navegação por teclado, foco visível e ARIA corretos, testados com <code>jest-axe</code> em
+        cada componente.
+      </p>
+    </div>
+  </div>
+
+  <div class="lp-fieldnotes__item">
+    <svg class="lp-fieldnotes__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path
+        d="M24 8c8 2 12 9 12 16-5 2-9 1-12-2-3 3-7 4-12 2 0-7 4-14 12-16Z"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path d="M24 24v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+    <div>
+      <h2 class="lp-fieldnotes__title">Fiel ao design system</h2>
+      <p class="lp-fieldnotes__text">
+        Tokens extraídos diretamente do Figma da Comhub — cor, tipografia, espaçamento, raio e
+        sombra. O Figma é a fonte de verdade; nada aqui foi inventado.
+      </p>
+    </div>
+  </div>
+</section>
+

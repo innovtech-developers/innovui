@@ -14,6 +14,12 @@ export default defineConfig({
       locales: {
         root: { label: 'Português', lang: 'pt-BR' },
       },
+      // @innovui/react/styles.css carrega uma vez para o site inteiro: toda demo viva usa o
+      // componente real, estilizado de verdade (sem isso o Button renderiza como <button> cru).
+      customCss: ['@innovui/react/styles.css', './src/styles/herbarium.css'],
+      components: {
+        Hero: './src/components/HerbariumHero.astro',
+      },
       social: [
         {
           icon: 'github',

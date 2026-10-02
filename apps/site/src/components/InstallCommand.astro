@@ -1,21 +1,37 @@
 ---
 import { TabItem, Tabs } from '@astrojs/starlight/components'
+import InstallSnippet from './InstallSnippet.astro'
 ---
 
-<Tabs syncKey="package-manager">
-	<TabItem label="pnpm">
-		```sh
-		pnpm add @innovui/react
-		```
-	</TabItem>
-	<TabItem label="npm">
-		```sh
-		npm install @innovui/react
-		```
-	</TabItem>
-	<TabItem label="bun">
-		```sh
-		bun add @innovui/react
-		```
-	</TabItem>
-</Tabs>
+<div class="install-ticket">
+  <span class="install-ticket__header">Ficha de instalação</span>
+  <Tabs syncKey="package-manager">
+    <TabItem label="pnpm">
+      <InstallSnippet cmd="pnpm add @innovui/react" />
+    </TabItem>
+    <TabItem label="npm">
+      <InstallSnippet cmd="npm install @innovui/react" />
+    </TabItem>
+    <TabItem label="bun">
+      <InstallSnippet cmd="bun add @innovui/react" />
+    </TabItem>
+  </Tabs>
+</div>
+
+<style>
+  .install-ticket {
+    border: 1px solid var(--sl-color-hairline);
+    background: rgb(251 247 238 / 0.4);
+    padding: 1rem 1.25rem 0.25rem;
+  }
+
+  .install-ticket__header {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sl-color-gray-4);
+    margin-bottom: 0.75rem;
+  }
+</style>

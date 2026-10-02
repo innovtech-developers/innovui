@@ -1,0 +1,67 @@
+---
+interface Props {
+  cmd: string
+}
+const { cmd } = Astro.props
+---
+
+<div class="install-snippet">
+  <code>{cmd}</code>
+  <button type="button" class="install-snippet__copy" data-copy={cmd} aria-label="Copiar comando">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+      <rect x="9" y="9" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6" />
+      <path
+        d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6"
+        stroke="currentColor"
+        stroke-width="1.6"
+      />
+    </svg>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.install-snippet__copy').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const text = button.dataset.copy ?? ''
+      await navigator.clipboard.writeText(text)
+      button.setAttribute('aria-label', 'Copiado!')
+      window.setTimeout(() => button.setAttribute('aria-label', 'Copiar comando'), 1500)
+    })
+  })
+</script>
+
+<style>
+  .install-snippet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--sl-color-text);
+    padding: 0.5rem 0;
+  }
+
+  .install-snippet__copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--sl-color-hairline-light);
+    color: var(--sl-color-gray-3);
+    cursor: pointer;
+  }
+
+  .install-snippet__copy:hover {
+    border-color: #9035ee;
+    color: #561d89;
+  }
+
+  .install-snippet__copy:focus-visible {
+    outline: 2px solid #9035ee;
+    outline-offset: 2px;
+  }
+</style>

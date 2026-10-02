@@ -1,0 +1,34 @@
+---
+/// <reference types="@astrojs/starlight" />
+import InstallCommand from './InstallCommand.astro'
+import { SpecimenPlate } from './SpecimenPlate'
+
+const { entry } = Astro.locals.starlightRoute
+const title = entry.data.hero?.title ?? entry.data.title
+const tagline = entry.data.hero?.tagline
+---
+
+<section class="lp-hero">
+  <div class="lp-hero__layout">
+    <div>
+      <h1 class="lp-hero__title">{title}</h1>
+      {tagline && <p class="lp-hero__tagline">{tagline}</p>}
+
+      <InstallCommand />
+
+      <!-- Links estilizados como o Button real (radius/full, mesmas cores), não o componente
+           em si: Button não tem variante "link" (asChild/href) — navegação pede <a> de verdade. -->
+      <div class="lp-cta">
+        <a class="lp-button lp-button--primary" href="/instalacao/"> Ver a documentação </a>
+        <a
+          class="lp-button lp-button--ghost"
+          href="https://github.com/innovtech-developers/innovui"
+        >
+          Código no GitHub
+        </a>
+      </div>
+    </div>
+
+    <SpecimenPlate client:load />
+  </div>
+</section>
