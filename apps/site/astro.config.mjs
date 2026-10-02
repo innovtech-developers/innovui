@@ -19,6 +19,8 @@ export default defineConfig({
       customCss: ['@innovui/react/styles.css', './src/styles/herbarium.css'],
       components: {
         Hero: './src/components/HerbariumHero.astro',
+        // sem tokens de modo escuro publicados ainda, o seletor padrão só fingiria escolha
+        ThemeSelect: './src/components/EmptyThemeSelect.astro',
       },
       social: [
         {

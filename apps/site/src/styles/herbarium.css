@@ -149,11 +149,8 @@ kbd {
 
 .specimen-plate__tape {
   position: absolute;
-  width: 3.5rem;
-  height: 1.25rem;
-  background: rgb(255 255 255 / 0.55);
-  border: 1px solid rgb(28 21 9 / 0.08);
-  box-shadow: 0 1px 3px rgb(28 21 9 / 0.1);
+  line-height: 0;
+  filter: drop-shadow(0 1px 2px rgb(28 21 9 / 0.15));
 }
 
 .specimen-plate__tape--tl {
@@ -303,7 +300,7 @@ kbd {
 
 .lp-fieldnotes__item {
   display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr);
+  grid-template-columns: 4.5rem minmax(0, 1fr);
   gap: 1.25rem;
   align-items: start;
   padding: 1.75rem 0;
@@ -311,8 +308,8 @@ kbd {
 }
 
 .lp-fieldnotes__mark {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 4rem;
+  height: 4rem;
   color: #561d89;
 }
 

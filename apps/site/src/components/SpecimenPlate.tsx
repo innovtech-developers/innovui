@@ -12,6 +12,21 @@ const VARIANT_TOKENS: Record<Variant, { swatch: string; token: string }> = {
   destructive: { swatch: '#d3221e', token: 'button/destructive/bg' },
 }
 
+/** Fita de montagem desenhada (bordas rasgadas + fibras), não um retângulo CSS liso. */
+function Tape() {
+  return (
+    <svg viewBox="0 0 56 18" width="56" height="18" aria-hidden="true">
+      <path
+        d="M4,0 1,3 5,6 1,9 5,12 1,15 4,18 52,18 55,15 51,12 55,9 51,6 55,3 52,0Z"
+        fill="rgb(255 255 255 / 0.6)"
+        stroke="rgb(28 21 9 / 0.18)"
+        strokeWidth="0.75"
+      />
+      <path d="M10 3 46 3M9 9 47 9M10 15 46 15" stroke="rgb(28 21 9 / 0.08)" strokeWidth="0.6" />
+    </svg>
+  )
+}
+
 /** Quebra o nome do token em "/" para não precisar de overflow-wrap:anywhere (que corta palavras ao meio). */
 function TokenName({ token }: { token: string }) {
   return (
@@ -49,8 +64,12 @@ export function SpecimenPlate() {
 
   return (
     <div className="specimen-plate">
-      <span className="specimen-plate__tape specimen-plate__tape--tl" aria-hidden="true" />
-      <span className="specimen-plate__tape specimen-plate__tape--br" aria-hidden="true" />
+      <span className="specimen-plate__tape specimen-plate__tape--tl">
+        <Tape />
+      </span>
+      <span className="specimen-plate__tape specimen-plate__tape--br">
+        <Tape />
+      </span>
 
       <span className="specimen-plate__stamp">Comhub DS v2.1 · coletado ago/2026</span>
 
