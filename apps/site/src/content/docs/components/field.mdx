@@ -1,0 +1,53 @@
+---
+title: Field
+description: Combina Label + controle + texto de apoio — o jeito certo de montar um campo de formulário.
+---
+
+import { FieldDemo } from '../../../components/demos/FormDemos'
+
+Field é um wrapper que combina **Label + controle + texto de apoio**, e é a forma recomendada de montar campos de formulário (em vez de usar [Input](/components/input/) sozinho). Ele aceita qualquer controle como filho — Input, Textarea, ou no futuro Select — e conecta automaticamente `id`, `aria-describedby` e `aria-invalid`.
+
+```tsx
+import { Field, Input } from '@innovui/react'
+
+<Field label="E-mail" required supportingText="Usaremos para enviar o acesso.">
+  <Input placeholder="voce@empresa.com" />
+</Field>
+```
+
+## Exemplo com validação
+
+<FieldDemo client:load />
+
+```tsx
+const [value, setValue] = useState('')
+const error = value.length > 0 && !value.includes('@')
+
+<Field
+  label="E-mail"
+  required
+  error={error}
+  supportingText={error ? 'Formato de e-mail inválido.' : 'Usaremos para enviar o acesso.'}
+>
+  <Input value={value} onChange={(e) => setValue(e.target.value)} />
+</Field>
+```
+
+Quando `error` está ativo, a cor se propaga para o rótulo, a borda do controle e o texto de apoio — automaticamente.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `string` | — | Texto do rótulo (obrigatório). |
+| `required` | `boolean` | `false` | Exibe um asterisco vermelho após o rótulo. |
+| `error` | `boolean` | `false` | Propaga vermelho para rótulo, borda do controle e texto de apoio. |
+| `disabled` | `boolean` | `false` | Propaga `disabled` para o controle. |
+| `supportingText` | `ReactNode` | — | Instrução (estado normal) ou mensagem de erro (estado `error`). |
+| `children` | um único elemento | — | O controle — precisa aceitar `id`, `disabled`, `error` e `aria-describedby`. |
+
+## Acessibilidade
+
+- O rótulo é conectado ao controle via `htmlFor`/`id` automaticamente — nunca precisa escrever isso à mão.
+- O texto de apoio é conectado via `aria-describedby`, então leitores de tela o anunciam junto do campo.
+- `required` marca apenas visualmente (asterisco); se o campo também precisa ser obrigatório para o navegador/formulário, passe `required` para o controle filho também.

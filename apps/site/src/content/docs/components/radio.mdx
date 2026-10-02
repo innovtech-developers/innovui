@@ -1,0 +1,44 @@
+---
+title: Radio
+description: Escolha única e mutuamente exclusiva.
+---
+
+import { RadioDemo } from '../../../components/demos/FormDemos'
+
+Escolha única e mutuamente exclusiva. Para mais de 5 opções, prefira Select (ainda não publicado nesta versão).
+
+<RadioDemo client:load />
+
+```tsx
+import { Radio } from '@innovui/react'
+
+{options.map((opt) => (
+  <Radio
+    key={opt.value}
+    name="plano"
+    label={opt.label}
+    checked={plan === opt.value}
+    onChange={() => setPlan(opt.value)}
+  />
+))}
+```
+
+O agrupamento (só uma opção marcada por vez) é o comportamento nativo do navegador para `input[type="radio"]` com o mesmo `name` — nenhum gerenciador de estado de grupo é necessário além do seu próprio `useState`.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `ReactNode` | — | Texto do rótulo, clicável junto com o círculo. |
+| `error` | `boolean` | `false` | Colore a borda de vermelho. |
+| `className` | `string` | — | Aplicada no `<label>` externo. |
+
+Além dessas, aceita todas as props nativas de `<input type="radio">` (`name`, `checked`, `onChange`, `disabled`, `value`, etc.) — `name` é obrigatório na prática para agrupar as opções.
+
+## Quando usar
+
+2–5 opções visíveis, mutuamente exclusivas. Para seleção múltipla, use [Checkbox](/components/checkbox/).
+
+## Acessibilidade
+
+Navegação por teclado entre opções do mesmo grupo é automática (setas do teclado, via o comportamento nativo do navegador para `radio` com `name` compartilhado).

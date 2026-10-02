@@ -1,0 +1,38 @@
+---
+title: Textarea
+description: Área de texto multilinha, mesmo padrão visual do Input.
+---
+
+import { TextareaDemo } from '../../../components/demos/FormDemos'
+
+Área de texto multilinha para entradas longas. Segue o mesmo padrão visual e sistema de tokens do [Input](/components/input/), com altura expandida e redimensionamento vertical.
+
+<TextareaDemo client:load />
+
+```tsx
+import { Field, Textarea } from '@innovui/react'
+
+<Field label="Descrição" supportingText="Máximo de 500 caracteres.">
+  <Textarea placeholder="Descreva com detalhes…" maxLength={500} />
+</Field>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `size` | `'lg' \| 'md' \| 'sm'` | `'md'` | Afeta o tamanho do texto; a altura mínima é a mesma nos três (ver Figma). |
+| `error` | `boolean` | `false` | Marca `aria-invalid` e colore a borda de vermelho. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`, sem conflito. |
+
+Além dessas, o componente aceita todas as props nativas de `<textarea>` (`value`, `onChange`, `rows`, `maxLength`, `disabled`, `readOnly`, etc.).
+
+## Diferenças do Input
+
+- Sem suporte a ícones laterais.
+- Redimensionável verticalmente por padrão (`resize-y`).
+- Mesmo sistema de estados e tokens do Input (default, hover, focus, error, disabled, read-only).
+
+## Acessibilidade
+
+Use sempre dentro de um [Field](/components/field/), com `supportingText` indicando limites (ex.: contagem de caracteres) quando aplicável.

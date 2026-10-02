@@ -1,0 +1,41 @@
+---
+title: Switch
+description: Liga/desliga com efeito imediato — sem submit.
+---
+
+import { SwitchDemo } from '../../../components/demos/FormDemos'
+
+Toggle para ações de liga/desliga com **efeito imediato** — sem precisar de submit. Semântica diferente do [Checkbox](/components/checkbox/) (que representa verdadeiro/falso num formulário).
+
+<SwitchDemo client:load />
+
+```tsx
+import { Switch } from '@innovui/react'
+
+<Switch label="Modo escuro" checked={dark} onChange={(e) => setDark(e.target.checked)} />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `ReactNode` | — | Texto do rótulo, clicável junto com o controle. |
+| `className` | `string` | — | Aplicada no `<label>` externo. |
+
+Além dessas, aceita todas as props nativas de `<input type="checkbox">` (`checked`, `onChange`, `disabled`, etc.) — por baixo dos panos é um checkbox com `role="switch"`.
+
+## Switch × Checkbox
+
+| | Switch | Checkbox |
+|---|---|---|
+| Efeito | Imediato (sem submit) | Requer submit |
+| Semântica | Liga/desliga | Verdadeiro/falso |
+| Indeterminate | Não suportado | Suportado |
+
+## Quando usar
+
+Modo escuro/claro, notificações push, feature toggles em dashboards, auto-save.
+
+## Acessibilidade
+
+O componente expõe `role="switch"` com `aria-checked` sincronizado explicitamente — sobrescrever o role implícito de um checkbox nativo descarta o mapeamento automático do navegador entre o estado marcado e `aria-checked`, então o Switch sincroniza isso manualmente (controlado ou não).

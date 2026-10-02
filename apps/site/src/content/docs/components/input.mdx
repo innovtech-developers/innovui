@@ -1,0 +1,55 @@
+---
+title: Input
+description: Campo de entrada de texto — o primitivo de formulário.
+---
+
+import { InputSizesDemo, InputStatesDemo } from '../../../components/demos/FormDemos'
+
+O campo de entrada de texto primitivo. Para uso em formulários reais, prefira [Field](/components/field/), que envolve o Input com label e texto de apoio.
+
+```tsx
+import { Input } from '@innovui/react'
+
+<Input placeholder="voce@empresa.com" />
+```
+
+## Tamanhos
+
+<InputSizesDemo client:load />
+
+```tsx
+<Input size="lg" placeholder="Large" />
+<Input size="md" placeholder="Medium" />
+<Input size="sm" placeholder="Small" />
+```
+
+## Estados
+
+<InputStatesDemo client:load />
+
+```tsx
+<Input placeholder="Default" />
+<Input defaultValue="email@invalido" error />
+<Input placeholder="Disabled" disabled />
+<Input defaultValue="Não editável" readOnly />
+```
+
+O estado `error` marca `aria-invalid` no campo — use junto com [Field](/components/field/) para também colorir o rótulo e mostrar a mensagem.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `size` | `'lg' \| 'md' \| 'sm'` | `'md'` | Tamanho do campo. |
+| `error` | `boolean` | `false` | Marca `aria-invalid` e colore a borda de vermelho. |
+| `leadingIcon` | `ReactNode` | — | Ícone antes do texto. |
+| `trailingIcon` | `ReactNode` | — | Ícone depois do texto. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`, sem conflito. |
+
+Além dessas, o componente aceita todas as props nativas de `<input>` (`value`, `onChange`, `placeholder`, `disabled`, `readOnly`, `type`, etc.).
+
+## Acessibilidade
+
+- Use sempre um `<label>` associado (via [Field](/components/field/) ou `aria-label` direto).
+- O estado `error` marca `aria-invalid="true"`; combine com uma mensagem conectada por `aria-describedby` (o Field já faz isso).
+- Contraste mínimo 4.5:1 entre texto e fundo, em todos os estados.

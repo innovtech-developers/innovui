@@ -1,0 +1,45 @@
+---
+title: Checkbox
+description: Controle de seleção múltipla, com suporte a estado indeterminado.
+---
+
+import { CheckboxDemo } from '../../../components/demos/FormDemos'
+
+Controle de seleção múltipla (0 ou mais). Suporta o estado **indeterminate** para seleção parcial — útil no clássico padrão "selecionar todos".
+
+<CheckboxDemo client:load />
+
+```tsx
+import { Checkbox } from '@innovui/react'
+
+// seleção parcial: nem todos, nem nenhum
+<Checkbox
+  label="Selecionar todos"
+  checked={allChecked}
+  indeterminate={someChecked && !allChecked}
+  onChange={(e) => setAll(e.target.checked)}
+/>
+```
+
+`indeterminate` não é um atributo HTML — é uma propriedade do DOM. O componente sincroniza isso por você via uma ref; você só passa a prop.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `ReactNode` | — | Texto do rótulo, clicável junto com a caixa. |
+| `indeterminate` | `boolean` | `false` | Estado de seleção parcial. |
+| `error` | `boolean` | `false` | Colore a borda de vermelho. |
+| `className` | `string` | — | Aplicada no `<label>` externo. |
+
+Além dessas, aceita todas as props nativas de `<input type="checkbox">` (`checked`, `onChange`, `disabled`, `name`, `value`, etc.).
+
+## Quando usar
+
+Aceitar termos, filtros com múltiplas opções, listas de seleção. Para escolha única entre 2–5 opções, use [Radio](/components/radio/).
+
+## Acessibilidade
+
+- Navegável e ativável por teclado (Tab + Espaço), como qualquer `input` nativo.
+- O rótulo é clicável (o clique no texto também alterna a caixa).
+- O estado indeterminate é refletido via a propriedade DOM real, então leitores de tela o anunciam corretamente.
