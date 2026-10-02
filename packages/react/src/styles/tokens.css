@@ -269,4 +269,32 @@
   /* ---- Component: Spinner ---- */
   --color-spinner-track: #10172b;
   --color-spinner-indicator: #10172b;
+
+  /* ---- Component: Field (Input, Textarea, Select) ---- */
+  --color-field-text: #10172b;
+  --color-field-text-placeholder: #96a3b9;
+  --color-field-text-label: #49556a;
+  --color-field-text-disabled: #ccd5e2;
+  --color-field-bg: #ffffff;
+  --color-field-bg-disabled: #f8fafc;
+  --color-field-border: #e3e8f0;
+  --color-field-border-hover: #96a3b9;
+  --color-field-border-error: #e54240;
+  --color-field-border-disabled: #e3e8f0;
+  --color-field-focus-ring: #bd84ff;
+
+  /* ---- Component: Checkbox, Radio, Switch ---- */
+  --color-selection-bg-unselected: #ffffff;
+  --color-selection-border-unselected: #ccd5e2;
+  --color-selection-text-label: #10172b;
+  --color-selection-indicator-selected: #ffffff;
+  --color-selection-bg-selected: #9035ee;
+  --color-selection-border-selected: #a456fb;
+  --color-selection-focus-ring: #bd84ff;
+  --color-selection-bg-disabled: #e3e8f0;
+  --color-selection-border-disabled: #e3e8f0;
+  --color-selection-text-disabled: #ccd5e2;
+  --color-selection-toggle-track-off: #ccd5e2;
+  --color-selection-toggle-track-off-hover: #96a3b9;
+  --color-selection-toggle-track-on-hover: #7b24d1;
 }
