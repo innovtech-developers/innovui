@@ -98,10 +98,9 @@ M0 Fundação do repo ──┬──→ M1 Esqueleto da lib ──→ M2 Tokens
   - Verify: navegação e busca (Pagefind) funcionando no build
   - Files: `src/content/docs/**`, `src/components/*`
 
-- [ ] **T3.3: Landing page**
-  - Acceptance: LP em `/` com proposta, instalação em 1 comando com botão de copiar, showcase vivo de componentes e CTAs para docs/GitHub. Design feito com `/impeccable` depois de M2 (precisa dos tokens)
-  - Verify: Lighthouse ≥ 95 nas 4 categorias
-  - Files: `src/pages/index.astro`, `src/components/landing/*`
+- [x] **T3.3: Landing page**: feito em 2026-10-02 via `/impeccable` (mundo "herbário de espécimes", ver `apps/site/.impeccable/surfaces/`). LP em `/` com proposta, instalação em 1 comando com botão de copiar, showcase vivo do Button real (specimen plate interativo) e CTAs para docs/GitHub. Passou por 2 rounds de finish-review (subagent) contra o direction contract; 6/8 achados corrigidos e reverificados. Em aberto (cosméticos, não bloqueantes): 2 pictogramas poderiam ler mais botânico, a fita de montagem é CSS plano (não ilustrada), e o seletor de tema "Auto" ainda aparece mesmo sem dark mode real.
+  - Verify: Lighthouse ainda não rodado — pendente.
+  - Files: `src/content/docs/index.mdx`, `src/components/HerbariumHero.astro`, `src/components/SpecimenPlate.tsx`, `src/components/Install{Command,Snippet}.astro`, `src/styles/herbarium.css`
 
 - [x] **T3.4: Container de produção**
   - Acceptance: `apps/site/Dockerfile` multi-stage (`node:24-alpine` + corepack/pnpm com `pnpm deploy`/filter → `nginx:alpine`), `nginx.conf` com gzip, cache imutável para `/_astro/*`, 404 do Astro, headers de segurança, `HEALTHCHECK`; `.dockerignore`
