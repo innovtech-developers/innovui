@@ -133,7 +133,9 @@ Cada componente da tabela de fases da spec vira uma task com este molde:
   - Verify: `pnpm test:coverage` (≥ 85%, axe sem violações) + revisão visual na doc contra o Figma
   - Files: `packages/react/src/components/<nome>/*`, `src/index.ts`, `apps/site/src/content/docs/components/<nome>.mdx`, `.changeset/*`
 
-- [x] **Button (piloto):** feito em 2026-10-01, junto com o Spinner (dependência da Button para o estado loading). Falta a página de doc (depende de M3) e o publish real no npm.
+- [x] **Button (piloto):** feito em 2026-10-01, junto com o Spinner (dependência da Button para o estado loading). Tem página de doc (`/components/button`). Falta o publish real no npm.
+- [x] **Input, Field, Textarea, Checkbox, Radio, Switch:** feito em 2026-10-02, resto da Fase 1 (Form Controls). Tamanhos/geometria reais do Figma (não da doc simplificada): Input/Textarea 56/48/40px, Checkbox/Radio caixa de 20px em alvo de toque de 44px, Switch trilho 44×24 com knob de 20px. 100%/98.55% de cobertura. **Falta:** página(s) de doc (ainda não escritas — só Button tem doc hoje).
+- [ ] **Select:** não iniciado. É o mais complexo da Fase 1 (Trigger + Dropdown + Option, 3 sub-componentes no Figma); SPEC.md já aprovou Radix UI para isso.
 
 **Ordem:** ~~Button (piloto, fecha o CP4)~~ → resto da Fase 1 → Fase 2 → Fase 3 → v1.0.0 → Fase 4.
 
