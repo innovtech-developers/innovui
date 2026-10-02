@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-10-02T20:29:53.892Z",
+        "reason": "direction contract (apps/site/.impeccable/surfaces/apps-site-src-content-docs-index-mdx.md) picks Fraunces deliberately for its engraved/specimen-label character via the variable SOFT/opsz/WONK axes; it's on new-work.md's own suggested list of faces-with-a-point-of-view for Persuade surfaces, and was reviewed twice by the finish-review subagent (which flagged the variation-settings values, not the font choice, since fixed)."
+      }
+    ]
+  }
+}
