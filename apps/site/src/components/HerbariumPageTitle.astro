@@ -1,0 +1,39 @@
+---
+import ComponentPictogram from './ComponentPictogram.astro'
+
+const { entry } = Astro.locals.starlightRoute
+const title = entry.data.title
+// só páginas de componente levam pictograma — "_top" é o id estável que o Starlight usa
+// para o skip-link e o TOC âncora no H1 (não há export público para importar a constante).
+const match = entry.id.match(/^components\/([\w-]+)$/)
+const componentName = match?.[1]
+---
+
+<h1 id="_top" class:list={{ 'specimen-page-title': Boolean(componentName) }}>
+  {componentName && <ComponentPictogram name={componentName} />}
+  <span>{title}</span>
+</h1>
+
+<style>
+  @layer starlight.core {
+    h1 {
+      margin-top: 1rem;
+      font-size: var(--sl-text-h1);
+      line-height: var(--sl-line-height-headings);
+      font-weight: 600;
+      color: var(--sl-color-white);
+    }
+
+    /* pictograma ao lado do título, nunca acima — um eyebrow/kicker empilhado é banido
+       mesmo quando o brief pede o pictograma; isto respeita os dois ao mesmo tempo */
+    .specimen-page-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .specimen-page-title span {
+      min-width: 0;
+    }
+  }
+</style>

@@ -17,10 +17,20 @@ export default defineConfig({
       // @innovui/react/styles.css carrega uma vez para o site inteiro: toda demo viva usa o
       // componente real, estilizado de verdade (sem isso o Button renderiza como <button> cru).
       customCss: ['@innovui/react/styles.css', './src/styles/herbarium.css'],
+      // Tema único e claro para os blocos de código: sem isso o Expressive Code escolhe
+      // dark/light pelo `data-theme` (que por padrão renderiza "dark" no SSR), e o bloco de
+      // código vira uma janela quase preta solta dentro da página kraft clara.
+      expressiveCode: {
+        themes: ['starlight-dark'],
+      },
       components: {
         Hero: './src/components/HerbariumHero.astro',
         // sem tokens de modo escuro publicados ainda, o seletor padrão só fingiria escolha
         ThemeSelect: './src/components/EmptyThemeSelect.astro',
+        // pictograma de categoria ao lado do H1 nas páginas de componente — cumpre o
+        // direction contract original ("cada categoria de componente leva um pictograma
+        // desenhado à mão"), nunca executado até agora.
+        PageTitle: './src/components/HerbariumPageTitle.astro',
       },
       social: [
         {

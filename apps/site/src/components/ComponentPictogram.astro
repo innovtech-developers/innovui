@@ -1,0 +1,60 @@
+---
+/**
+ * Pictogramas à mão por categoria de componente — mesma voz das ilustrações do field-notes
+ * da home (viewBox 48x48, traço principal 1.75, detalhe 1.1/0.9, currentColor, fill none).
+ * Cumpre o compromisso do direction contract original ("cada categoria de componente leva
+ * um pictograma desenhado à mão"), nunca executado até agora nem na própria home.
+ */
+const PICTOGRAMS: Record<string, string> = {
+  button: `
+    <path d="M24 44V27" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+    <path d="M24 27c3-2 5-4 5-7-3 1-5 3-5 7ZM24 27c-3-2-5-4-5-7 3 1 5 3 5 7Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" />
+    <path d="M14 44c2-5 6-8 10-8M34 44c-2-5-6-8-10-8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+  `,
+  checkbox: `
+    <path d="M10 20c5 1 8 5 8 10-5-1-8-5-8-10Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" />
+    <path d="M20 16c5 1 8 5 8 10-5-1-8-5-8-10Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" />
+    <path d="M30 20c5 1 8 5 8 10-5-1-8-5-8-10Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" />
+    <path d="M19 32l4 5 8-11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+  `,
+  field: `
+    <path d="M24 6v8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+    <path d="M20 14h8c2 0 3 1 3 3v16c0 2-1 3-3 3H20c-2 0-3-1-3-3V17c0-2 1-3 3-3Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" />
+    <path d="M19 24h10" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" />
+    <path d="M19 29h6" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" />
+  `,
+  input: `
+    <path d="M24 6v36" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+    <path d="M15 24h18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+    <path d="M15 20v8M33 20v8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+  `,
+  radio: `
+    <path d="M6 30a4 4 0 1 0 8 0a4 4 0 1 0 -8 0Z" stroke="currentColor" stroke-width="1.1" />
+    <path d="M34 30a4 4 0 1 0 8 0a4 4 0 1 0 -8 0Z" stroke="currentColor" stroke-width="1.1" />
+    <path d="M18 30a6 6 0 1 0 12 0a6 6 0 1 0 -12 0Z" stroke="currentColor" stroke-width="1.75" />
+    <path d="M24 24V16M24 24c3-1 6 0 8 2M24 24c-3-1-6 0-8 2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+  `,
+  switch: `
+    <path d="M8 24c6-8 12-11 16-11s10 3 16 11c-6 8-12 11-16 11s-10-3-16-11Z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" />
+    <path d="M20 24a4 4 0 1 0 8 0a4 4 0 1 0 -8 0Z" stroke="currentColor" stroke-width="1.1" />
+  `,
+  textarea: `
+    <path d="M24 6v36" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+    <path d="M15 12v30M33 12v30" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+    <path d="M12 38h24" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+  `,
+}
+
+interface Props {
+  name: string
+}
+
+const { name } = Astro.props as Props
+const inner = PICTOGRAMS[name]
+---
+
+{
+  inner && (
+    <svg class="component-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true" set:html={inner} />
+  )
+}
