@@ -1,85 +1,106 @@
 /**
- * InnovUI — mundo visual "herbário de espécimes de interface".
- * Ver apps/site/.impeccable/surfaces/apps-site-src-content-docs-index-mdx.md (direction contract).
+ * InnovUI — site shell, modo claro.
+ * Usa os mesmos tokens do design system real (@innovui/react/src/styles/tokens.css):
+ * roxo Comhub (purple/600 #9035ee), escala de cinza neutra, Inter como fonte única.
+ * Nenhuma paleta/fonte inventada só para o site — o site usa a própria marca.
  *
  * Tipografia self-hosted via fontsource (sem stylesheet externo):
- * Fraunces (display, eixos soft/opsz) · Newsreader (corpo/prosa) · Space Mono (medidas/metadado).
+ * Inter (display/corpo) · Space Mono (metadado/código).
  */
-@import "@fontsource-variable/fraunces";
-@import "@fontsource/newsreader/400.css";
-@import "@fontsource/newsreader/400-italic.css";
-@import "@fontsource/newsreader/500.css";
-@import "@fontsource/newsreader/600.css";
+@import "@fontsource-variable/inter";
 @import "@fontsource/space-mono/400.css";
 @import "@fontsource/space-mono/700.css";
 
 :root,
 [data-theme="light"] {
-  /* kraft/manila de verdade — tom saturado de papel kraft, não creme/parchment pálido
-     (todas as cores de texto abaixo foram conferidas em WCAG AA, ≥4.5:1, contra este fundo) */
-  --sl-color-bg: #dcc191;
-  --sl-color-bg-nav: #d3b57f;
-  --sl-color-bg-sidebar: #dcc191;
-  --sl-color-bg-inline-code: #d3b57f;
+  --sl-color-bg: #ffffff;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #ffffff;
+  --sl-color-bg-inline-code: #f1f5f9;
   --sl-color-bg-accent: #9035ee;
 
-  --sl-color-white: #1c1509;
-  --sl-color-gray-1: #2a2112;
-  --sl-color-gray-2: #3a2f1a;
-  --sl-color-gray-3: #4a3f24;
-  --sl-color-gray-4: #5c4d2f;
-  --sl-color-gray-5: #9c875c;
-  --sl-color-gray-6: #c7ae7c;
-  --sl-color-black: #fbf7ee;
+  --sl-color-white: #10172b;
+  --sl-color-gray-1: #20293c;
+  --sl-color-gray-2: #354156;
+  --sl-color-gray-3: #49556a;
+  --sl-color-gray-4: #66748c;
+  --sl-color-gray-5: #96a3b9;
+  --sl-color-gray-6: #ccd5e2;
+  --sl-color-gray-7: #e3e8f0;
+  --sl-color-black: #ffffff;
 
-  --sl-color-text: #1c1509;
-  --sl-color-text-accent: #561d89;
-  --sl-color-text-invert: #fbf7ee;
-  --sl-color-hairline: #a68f5e;
-  --sl-color-hairline-light: #4a3f24;
-  --sl-color-hairline-shade: #1c1509;
+  --sl-color-text: #10172b;
+  --sl-color-text-accent: #9035ee;
+  --sl-color-text-invert: #ffffff;
+  --sl-color-hairline: #e3e8f0;
+  --sl-color-hairline-light: #f1f5f9;
+  --sl-color-hairline-shade: #ccd5e2;
 
   --sl-hue-purple: 272;
-  --sl-color-accent-low: #e8d5ff;
+  --sl-color-accent-low: #f2e8ff;
   --sl-color-accent: #9035ee;
-  --sl-color-accent-high: #561d89;
+  --sl-color-accent-high: #7b24d1;
 
-  --sl-font: "Newsreader", "Georgia", serif;
+  --sl-font: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
   --sl-font-mono: "Space Mono", ui-monospace, monospace;
 }
 
-/* mesmo mundo no modo escuro: o design system ainda não publicou tokens dark (PRODUCT.md) */
+/* Expressive Code (ver astro.config.mjs) usa o tema escuro "starlight-dark" (Night Owl)
+   em todo o site, claro ou escuro — blocos de código escuros são convenção comum mesmo em
+   docs claras (contraste de sintaxe melhor do que qualquer tema claro padrão). Troca só a
+   "casca" (fundo, frame, bordas, scrollbar) para a nossa tinta neutra, sem tocar nas cores
+   de sintaxe que o tema já calibrou.
+   Fora do @layer do Starlight — CSS sem layer sempre vence sobre CSS em layer. */
+.expressive-code {
+  --ec-codeBg: #10172b;
+  --ec-codeSelBg: rgb(144 53 238 / 0.35);
+  --ec-brdCol: rgb(102 116 140 / 0.35);
+  --ec-focusBrd: #bd84ff;
+  --ec-frm-edBg: #10172b;
+  --ec-frm-edActTabBg: #20293c;
+  --ec-frm-edActTabFg: #ffffff;
+  --ec-frm-edTabBarBg: #10172b;
+  --ec-frm-edTabBarBrdCol: rgb(102 116 140 / 0.35);
+  --ec-frm-edTabBarBrdBtmCol: rgb(102 116 140 / 0.35);
+  --ec-frm-trmBg: #10172b;
+  --ec-frm-trmTtbBg: #10172b;
+  --ec-frm-trmTtbBrdBtmCol: rgb(102 116 140 / 0.35);
+  --ec-frm-trmTtbFg: #ffffff;
+  --ec-frm-trmTtbDotsFg: #ffffff;
+  --ec-frm-inlBtnFg: #ffffff;
+  --ec-frm-inlBtnBg: #ffffff;
+  --ec-frm-inlBtnBrd: #ffffff;
+  --ec-frm-frameBoxShdCssVal: 0 1px 2px rgb(16 23 43 / 0.15);
+  --ec-gtrFg: rgb(102 116 140 / 0.8);
+  --ec-gtrBrdCol: rgb(102 116 140 / 0.3);
+}
+
+/* design system ainda não publicou tokens dark (PRODUCT.md) — espelha o claro em vez de
+   deixar o SO forçar um tema quebrado */
 :root[data-theme="dark"] {
-  --sl-color-bg: #dcc191;
-  --sl-color-bg-nav: #d3b57f;
-  --sl-color-bg-sidebar: #dcc191;
-  --sl-color-text: #1c1509;
+  --sl-color-bg: #ffffff;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #ffffff;
+  --sl-color-text: #10172b;
   --sl-color-accent: #9035ee;
 }
 
-/* a prancha de espécime usa transform: rotate(), cujos cantos saem levemente da caixa de
-   layout; sem isto o navegador soma uma barra de rolagem horizontal por causa desses poucos
-   pixels de rotação, mesmo sem nenhum elemento realmente mais largo que o viewport */
-html,
 body {
-  overflow-x: clip;
-}
-
-body {
-  background-image:
-    radial-gradient(circle at 20% 15%, rgb(0 0 0 / 0.05) 0, transparent 45%),
-    radial-gradient(circle at 80% 70%, rgb(0 0 0 / 0.06) 0, transparent 50%);
+  font-feature-settings: "cv05", "cv11";
 }
 
 h1,
 h2,
-h3,
+h3 {
+  font-family: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
 .site-title {
-  font-family: "Fraunces Variable", "Fraunces", serif;
-  /* tamanho ótico automático por font-size (nativo do eixo variável), em vez de travar
-     "opsz" num valor de display mesmo em headings pequenos — o que amolecia tudo */
-  font-optical-sizing: auto;
-  font-variation-settings: "WONK" 0;
+  font-family: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 800;
   letter-spacing: -0.01em;
 }
 
@@ -89,9 +110,18 @@ kbd {
   font-family: "Space Mono", ui-monospace, monospace;
 }
 
+/* pictograma de categoria ao lado do H1 de cada página de componente — ver
+   ComponentPictogram.astro e HerbariumPageTitle.astro */
+.component-mark {
+  width: 1.9rem;
+  height: 1.9rem;
+  flex-shrink: 0;
+  color: var(--sl-color-text-accent);
+}
+
 ::selection {
   background: #9035ee;
-  color: #fbf7ee;
+  color: #ffffff;
 }
 
 /* ===== Landing page: hero ===== */
@@ -108,8 +138,6 @@ kbd {
 }
 
 .lp-hero__tagline {
-  font-family: "Newsreader", serif;
-  font-style: italic;
   font-size: clamp(1.15rem, 2.2vw, 1.5rem);
   color: var(--sl-color-gray-3);
   max-width: 48ch;
@@ -138,42 +166,24 @@ kbd {
 .specimen-plate {
   position: relative;
   min-width: 0;
-  background: #f0ddb0;
+  background: #f8fafc;
   border: 1px solid var(--sl-color-hairline);
-  padding: 2.25rem 2rem 1.75rem;
+  border-radius: 12px;
+  padding: 2rem;
   box-shadow:
-    0 1px 2px rgb(28 21 9 / 0.06),
-    0 18px 36px -20px rgb(28 21 9 / 0.35);
-  transform: rotate(-0.6deg);
-}
-
-.specimen-plate__tape {
-  position: absolute;
-  line-height: 0;
-  filter: drop-shadow(0 1px 2px rgb(28 21 9 / 0.15));
-}
-
-.specimen-plate__tape--tl {
-  top: -0.6rem;
-  left: 1.5rem;
-  transform: rotate(-8deg);
-}
-
-.specimen-plate__tape--br {
-  bottom: -0.6rem;
-  right: 1.75rem;
-  transform: rotate(6deg);
+    0 1px 2px rgb(16 23 43 / 0.04),
+    0 16px 32px -16px rgb(16 23 43 / 0.18);
 }
 
 .specimen-plate__stamp {
   display: inline-block;
   font-family: "Space Mono", monospace;
-  font-size: 0.7rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
-  color: #6822ab;
-  border: 1.5px solid #6822ab;
-  padding: 0.2rem 0.6rem;
-  transform: rotate(-2deg);
+  color: var(--sl-color-accent-high);
+  background: var(--sl-color-accent-low);
+  border-radius: 9999px;
+  padding: 0.25rem 0.7rem;
   margin-bottom: 1.5rem;
 }
 
@@ -181,15 +191,9 @@ kbd {
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
-  background: repeating-linear-gradient(
-    0deg,
-    rgb(28 21 9 / 0.04) 0,
-    rgb(28 21 9 / 0.04) 1px,
-    transparent 1px,
-    transparent 28px
-  );
-  border-top: 1px solid var(--sl-color-hairline);
-  border-bottom: 1px solid var(--sl-color-hairline);
+  background: #ffffff;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 8px;
 }
 
 .specimen-plate__reading {
@@ -227,7 +231,7 @@ kbd {
   width: 0.85rem;
   height: 0.85rem;
   border-radius: 9999px;
-  border: 1px solid rgb(28 21 9 / 0.25);
+  border: 1px solid rgb(16 23 43 / 0.15);
   flex-shrink: 0;
 }
 
@@ -235,7 +239,7 @@ kbd {
   display: grid;
   gap: 0.5rem;
   padding-top: 1rem;
-  border-top: 1px dashed var(--sl-color-hairline);
+  border-top: 1px solid var(--sl-color-hairline);
 }
 
 .specimen-plate__control-row {
@@ -262,10 +266,11 @@ kbd {
 .specimen-plate__chip {
   font-family: "Space Mono", monospace;
   font-size: 0.75rem;
-  background: transparent;
-  border: 1px solid var(--sl-color-hairline-light);
+  background: #ffffff;
+  border: 1px solid var(--sl-color-hairline-shade);
+  border-radius: 9999px;
   color: var(--sl-color-gray-3);
-  padding: 0.3rem 0.65rem;
+  padding: 0.3rem 0.7rem;
   cursor: pointer;
   transition:
     background-color 0.15s ease,
@@ -275,7 +280,7 @@ kbd {
 
 .specimen-plate__chip:hover {
   border-color: #9035ee;
-  color: #6822ab;
+  color: #7b24d1;
 }
 
 .specimen-plate__chip[aria-pressed="true"] {
@@ -310,11 +315,10 @@ kbd {
 .lp-fieldnotes__mark {
   width: 4rem;
   height: 4rem;
-  color: #561d89;
+  color: var(--sl-color-text-accent);
 }
 
 .lp-fieldnotes__title {
-  font-family: "Fraunces Variable", serif;
   font-size: 1.375rem;
   margin: 0 0 0.4rem;
 }
@@ -323,6 +327,16 @@ kbd {
   color: var(--sl-color-gray-3);
   max-width: 60ch;
   margin: 0;
+}
+
+/* ===== Specimen demo stage (fundo das demos React vivas nas páginas de componente) ===== */
+
+.specimen-demo {
+  background: #f8fafc;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.25rem 0;
 }
 
 /* ===== Closing CTA (mesma linguagem visual do Button real — primary/ghost, radius/full) ===== */
@@ -342,7 +356,6 @@ kbd {
   height: 2.75rem;
   padding-inline: 1.25rem;
   border-radius: 9999px;
-  font-family: "Newsreader", serif;
   font-weight: 500;
   font-size: 0.95rem;
   text-decoration: none;
@@ -367,10 +380,11 @@ kbd {
 
 .lp-button--ghost {
   background: transparent;
-  color: #561d89; /* accent-high: #9035ee puro não fecha 4.5:1 em texto sobre o fundo kraft */
-  border: 1px solid #561d89;
+  color: #7b24d1;
+  border: 1px solid var(--sl-color-hairline-shade);
 }
 
 .lp-button--ghost:hover {
-  background: rgb(86 29 137 / 0.08);
+  background: #f2e8ff;
+  border-color: #9035ee;
 }

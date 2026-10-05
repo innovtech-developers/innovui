@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-05T16:20:00Z",
+  "title": "Design System: InnovUI site",
+  "extensions": {
+    "colorMeta": {
+      "purple-600": {
+        "role": "primary",
+        "displayName": "Comhub Purple 600",
+        "canonical": "#9035ee",
+        "tonalRamp": [
+          "#faf5ff",
+          "#f2e8ff",
+          "#e8d5ff",
+          "#d6b4ff",
+          "#bd84ff",
+          "#a456fb",
+          "#9035ee",
+          "#7b24d1",
+          "#6822ab",
+          "#561d89"
+        ]
+      },
+      "purple-700": {
+        "role": "primary",
+        "displayName": "Comhub Purple 700 (hover)",
+        "canonical": "#7b24d1"
+      },
+      "purple-800": {
+        "role": "primary",
+        "displayName": "Comhub Purple 800",
+        "canonical": "#6822ab"
+      },
+      "purple-900": {
+        "role": "primary",
+        "displayName": "Comhub Purple 900",
+        "canonical": "#561d89"
+      },
+      "purple-100": {
+        "role": "primary",
+        "displayName": "Purple 100 (chip bg)",
+        "canonical": "#f2e8ff"
+      },
+      "white": { "role": "neutral", "displayName": "White", "canonical": "#ffffff" },
+      "gray-50": {
+        "role": "neutral",
+        "displayName": "Gray 50 (card surface)",
+        "canonical": "#f8fafc",
+        "tonalRamp": [
+          "#f8fafc",
+          "#f1f5f9",
+          "#e3e8f0",
+          "#ccd5e2",
+          "#96a3b9",
+          "#66748c",
+          "#49556a",
+          "#354156",
+          "#20293c",
+          "#10172b"
+        ]
+      },
+      "gray-100": {
+        "role": "neutral",
+        "displayName": "Gray 100 (inline code bg)",
+        "canonical": "#f1f5f9"
+      },
+      "gray-200": {
+        "role": "neutral",
+        "displayName": "Gray 200 (hairline)",
+        "canonical": "#e3e8f0"
+      },
+      "gray-500": {
+        "role": "neutral",
+        "displayName": "Gray 500 (metadata label)",
+        "canonical": "#66748c"
+      },
+      "gray-600": {
+        "role": "neutral",
+        "displayName": "Gray 600 (secondary text)",
+        "canonical": "#49556a"
+      },
+      "gray-900": {
+        "role": "neutral",
+        "displayName": "Gray 900 (body text)",
+        "canonical": "#10172b"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (Inter 700)",
+        "purpose": "H1/H2/H3, título do hero, título das páginas de componente."
+      },
+      "body": { "displayName": "Body (Inter 400)", "purpose": "Toda prosa corrida." },
+      "label": {
+        "displayName": "Label (Space Mono)",
+        "purpose": "Metadado, código, leitura de medidas da Specimen Plate."
+      }
+    },
+    "shadows": [
+      {
+        "name": "plate-lift",
+        "value": "0 1px 2px rgb(16 23 43 / 0.04), 0 16px 32px -16px rgb(16 23 43 / 0.18)",
+        "purpose": "Única sombra dupla do site, só na Specimen Plate do hero."
+      }
+    ],
+    "breakpoints": [{ "name": "hero-collapse", "value": "62rem" }]
+  },
+  "components": [
+    {
+      "name": "Specimen Plate",
+      "kind": "custom",
+      "refersTo": "specimen-demo-card",
+      "description": "Prancha do hero: Button real montado, carimbo de versão, chips de variant/size e leitura de medidas ao vivo.",
+      "html": "<div class=\"ds-specimen-plate\"><span class=\"ds-specimen-plate__stamp\">Comhub DS v2.1</span><div class=\"ds-specimen-plate__mount\"><button class=\"ds-btn-primary\">Salvar alterações</button></div></div>",
+      "css": ".ds-specimen-plate { position: relative; background: #f8fafc; border: 1px solid #e3e8f0; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 2px rgba(16,23,43,0.04), 0 16px 32px -16px rgba(16,23,43,0.18); } .ds-specimen-plate__stamp { display: inline-block; font-family: 'Space Mono', monospace; font-size: 0.6875rem; letter-spacing: 0.04em; color: #7b24d1; background: #f2e8ff; border-radius: 9999px; padding: 0.25rem 0.7rem; margin-bottom: 1.5rem; } .ds-specimen-plate__mount { display: flex; justify-content: center; padding: 2rem 1rem; background: #ffffff; border: 1px solid #e3e8f0; border-radius: 8px; } .ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 2.75rem; padding: 0 1.25rem; border-radius: 9999px; border: none; font-weight: 500; font-size: 0.95rem; background: #9035ee; color: #fff; cursor: pointer; transition: background-color 0.15s ease; } .ds-btn-primary:hover { background: #7b24d1; } .ds-btn-primary:focus-visible { outline: 2px solid #bd84ff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Specimen Demo Card",
+      "kind": "card",
+      "refersTo": "specimen-demo-card",
+      "description": "Fundo Gray 50 por trás de cada demo React viva nas páginas de componente.",
+      "html": "<div class=\"ds-specimen-demo\">Conteúdo da demo (componente real)</div>",
+      "css": ".ds-specimen-demo { background: #f8fafc; border: 1px solid #e3e8f0; border-radius: 8px; padding: 1.5rem; margin: 1.25rem 0; }"
+    },
+    {
+      "name": "LP Button Primary",
+      "kind": "button",
+      "refersTo": "lp-button-primary",
+      "description": "CTA primário da landing page (link estilizado como Button real, variant primary).",
+      "html": "<a class=\"ds-lp-btn ds-lp-btn-primary\" href=\"#\">Ver a documentação</a>",
+      "css": ".ds-lp-btn { display: inline-flex; align-items: center; justify-content: center; height: 2.75rem; padding: 0 1.25rem; border-radius: 9999px; font-weight: 500; font-size: 0.95rem; text-decoration: none; transition: background-color 0.15s ease, color 0.15s ease; } .ds-lp-btn-primary { background: #9035ee; color: #fff; } .ds-lp-btn-primary:hover { background: #7b24d1; } .ds-lp-btn-primary:focus-visible { outline: 2px solid #bd84ff; outline-offset: 2px; }"
+    },
+    {
+      "name": "LP Button Ghost",
+      "kind": "button",
+      "refersTo": "lp-button-ghost",
+      "description": "CTA secundário da landing page (link para o GitHub, variant ghost).",
+      "html": "<a class=\"ds-lp-btn ds-lp-btn-ghost\" href=\"#\">Código no GitHub</a>",
+      "css": ".ds-lp-btn { display: inline-flex; align-items: center; justify-content: center; height: 2.75rem; padding: 0 1.25rem; border-radius: 9999px; font-weight: 500; font-size: 0.95rem; text-decoration: none; transition: background-color 0.15s ease, color 0.15s ease; } .ds-lp-btn-ghost { background: transparent; color: #7b24d1; border: 1px solid #e3e8f0; } .ds-lp-btn-ghost:hover { background: #f2e8ff; border-color: #9035ee; } .ds-lp-btn-ghost:focus-visible { outline: 2px solid #bd84ff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Nav Title (Site Title)",
+      "kind": "nav",
+      "refersTo": "site-title",
+      "description": "Marca no cabeçalho — Inter 800, mesma família tipográfica do resto do site.",
+      "html": "<a class=\"ds-site-title\" href=\"#\">InnovUI</a>",
+      "css": ".ds-site-title { font-family: 'Inter Variable', 'Inter', sans-serif; font-size: 0.9375rem; font-weight: 800; letter-spacing: -0.01em; color: #9035ee; text-decoration: none; }"
+    },
+    {
+      "name": "Install Ticket",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Ficha de instalação copiável.",
+      "html": "<div class=\"ds-install-ticket\"><span class=\"ds-install-ticket__header\">Ficha de instalação</span><div class=\"ds-install-snippet\"><code>pnpm add @innovui/react</code><button class=\"ds-install-copy\" aria-label=\"Copiar comando\">⧉</button></div></div>",
+      "css": ".ds-install-ticket { border: 1px solid #e3e8f0; border-radius: 8px; background: #f8fafc; padding: 1rem 1.25rem 0.25rem; } .ds-install-ticket__header { display: block; font-family: 'Space Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: #66748c; margin-bottom: 0.75rem; } .ds-install-snippet { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; font-family: 'Space Mono', monospace; font-size: 0.875rem; color: #10172b; padding: 0.5rem 0; } .ds-install-copy { display: inline-flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; background: transparent; border: 1px solid #f1f5f9; color: #49556a; cursor: pointer; } .ds-install-copy:hover { border-color: #9035ee; color: #7b24d1; } .ds-install-copy:focus-visible { outline: 2px solid #9035ee; outline-offset: 2px; }"
+    },
+    {
+      "name": "Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Bloco de código (Expressive Code / Night Owl escuro) — casca retintada para Gray 900, paleta de sintaxe do tema intocada.",
+      "html": "<div class=\"ds-code-block\"><div class=\"ds-code-block__tab\">example.tsx</div><pre class=\"ds-code-block__pre\"><code>import { Button } from '@innovui/react'</code></pre></div>",
+      "css": ".ds-code-block { border: 1px solid rgba(102,116,140,0.35); } .ds-code-block__tab { background: #20293c; color: #ffffff; font-family: 'Space Mono', monospace; font-size: 0.8rem; padding: 0.4rem 1rem; border-bottom: 1px solid rgba(102,116,140,0.35); } .ds-code-block__pre { background: #10172b; color: #d6deeb; font-family: 'Space Mono', monospace; font-size: 0.875rem; padding: 0.75rem 1rem; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Living Spec Sheet",
+    "overview": "O site é a própria documentação do Comhub Design System renderizada com seus próprios tokens — nenhuma paleta, fonte ou metáfora inventada só para a casca do site. A página é uma superfície clara e neutra (branco/cinza muito claro), e o roxo da marca Comhub é o único elemento de cor com autoridade. A clareza vem de hierarquia por espaço em branco, borda fina e sombra discreta, no espírito da documentação de design system que o MUI pratica bem, sem reproduzir sua paleta azul/indigo nem sua tipografia.",
+    "keyCharacteristics": [
+      "Superfícies claras (branco + cinza muito claro), nunca um bloco de cor saturada como fundo de página",
+      "Roxo Comhub (#9035ee) reservado para ação primária, link, foco e seleção",
+      "Uma única voz tipográfica para prosa e display (Inter), mais mono só para metadado/código",
+      "Cantos levemente arredondados (8–12px) em cards; pílula total só em controles de ação",
+      "Elevação mínima: borda de 1px + sombra muito suave; nunca sombra decorativa em controle comum"
+    ],
+    "rules": [
+      {
+        "name": "The Dogfood Rule",
+        "body": "Toda cor do site vem da escala real de @innovui/react/src/styles/tokens.css. Nenhuma cor é escolhida só para o site.",
+        "section": "colors"
+      },
+      {
+        "name": "One Voice Rule",
+        "body": "Prosa e display usam a mesma família (Inter), diferenciados por peso e tamanho — não por fonte.",
+        "section": "typography"
+      },
+      {
+        "name": "Flat by Default",
+        "body": "Nenhum controle comum recebe sombra. Só a Specimen Plate do hero recebe elevação, e mesmo essa é discreta.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do puxar toda cor do site da escala real de tokens do @innovui/react",
+      "Do manter Gray 50 como única superfície secundária",
+      "Do manter o roxo reservado a estado ativo/interativo"
+    ],
+    "donts": [
+      "Don't reintroduzir sombra em controle comum (botão, input, chip)",
+      "Don't copiar a paleta azul/indigo ou a tipografia padrão do MUI",
+      "Don't misturar Inter com qualquer serifa de exibição"
+    ]
+  }
+}

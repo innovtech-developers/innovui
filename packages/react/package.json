@@ -37,7 +37,7 @@
   "scripts": {
     "build": "tsdown && pnpm build:css",
     "build:css": "tailwindcss -i src/styles/index.css -o dist/styles.css --minify",
-    "dev": "tsdown --watch",
+    "dev": "tsdown --watch & tailwindcss -i src/styles/index.css -o dist/styles.css --watch & wait",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit"

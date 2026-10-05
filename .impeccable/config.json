@@ -8,6 +8,12 @@
         "value": "fraunces",
         "createdAt": "2026-10-02T20:29:53.892Z",
         "reason": "direction contract (apps/site/.impeccable/surfaces/apps-site-src-content-docs-index-mdx.md) picks Fraunces deliberately for its engraved/specimen-label character via the variable SOFT/opsz/WONK axes; it's on new-work.md's own suggested list of faces-with-a-point-of-view for Persuade surfaces, and was reviewed twice by the finish-review subagent (which flagged the variation-settings values, not the font choice, since fixed)."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-05T19:16:47.620Z",
+        "reason": "Inter é a fonte real do design system (--font-sans em @innovui/react/src/styles/tokens.css); o site usa a tipografia do próprio DS que documenta, não uma escolha genérica de IA (user confirmed: pediu para o site usar 'nosso design system')"
       }
     ]
   }
