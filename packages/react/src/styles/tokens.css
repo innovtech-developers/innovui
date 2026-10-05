@@ -283,6 +283,14 @@
   --color-field-border-disabled: #e3e8f0;
   --color-field-focus-ring: #bd84ff;
 
+  /* ---- Component: Select (Dropdown, Option) ---- */
+  --color-select-dropdown-bg: #ffffff;
+  --color-select-dropdown-border: #f1f5f9;
+  --color-select-option-text: #10172b;
+  --color-select-option-text-disabled: #ccd5e2;
+  --color-select-option-bg-hover: #f8fafc;
+  --color-select-option-bg-selected: #faf5ff;
+
   /* ---- Component: Checkbox, Radio, Switch ---- */
   --color-selection-bg-unselected: #ffffff;
   --color-selection-border-unselected: #ccd5e2;

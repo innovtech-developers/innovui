@@ -1,4 +1,13 @@
-import { Checkbox, Field, Input, Radio, Switch, Textarea } from '@innovui/react'
+import {
+  Checkbox,
+  Field,
+  Input,
+  Radio,
+  Select,
+  SelectOption,
+  Switch,
+  Textarea,
+} from '@innovui/react'
 import { useState } from 'react'
 import { Stage } from './Stage'
 
@@ -115,6 +124,77 @@ export function RadioDemo() {
             onChange={() => setPlan(value)}
           />
         ))}
+      </div>
+    </Stage>
+  )
+}
+
+export function SelectSizesDemo() {
+  return (
+    <Stage>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: 320 }}>
+        <Select size="lg" placeholder="Large">
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+        <Select size="md" placeholder="Medium">
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+        <Select size="sm" placeholder="Small">
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+      </div>
+    </Stage>
+  )
+}
+
+export function SelectStatesDemo() {
+  return (
+    <Stage>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: 320 }}>
+        <Select placeholder="Default">
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+        <Select placeholder="Com erro" error>
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+        <Select placeholder="Disabled" disabled>
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+        <Select defaultValue="ops" readOnly>
+          <SelectOption value="ops">Operações</SelectOption>
+          <SelectOption value="mkt">Marketing</SelectOption>
+        </Select>
+      </div>
+    </Stage>
+  )
+}
+
+export function SelectFieldDemo() {
+  const [workspace, setWorkspace] = useState('')
+
+  return (
+    <Stage>
+      <div style={{ maxWidth: 320 }}>
+        <Field label="Workspace" required supportingText="O workspace define quem vê este projeto.">
+          <Select
+            placeholder="Selecione um workspace"
+            value={workspace}
+            onValueChange={setWorkspace}
+          >
+            <SelectOption value="ops">Workspace Operações</SelectOption>
+            <SelectOption value="mkt">Workspace Marketing</SelectOption>
+            <SelectOption value="fin">Workspace Financeiro</SelectOption>
+            <SelectOption value="arquivado" disabled>
+              Workspace Arquivado
+            </SelectOption>
+          </Select>
+        </Field>
       </div>
     </Stage>
   )

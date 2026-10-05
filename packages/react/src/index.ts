@@ -3,6 +3,12 @@ export { Checkbox, type CheckboxProps } from './components/checkbox'
 export { Field, type FieldProps } from './components/field'
 export { Input, type InputProps } from './components/input'
 export { Radio, type RadioProps } from './components/radio'
+export {
+  Select,
+  SelectOption,
+  type SelectOptionProps,
+  type SelectProps,
+} from './components/select'
 export { Spinner, type SpinnerProps } from './components/spinner'
 export { Switch, type SwitchProps } from './components/switch'
 export { Textarea, type TextareaProps } from './components/textarea'

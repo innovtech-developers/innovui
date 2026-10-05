@@ -1,0 +1,95 @@
+---
+title: Select
+description: Lista suspensa de opções — escolha única, acessível via teclado.
+---
+
+import { SelectSizesDemo, SelectStatesDemo, SelectFieldDemo } from '../../../components/demos/FormDemos'
+
+Lista suspensa para escolha única entre várias opções. Construído sobre o [Radix UI Select](https://www.radix-ui.com/primitives/docs/components/select) — navegação por teclado, typeahead e posicionamento corretos de fábrica. Para uso em formulários reais, prefira [Field](/components/field/), que envolve o Select com label e texto de apoio.
+
+```tsx
+import { Select, SelectOption } from '@innovui/react'
+
+<Select placeholder="Selecione...">
+  <SelectOption value="ops">Operações</SelectOption>
+  <SelectOption value="mkt">Marketing</SelectOption>
+</Select>
+```
+
+## Tamanhos
+
+<SelectSizesDemo client:load />
+
+```tsx
+<Select size="lg" placeholder="Large">...</Select>
+<Select size="md" placeholder="Medium">...</Select>
+<Select size="sm" placeholder="Small">...</Select>
+```
+
+## Estados
+
+<SelectStatesDemo client:load />
+
+```tsx
+<Select placeholder="Default">...</Select>
+<Select placeholder="Com erro" error>...</Select>
+<Select placeholder="Disabled" disabled>...</Select>
+<Select defaultValue="ops" readOnly>...</Select>
+```
+
+`readOnly` mantém o campo focável (diferente de `disabled`), mas o dropdown nunca abre — o mesmo comportamento de um `<input readOnly>`.
+
+## Com Field
+
+<SelectFieldDemo client:load />
+
+```tsx
+<Field label="Workspace" required supportingText="O workspace define quem vê este projeto.">
+  <Select placeholder="Selecione um workspace" value={workspace} onValueChange={setWorkspace}>
+    <SelectOption value="ops">Workspace Operações</SelectOption>
+    <SelectOption value="mkt">Workspace Marketing</SelectOption>
+    <SelectOption value="arquivado" disabled>Workspace Arquivado</SelectOption>
+  </Select>
+</Field>
+```
+
+## Props
+
+### `Select`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Uma ou mais `<SelectOption>`. |
+| `placeholder` | `string` | `'Selecione...'` | Texto exibido sem valor selecionado. |
+| `size` | `'lg' \| 'md' \| 'sm'` | `'md'` | Tamanho do campo. |
+| `value` / `defaultValue` | `string` | — | Valor controlado ou inicial. |
+| `onValueChange` | `(value: string) => void` | — | Chamado ao selecionar uma opção. |
+| `error` | `boolean` | `false` | Marca `aria-invalid` e colore a borda de vermelho. |
+| `disabled` | `boolean` | `false` | Desabilita o campo por completo (sai do tab order). |
+| `readOnly` | `boolean` | `false` | Continua focável, mas o dropdown nunca abre. |
+| `required` | `boolean` | `false` | Marca o campo como obrigatório para validação de formulário. |
+| `name` | `string` | — | Nome do campo num `<form>` nativo. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`, sem conflito. |
+
+### `SelectOption`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | — | Valor único da opção (obrigatório). |
+| `disabled` | `boolean` | `false` | Opção não selecionável. |
+| `children` | `ReactNode` | — | Rótulo exibido. |
+
+## Quando usar
+
+Escolha única entre muitas opções (tipicamente mais de 5) — listas longas, dados vindos de uma API, ou quando o espaço vertical é limitado. Para 2–5 opções sempre visíveis, prefira [Radio](/components/radio/).
+
+## Quando não usar
+
+Não use para múltipla seleção — não existe hoje um `multiple` no Select do InnovUI. Para isso, combine vários [Checkbox](/components/checkbox/).
+
+## Acessibilidade
+
+- Totalmente navegável por teclado: `Enter`/`Espaço` abre o dropdown, setas navegam entre opções, `Esc` fecha.
+- Typeahead: digitar letras pula para a opção correspondente, mesmo com o dropdown fechado.
+- O gatilho (`Trigger`) expõe `role="combobox"` e `aria-expanded`; o dropdown expõe `role="listbox"` e cada opção `role="option"` — tudo cortesia do Radix UI.
+- O estado `error` marca `aria-invalid="true"`; combine com [Field](/components/field/) para também colorir o rótulo e conectar a mensagem via `aria-describedby`.

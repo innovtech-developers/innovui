@@ -135,9 +135,9 @@ Cada componente da tabela de fases da spec vira uma task com este molde:
 
 - [x] **Button (piloto):** feito em 2026-10-01, junto com o Spinner (dependência da Button para o estado loading). Tem página de doc (`/components/button`). Falta o publish real no npm.
 - [x] **Input, Field, Textarea, Checkbox, Radio, Switch:** feito em 2026-10-02, resto da Fase 1 (Form Controls). Tamanhos/geometria reais do Figma (não da doc simplificada): Input/Textarea 56/48/40px, Checkbox/Radio caixa de 20px em alvo de toque de 44px, Switch trilho 44×24 com knob de 20px. 100%/98.55% de cobertura. Página de doc com demo ao vivo para cada um (ex.: Field com validação ao vivo, Checkbox com padrão selecionar-todos/indeterminate).
-- [ ] **Select:** não iniciado. É o mais complexo da Fase 1 (Trigger + Dropdown + Option, 3 sub-componentes no Figma); SPEC.md já aprovou Radix UI para isso.
+- [x] **Select:** feito em 2026-10-05, fecha a Fase 1 (Form Controls). Construído sobre `@radix-ui/react-select` (Trigger + Dropdown + Option do Figma viram, na API pública, só `Select` + `SelectOption` — o resto é composição interna). Tamanhos 56/48/40px idênticos ao Input; estados Default/Hover/Focus/Open/Error/Disabled herdam os tokens `--color-field-*` já existentes; `select/option/*` e `select/dropdown/*` viraram tokens novos (`--color-select-*`). `readOnly` implementado via `open` controlado internamente (foco normal, nunca abre), já que Radix não tem esse conceito nativo. 100%/98.7% de cobertura. Doc com demo de tamanhos, estados e uso com `Field`.
 
-**Ordem:** ~~Button (piloto, fecha o CP4)~~ → resto da Fase 1 → Fase 2 → Fase 3 → v1.0.0 → Fase 4.
+**Ordem:** ~~Button (piloto, fecha o CP4)~~ → ~~resto da Fase 1~~ → Fase 2 → Fase 3 → v1.0.0 → Fase 4.
 
 ---
 
