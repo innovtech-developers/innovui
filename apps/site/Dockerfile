@@ -19,6 +19,6 @@ FROM nginx:alpine AS runtime
 COPY apps/site/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /repo/apps/site/dist /usr/share/nginx/html
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1/ || exit 1
 
 EXPOSE 80
