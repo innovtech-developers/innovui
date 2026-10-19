@@ -55,7 +55,7 @@ export function Modal({
     <Dialog.Root open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
-        <Dialog.Overlay className="iu:fixed iu:inset-0 iu:z-50 iu:bg-[var(--color-surface-overlay)] iu:opacity-50" />
+        <Dialog.Overlay className="iu:fixed iu:inset-0 iu:z-50 iu:bg-[var(--color-surface-overlay)] iu:opacity-(--surface-overlay-opacity)" />
         <Dialog.Content className={cn(modalVariants({ size }), className)}>
           <div className="iu:flex iu:items-center iu:gap-4 iu:border-b iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
             <Dialog.Title className="iu:flex-1 iu:text-lg iu:leading-6 iu:font-semibold iu:text-[var(--color-text-primary)]">

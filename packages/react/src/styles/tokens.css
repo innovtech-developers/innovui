@@ -2,8 +2,10 @@
  * Design tokens do InnovUI, extraídos do Figma "Comhub Design System" (Qi9eahiHd9Zn6b0ZbffmKB).
  * Fonte de verdade: Figma. Ver SPEC.md para o inventário completo e divergências resolvidas.
  *
- * Modo escuro: a estrutura semântica já existe no Figma (Light/Dark), mas os valores Dark
- * ainda não foram lidos — ver PLAN.md (T2.1). Por ora só o modo claro é publicado.
+ * Modo escuro: os mesmos tokens semânticos e de componente, resolvidos no modo Dark do Figma
+ * (coleções Semantic e Component, lidas direto das variáveis). Ativa com `class="dark"` ou
+ * `data-theme="dark"` em qualquer elemento (normalmente o <html>); os componentes não mudam,
+ * só o valor resolvido de cada token. Não há ativação automática por prefers-color-scheme.
  */
 
 @theme {
@@ -225,7 +227,8 @@
   --color-border-focus: #bd84ff;
 
   --color-surface-elevated: #ffffff;
-  --color-surface-overlay: #10172b; /* usado com opacity-50, como no Backdrop do Figma */
+  --color-surface-overlay: #10172b;
+  --surface-overlay-opacity: 0.5; /* opacity/50 no claro, opacity/70 no escuro (Backdrop do Modal) */
 
   --color-interactive-primary: #9035ee;
   --color-interactive-primary-hover: #7b24d1;
@@ -309,4 +312,117 @@
   --color-selection-toggle-track-off: #ccd5e2;
   --color-selection-toggle-track-off-hover: #96a3b9;
   --color-selection-toggle-track-on-hover: #7b24d1;
+}
+
+/* Modo escuro: só sobrescreve o valor; os nomes são os mesmos do :root acima. */
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* ---- Semantic (modo escuro) ---- */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #96a3b9;
+  --color-text-tertiary: #66748c;
+  --color-text-disabled: #49556a;
+  --color-text-inverse: #10172b;
+  --color-text-inverse-secondary: #66748c;
+  --color-text-brand: #bd84ff;
+
+  --color-bg-primary: #10172b;
+  --color-bg-secondary: #20293c;
+  --color-bg-tertiary: #354156;
+  --color-bg-inverse: #ffffff;
+  --color-bg-skeleton: #49556a;
+  --color-bg-success-emphasis: #37a345;
+
+  --color-border-default: #354156;
+  --color-border-strong: #66748c;
+  --color-border-focus: #bd84ff;
+
+  --color-surface-elevated: #354156;
+  --color-surface-overlay: #10172b;
+  --surface-overlay-opacity: 0.7;
+
+  --color-interactive-primary: #a456fb;
+  --color-interactive-primary-hover: #bd84ff;
+  --color-interactive-disabled: #354156;
+
+  --color-status-success-text: #63de7c;
+  --color-status-success-bg: #1f532b;
+  --color-status-success-border: #63de7c;
+  --color-status-error-text: #ef706f;
+  --color-status-error-bg: #7a1c1a;
+  --color-status-error-border: #ef706f;
+  --color-status-warning-text: #e5b200;
+  --color-status-warning-bg: #402003;
+  --color-status-warning-border: #c48900;
+  --color-status-info-text: #6ca6fd;
+  --color-status-info-bg: #1e3a8a;
+  --color-status-info-border: #6ca6fd;
+  --color-status-neutral-text: #96a3b9;
+  --color-status-neutral-bg: #20293c;
+  --color-status-neutral-border: #354156;
+  --color-status-pending-text: #e5b200;
+  --color-status-pending-bg: #402003;
+
+  /* ---- Component: Button ---- */
+  --color-button-primary-text: #10172b;
+  --color-button-primary-bg: #a456fb;
+  --color-button-primary-bg-hover: #bd84ff;
+  --color-button-primary-bg-active: #d6b4ff;
+  --color-button-secondary-text: #bd84ff;
+  --color-button-secondary-bg: #561d89;
+  --color-button-secondary-bg-hover: #6822ab;
+  --color-button-tertiary-text: #f8fafc;
+  --color-button-tertiary-border: #49556a;
+  --color-button-ghost-text: #bd84ff;
+  --color-button-ghost-bg-hover: #561d89;
+  --color-button-destructive-text: #10172b;
+  --color-button-destructive-bg: #e54240;
+  --color-button-destructive-bg-hover: #e54240;
+  --color-button-destructive-bg-active: #ef706f;
+  --color-button-disabled-bg: #354156;
+  --color-button-disabled-text: #66748c;
+  --color-button-disabled-text-destructive: #49556a;
+  --color-button-focus-ring: #bd84ff;
+
+  /* ---- Component: Spinner ---- */
+  --color-spinner-track: #f8fafc;
+  --color-spinner-indicator: #f8fafc;
+
+  /* ---- Component: Field (Input, Textarea, Select) ---- */
+  --color-field-text: #f8fafc;
+  --color-field-text-placeholder: #66748c;
+  --color-field-text-label: #96a3b9;
+  --color-field-text-disabled: #49556a;
+  --color-field-bg: #10172b;
+  --color-field-bg-disabled: #20293c;
+  --color-field-border: #354156;
+  --color-field-border-hover: #66748c;
+  --color-field-border-error: #ef706f;
+  --color-field-border-disabled: #354156;
+  --color-field-focus-ring: #bd84ff;
+
+  /* ---- Component: Select (Dropdown, Option) ---- */
+  --color-select-dropdown-bg: #354156;
+  --color-select-dropdown-border: #20293c;
+  --color-select-option-text: #f8fafc;
+  --color-select-option-text-disabled: #49556a;
+  --color-select-option-bg-hover: #20293c;
+  --color-select-option-bg-selected: #561d89;
+
+  /* ---- Component: Checkbox, Radio, Switch ---- */
+  --color-selection-bg-unselected: #10172b;
+  --color-selection-border-unselected: #49556a;
+  --color-selection-text-label: #f8fafc;
+  --color-selection-indicator-selected: #10172b;
+  --color-selection-bg-selected: #a456fb;
+  --color-selection-border-selected: #bd84ff;
+  --color-selection-focus-ring: #bd84ff;
+  --color-selection-bg-disabled: #354156;
+  --color-selection-border-disabled: #354156;
+  --color-selection-text-disabled: #49556a;
+  --color-selection-toggle-track-off: #49556a;
+  --color-selection-toggle-track-off-hover: #66748c;
+  --color-selection-toggle-track-on-hover: #bd84ff;
 }

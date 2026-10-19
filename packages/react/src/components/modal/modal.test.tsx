@@ -133,9 +133,9 @@ describe('Modal', () => {
       </Modal>,
     )
     expect(screen.getByRole('dialog')).toHaveClass('iu:rounded-lg', 'iu:shadow-2xl', 'iu:mt-2')
-    expect(document.querySelector('[data-state="open"].iu\\:opacity-50')).toHaveClass(
-      'iu:bg-[var(--color-surface-overlay)]',
-    )
+    expect(
+      document.querySelector('[data-state="open"].iu\\:opacity-\\(--surface-overlay-opacity\\)'),
+    ).toHaveClass('iu:bg-[var(--color-surface-overlay)]')
   })
 
   it('não tem violações de acessibilidade', async () => {
