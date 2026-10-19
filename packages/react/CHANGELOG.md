@@ -1,5 +1,17 @@
 # @innovui/react
 
+## 0.3.0
+
+### Minor Changes
+
+- [`19fc07f`](https://github.com/innovtech-developers/innovui/commit/19fc07f9144267ea362504fd377ceae274058c7e) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona Alert (mensagem em bloco com título, ação e fechar) e Banner (mensagem em largura total) — 5 status cada, com ícones semânticos e tokens extraídos do Figma.
+
+- [`ad5105a`](https://github.com/innovtech-developers/innovui/commit/ad5105ac8ff2a70f97fa4782a77b50278da40af6) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona Badge (6 status, com indicador opcional) e Tag (filled/outline, removível) — início da Fase 2 (Feedback), com tokens extraídos do Figma e cobertura de testes/acessibilidade.
+
+- [`f13c4dd`](https://github.com/innovtech-developers/innovui/commit/f13c4dd2346c5c0f949141fe0b30438d1e169885) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona o Skeleton (text, title, avatar, card e rectangle, com pulse) — fecha a Fase 2 (Feedback e Loading).
+
+- [`3c83423`](https://github.com/innovtech-developers/innovui/commit/3c83423e564313f1790cf7af9651b0c3e1b90651) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona o Toast: `ToastProvider` + hook `useToast()` para disparar notificações temporárias de qualquer lugar (5 status, ação, fechar, auto-dismiss de 5s com pausa ao passar o mouse, região acessível), construído sobre o Radix UI Toast.
+
 ## 0.2.0
 
 ### Minor Changes
