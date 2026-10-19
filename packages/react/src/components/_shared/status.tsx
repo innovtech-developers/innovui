@@ -2,7 +2,16 @@ import type { ComponentProps } from 'react'
 
 export type Status = 'success' | 'error' | 'warning' | 'info' | 'neutral'
 
-/** Fundo e cor de destaque por status, compartilhados por Alert, Banner e Toast (uso interno). */
+/** Só a cor de destaque (texto/ícone) por status. */
+export const statusText: Record<Status, string> = {
+  success: 'iu:text-[var(--color-status-success-text)]',
+  error: 'iu:text-[var(--color-status-error-text)]',
+  warning: 'iu:text-[var(--color-status-warning-text)]',
+  info: 'iu:text-[var(--color-status-info-text)]',
+  neutral: 'iu:text-[var(--color-status-neutral-text)]',
+}
+
+/** Fundo e cor de destaque por status, compartilhados por Alert e Banner (uso interno). */
 export const statusSurface: Record<Status, string> = {
   success: 'iu:bg-[var(--color-status-success-bg)] iu:text-[var(--color-status-success-text)]',
   error: 'iu:bg-[var(--color-status-error-bg)] iu:text-[var(--color-status-error-text)]',

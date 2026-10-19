@@ -17,4 +17,10 @@ export { Spinner, type SpinnerProps } from './components/spinner'
 export { Switch, type SwitchProps } from './components/switch'
 export { Tag, type TagProps } from './components/tag'
 export { Textarea, type TextareaProps } from './components/textarea'
+export {
+  type ToastOptions,
+  ToastProvider,
+  type ToastProviderProps,
+  useToast,
+} from './components/toast'
 export { cn } from './utils/cn'
