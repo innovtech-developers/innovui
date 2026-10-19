@@ -31,6 +31,21 @@ export function Example() {
 - React 19 ou mais recente (`react` e `react-dom` como peer dependencies).
 - Não é necessário ter Tailwind CSS instalado no seu projeto — o CSS da lib já vem compilado.
 
+## Com Tailwind v4
+
+Se o seu projeto já usa o Tailwind v4, os dois convivem sem conflito: as classes da lib têm o prefixo `iu:` e os tokens do tema do Tailwind dela viram `--iu-*`, então mudar o `@theme` do seu projeto (`--spacing`, `--radius-*`, `--font-sans`, cores…) **não** altera os componentes.
+
+Importe o CSS da lib **antes** do Tailwind, no seu CSS global:
+
+```css
+@import "@innovui/react/styles.css";
+@import "tailwindcss";
+```
+
+Nessa ordem, as suas classes ganham quando você passa `className` a um componente para mudar algo que ele já define (ex.: `<Button className="h-20">`), e a fonte do seu projeto (`--font-sans`) é a que os componentes herdam. Se invertida, as classes da lib vencem os conflitos e a fonte dos componentes passa a ser a da própria lib. Classes que não conflitam (`mt-4`, `w-full`) funcionam em qualquer ordem.
+
+Verificamos esse cenário com Vite e com Next.js 16 (Server Component), em Tailwind v4, com o `@theme` do consumidor sobrescrevendo espaçamento, raio, fonte, cinza e tamanho de texto: o estilo computado dos 23 componentes testados fica idêntico ao de um app sem Tailwind, exceto pela fonte herdada.
+
 ## Server Components
 
 Todo componente interativo já tem a diretiva `"use client"`, então funciona normalmente dentro de Server Components do Next.js (App Router), sem configuração adicional.
