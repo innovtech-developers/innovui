@@ -1,0 +1,56 @@
+---
+title: SegmentedControl
+description: Escolha única entre 2 a 5 views do mesmo conteúdo.
+---
+
+import { SegmentedDemo } from '../../../components/demos/NavigationDemos'
+
+Escolha única entre **2 a 5 opções fixas**, para alternar entre views do mesmo conteúdo. O item ativo ganha fundo sólido sobre um contêiner com fundo sutil. Para navegar entre seções diferentes, use [Tabs](/components/tabs/).
+
+<SegmentedDemo client:load />
+
+```tsx
+import { SegmentedControl, SegmentedItem } from '@innovui/react'
+
+<SegmentedControl aria-label="Visualização" value={view} onValueChange={setView}>
+  <SegmentedItem value="lista">Lista</SegmentedItem>
+  <SegmentedItem value="grade">Grade</SegmentedItem>
+  <SegmentedItem value="mapa">Mapa</SegmentedItem>
+</SegmentedControl>
+```
+
+## Props
+
+### `SegmentedControl`
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `aria-label` | `string` | **Obrigatório.** Descreve o que o controle escolhe. |
+| `value` | `string` | Item escolhido (modo controlado). |
+| `defaultValue` | `string` | Item inicial (modo não controlado). |
+| `onValueChange` | `(value: string) => void` | Chamado ao trocar de item. |
+| `disabled` | `boolean` | Desabilita o controle inteiro. |
+| `className` | `string` | Mesclado com as classes internas via `tailwind-merge`. |
+
+### `SegmentedItem`
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `value` | `string` | **Obrigatória.** Valor do item. |
+| `disabled` | `boolean` | Desabilita só este item. |
+| `className` | `string` | Mesclado com as classes internas. |
+
+## Acessibilidade
+
+- É um grupo de opções (`radiogroup` com itens `radio`): sempre há um item escolhido e clicar no escolhido não o desmarca.
+- Teclado: `←`/`→` movem e escolhem o item (pulando os desabilitados), `Tab` entra e sai do grupo.
+- O `aria-label` é obrigatório: o TypeScript recusa o uso sem ele.
+- Foco visível com anel de 2px.
+
+### Quando usar
+
+Alternar entre views do mesmo conteúdo (lista/grade, mensal/semanal), com 2 a 5 opções fixas.
+
+### Quando não usar
+
+Navegação entre seções ([Tabs](/components/tabs/)), mais de 5 opções (use o [Select](/components/select/)) ou escolha múltipla.

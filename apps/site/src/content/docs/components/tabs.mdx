@@ -1,0 +1,81 @@
+---
+title: Tabs
+description: Abas para navegar entre seções diferentes de conteúdo.
+---
+
+import { TabsDemo, TabsIconDemo } from '../../../components/demos/NavigationDemos'
+
+Navegação horizontal para alternar entre **seções diferentes** de conteúdo, com indicador sublinhado na aba ativa. Para alternar entre views do mesmo conteúdo, use o [SegmentedControl](/components/segmented-control/).
+
+<TabsDemo client:load />
+
+```tsx
+import { Tabs, TabList, Tab, TabPanel } from '@innovui/react'
+
+<Tabs defaultValue="geral">
+  <TabList aria-label="Configurações">
+    <Tab value="geral">Geral</Tab>
+    <Tab value="conta">Conta</Tab>
+    <Tab value="faturas" disabled>Faturas</Tab>
+  </TabList>
+  <TabPanel value="geral">Preferências gerais.</TabPanel>
+  <TabPanel value="conta">Dados da conta.</TabPanel>
+</Tabs>
+```
+
+É composto por quatro partes: `Tabs` (estado), `TabList` (a barra), `Tab` (cada aba) e `TabPanel` (o conteúdo de cada aba). O `value` do `Tab` liga a aba ao seu `TabPanel`.
+
+## Com ícone
+
+<TabsIconDemo client:load />
+
+```tsx
+<Tab value="inicio" icon={<Home />}>Início</Tab>
+```
+
+O ícone fica à esquerda do rótulo, em 24px.
+
+## Controlado
+
+```tsx
+const [tab, setTab] = useState('geral')
+
+<Tabs value={tab} onValueChange={setTab}>…</Tabs>
+```
+
+## Props
+
+### `Tabs`
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `defaultValue` | `string` | Aba ativa inicial (modo não controlado). |
+| `value` | `string` | Aba ativa (modo controlado). |
+| `onValueChange` | `(value: string) => void` | Chamado ao trocar de aba. |
+| `orientation` | `'horizontal' \| 'vertical'` | Direção das setas do teclado. Padrão: `'horizontal'`. |
+
+### `Tab`
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `value` | `string` | **Obrigatória.** Liga a aba ao `TabPanel` de mesmo `value`. |
+| `icon` | `ReactNode` | Ícone à esquerda do rótulo. |
+| `disabled` | `boolean` | Desabilita a aba. |
+| `className` | `string` | Mesclado com as classes internas via `tailwind-merge`. |
+
+`TabList` e `TabPanel` aceitam `className` e as props nativas de `<div>`. O `TabPanel` também recebe o `value`.
+
+## Acessibilidade
+
+- Implementa o padrão WAI-ARIA de abas (`tablist`, `tab`, `tabpanel`), com `aria-selected` e `aria-controls` automáticos.
+- Teclado: `←`/`→` movem entre as abas (e pulam as desabilitadas), `Home`/`End` vão para a primeira/última, `Tab` leva ao painel.
+- Dê um nome à lista com `aria-label` no `TabList` quando houver mais de um conjunto de abas na página.
+- Foco visível com anel de 2px.
+
+### Quando usar
+
+Navegação entre seções diferentes, quando o conteúdo muda por completo e a quantidade de abas varia.
+
+### Quando não usar
+
+Alternar entre views do mesmo conteúdo ([SegmentedControl](/components/segmented-control/)) ou navegar entre páginas (use links).
