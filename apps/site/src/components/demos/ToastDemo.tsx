@@ -53,10 +53,12 @@ function Buttons() {
 
 export function ToastDemo() {
   return (
-    <ToastProvider>
-      <Stage>
+    // O ToastProvider fica dentro do Stage (not-content): o viewport é renderizado no lugar do
+    // provider, e fora dele o CSS de markdown do Starlight bagunça o espaçamento dos toasts.
+    <Stage>
+      <ToastProvider>
         <Buttons />
-      </Stage>
-    </ToastProvider>
+      </ToastProvider>
+    </Stage>
   )
 }
