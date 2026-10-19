@@ -90,7 +90,7 @@
   --sl-color-gray-1: #ccd5e2;
   --sl-color-gray-2: #96a3b9;
   --sl-color-gray-3: #96a3b9;
-  --sl-color-gray-4: #66748c;
+  --sl-color-gray-4: #96a3b9; /* rótulos pequenos: #66748c dava 3.07:1 sobre bg/secondary */
   --sl-color-gray-5: #354156;
   --sl-color-gray-6: #20293c;
   --sl-color-gray-7: #10172b;
