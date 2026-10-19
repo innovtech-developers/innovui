@@ -58,10 +58,16 @@ export function ToastProvider({
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
-  const dismiss = useCallback(
-    (id: number) => setItems((current) => current.filter((item) => item.id !== id)),
-    [],
-  )
+  const viewportRef = useRef<HTMLOListElement>(null)
+
+  const dismiss = useCallback((id: number) => {
+    // O Radix pausa os timers no focusin do viewport e só retoma no focusout. Se o toast focado
+    // (ex.: o botão da ação clicada) sair do DOM, esse focusout nunca vem e os outros toasts
+    // ficariam pausados para sempre; tirar o foco antes de remover dispara a retomada.
+    const active = document.activeElement
+    if (active instanceof HTMLElement && viewportRef.current?.contains(active)) active.blur()
+    setItems((current) => current.filter((item) => item.id !== id))
+  }, [])
   const toast = useCallback((options: ToastOptions) => {
     const id = nextId.current++
     setItems((current) => [...current, { ...options, id }])
@@ -109,6 +115,7 @@ export function ToastProvider({
         {mounted &&
           createPortal(
             <RadixToast.Viewport
+              ref={viewportRef}
               label={label}
               className="iu:fixed iu:right-4 iu:bottom-4 iu:z-50 iu:m-0 iu:flex iu:w-[360px] iu:max-w-[calc(100vw-2rem)] iu:list-none iu:flex-col iu:gap-2 iu:p-0 iu:outline-none"
             />,

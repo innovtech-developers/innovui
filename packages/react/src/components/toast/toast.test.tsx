@@ -96,6 +96,45 @@ describe('Toast', () => {
     }
   })
 
+  it('depois de clicar na ação, os demais toasts continuam fechando sozinhos', async () => {
+    // O Radix pausa os timers quando o foco entra no viewport e só retoma no focusout; ao
+    // fechar o toast focado o elemento some sem focusout, e os outros ficavam pausados para sempre.
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      function Two() {
+        const { toast } = useToast()
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              toast({
+                description: 'Com ação',
+                duration: 1000,
+                action: { label: 'Desfazer', onClick: () => {} },
+              })
+              toast({ description: 'Sem ação', duration: 1000 })
+            }}
+          >
+            dois
+          </button>
+        )
+      }
+      render(
+        <ToastProvider>
+          <Two />
+        </ToastProvider>,
+      )
+      await userEvent.click(screen.getByText('dois'))
+      await userEvent.click(await screen.findByRole('button', { name: 'Desfazer' }))
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1500)
+      })
+      expect(screen.queryByText('Sem ação')).not.toBeInTheDocument()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('useToast fora do ToastProvider lança erro claro', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<Trigger options={{ description: 'x' }} />)).toThrow(
