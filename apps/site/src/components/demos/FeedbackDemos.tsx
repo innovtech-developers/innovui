@@ -1,4 +1,4 @@
-import { Alert, Badge, Banner, Button, Tag } from '@innovui/react'
+import { Alert, Badge, Banner, Button, Skeleton, Tag } from '@innovui/react'
 import { useState } from 'react'
 import { Stage } from './Stage'
 
@@ -145,6 +145,61 @@ export function BannerDemo() {
         <Banner status="error">Estamos com instabilidade nos pagamentos.</Banner>
         <Banner status="warning">Seu período de teste termina amanhã.</Banner>
         <Banner status="neutral">Versão 2.1 disponível.</Banner>
+      </div>
+    </Stage>
+  )
+}
+
+export function SkeletonVariantsDemo() {
+  return (
+    <Stage>
+      <div style={{ display: 'flex', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1.5rem' }}>
+        <Skeleton variant="text" />
+        <Skeleton variant="title" />
+        <Skeleton variant="avatar" />
+        <Skeleton variant="rectangle" />
+        <Skeleton variant="card" />
+      </div>
+    </Stage>
+  )
+}
+
+export function SkeletonLoadingDemo() {
+  const [loading, setLoading] = useState(true)
+
+  return (
+    <Stage>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          width: '100%',
+          maxWidth: 360,
+        }}
+      >
+        <div aria-busy={loading} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          {loading ? (
+            <>
+              <Skeleton variant="avatar" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                <Skeleton variant="title" className="iu:w-3/5" />
+                <Skeleton className="iu:w-full" />
+              </div>
+            </>
+          ) : (
+            <>
+              <Badge status="success">LB</Badge>
+              <div>
+                <strong>Lucas Bogos</strong>
+                <div>Design System · InnovUI</div>
+              </div>
+            </>
+          )}
+        </div>
+        <Button variant="secondary" size="sm" onClick={() => setLoading(!loading)}>
+          {loading ? 'Carregar conteúdo' : 'Voltar ao carregamento'}
+        </Button>
       </div>
     </Stage>
   )
