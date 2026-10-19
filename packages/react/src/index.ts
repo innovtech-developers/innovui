@@ -12,6 +12,7 @@ export { Checkbox, type CheckboxProps } from './components/checkbox'
 export { Field, type FieldProps } from './components/field'
 export { IconButton, type IconButtonProps } from './components/icon-button'
 export { Input, type InputProps } from './components/input'
+export { Modal, ModalClose, type ModalProps } from './components/modal'
 export { Radio, type RadioProps } from './components/radio'
 export {
   SegmentedControl,
@@ -47,4 +48,5 @@ export {
   type ToastProviderProps,
   useToast,
 } from './components/toast'
+export { Tooltip, type TooltipProps } from './components/tooltip'
 export { cn } from './utils/cn'

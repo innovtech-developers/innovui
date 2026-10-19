@@ -225,6 +225,7 @@
   --color-border-focus: #bd84ff;
 
   --color-surface-elevated: #ffffff;
+  --color-surface-overlay: #10172b; /* usado com opacity-50, como no Backdrop do Figma */
 
   --color-interactive-primary: #9035ee;
   --color-interactive-primary-hover: #7b24d1;
