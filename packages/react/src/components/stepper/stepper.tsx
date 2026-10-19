@@ -1,3 +1,5 @@
+'use client'
+
 import { Children, type ComponentProps, createContext, useContext } from 'react'
 import { cn } from '../../utils/cn'
 import { CheckIcon } from '../_shared/status'
