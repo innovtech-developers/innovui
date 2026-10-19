@@ -1,0 +1,64 @@
+---
+title: Alert
+description: Mensagem contextual em bloco, persistente, com 5 status.
+---
+
+import { AlertDemo, AlertActionDemo } from '../../../components/demos/FeedbackDemos'
+
+Mensagem contextual **em bloco** para comunicar informações, avisos, erros ou confirmações. Fica na interface até ser dispensada. Para avisos temporários, use o Toast; para mensagens globais no topo da tela, o [Banner](/components/banner/).
+
+<AlertDemo client:load />
+
+```tsx
+import { Alert } from '@innovui/react'
+
+<Alert status="success" title="Pagamento aprovado">
+  Seu pedido foi confirmado.
+</Alert>
+```
+
+## Com ação e fechar
+
+<AlertActionDemo client:load />
+
+```tsx
+<Alert
+  status="warning"
+  title="Alterações não salvas"
+  action={<Button variant="ghost" size="sm">Salvar agora</Button>}
+  onDismiss={() => setOpen(false)}
+>
+  Você tem edições pendentes neste formulário.
+</Alert>
+```
+
+A `action` é um slot: passe um [Button](/components/button/) `ghost` de tamanho `sm` (ou um link). O botão de fechar (×) aparece quando `onDismiss` é passado.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral'` | `'info'` | Cor semântica e ícone. |
+| `title` | `ReactNode` | — | Resumo do alerta (opcional). |
+| `children` | `ReactNode` | — | Descrição. |
+| `showIcon` | `boolean` | `true` | Mostra o ícone do status. |
+| `action` | `ReactNode` | — | Ação contextual abaixo da descrição. |
+| `onDismiss` | `() => void` | — | Mostra o botão de fechar e o chama ao clicar. |
+| `dismissLabel` | `string` | `'Fechar'` | Nome acessível do botão de fechar. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`. |
+
+Aceita também as props nativas de `<div>`.
+
+## Acessibilidade
+
+- `error` e `warning` usam `role="alert"` (o leitor de tela interrompe e anuncia); `success`, `info` e `neutral` usam `role="status"` (anunciados sem interromper). Você pode sobrescrever com a prop `role`.
+- A cor não é o único sinal: o ícone e o texto também dizem o status.
+- O botão de fechar é um `<button>` real, com foco visível e acionável por teclado.
+
+### Quando usar
+
+Validação de formulário, feedback de operações, avisos contextuais numa seção, status de integrações.
+
+### Quando não usar
+
+Notificações temporárias (Toast), mensagens globais ([Banner](/components/banner/)), conteúdo longo e vários alertas empilhados.

@@ -1,4 +1,4 @@
-import { Badge, Tag } from '@innovui/react'
+import { Alert, Badge, Banner, Button, Tag } from '@innovui/react'
 import { useState } from 'react'
 import { Stage } from './Stage'
 
@@ -64,6 +64,87 @@ export function TagDismissDemo() {
           </Tag>
         ))}
         {tags.length === 0 && <span>Todas as tags foram removidas.</span>}
+      </div>
+    </Stage>
+  )
+}
+
+const stack = { display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' } as const
+
+export function AlertDemo() {
+  return (
+    <Stage>
+      <div style={stack}>
+        <Alert status="success" title="Pagamento aprovado">
+          Seu pedido foi confirmado.
+        </Alert>
+        <Alert status="error" title="Falha no envio">
+          Não foi possível salvar. Tente novamente.
+        </Alert>
+        <Alert status="warning" title="Atenção">
+          Sua assinatura vence em 3 dias.
+        </Alert>
+        <Alert status="info" title="Novidade">
+          Agora você pode exportar relatórios em PDF.
+        </Alert>
+        <Alert status="neutral" title="Dica">
+          Use atalhos de teclado para navegar mais rápido.
+        </Alert>
+      </div>
+    </Stage>
+  )
+}
+
+export function AlertActionDemo() {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <Stage>
+      {open ? (
+        <Alert
+          status="warning"
+          title="Alterações não salvas"
+          action={
+            <Button variant="ghost" size="sm">
+              Salvar agora
+            </Button>
+          }
+          onDismiss={() => setOpen(false)}
+        >
+          Você tem edições pendentes neste formulário.
+        </Alert>
+      ) : (
+        <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+          Mostrar alerta de novo
+        </Button>
+      )}
+    </Stage>
+  )
+}
+
+export function BannerDemo() {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <Stage>
+      <div style={stack}>
+        {open && (
+          <Banner
+            status="info"
+            action={
+              <Button variant="ghost" size="sm">
+                Saiba mais
+              </Button>
+            }
+            onDismiss={() => setOpen(false)}
+          >
+            Manutenção programada hoje às 22h. O sistema ficará indisponível por 30 minutos.
+          </Banner>
+        )}
+        <Banner status="success">Sua conta foi verificada com sucesso.</Banner>
+        <Banner status="error">Estamos com instabilidade nos pagamentos.</Banner>
+        <Banner status="warning">Seu período de teste termina amanhã.</Banner>
+        <Banner status="neutral">Versão 2.1 disponível.</Banner>
       </div>
     </Stage>
   )
