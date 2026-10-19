@@ -8,6 +8,12 @@ export { IconButton, type IconButtonProps } from './components/icon-button'
 export { Input, type InputProps } from './components/input'
 export { Radio, type RadioProps } from './components/radio'
 export {
+  SegmentedControl,
+  type SegmentedControlProps,
+  SegmentedItem,
+  type SegmentedItemProps,
+} from './components/segmented-control'
+export {
   Select,
   SelectOption,
   type SelectOptionProps,
@@ -16,6 +22,16 @@ export {
 export { Skeleton, type SkeletonProps } from './components/skeleton'
 export { Spinner, type SpinnerProps } from './components/spinner'
 export { Switch, type SwitchProps } from './components/switch'
+export {
+  Tab,
+  TabList,
+  type TabListProps,
+  TabPanel,
+  type TabPanelProps,
+  type TabProps,
+  Tabs,
+  type TabsProps,
+} from './components/tabs'
 export { Tag, type TagProps } from './components/tag'
 export { Textarea, type TextareaProps } from './components/textarea'
 export {
