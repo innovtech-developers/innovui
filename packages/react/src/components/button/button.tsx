@@ -5,31 +5,34 @@ import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { Spinner } from '../spinner/spinner'
 
-const buttonVariants = cva(
-  'iu:inline-flex iu:items-center iu:justify-center iu:gap-2 iu:whitespace-nowrap iu:rounded-full iu:font-medium iu:transition-colors iu:focus-visible:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-button-focus-ring)] iu:focus-visible:ring-offset-2 iu:disabled:pointer-events-none iu:disabled:bg-[var(--color-button-disabled-bg)] iu:disabled:text-[var(--color-button-disabled-text)]',
-  {
-    variants: {
-      variant: {
-        primary:
-          'iu:bg-[var(--color-button-primary-bg)] iu:text-[var(--color-button-primary-text)] iu:hover:bg-[var(--color-button-primary-bg-hover)] iu:active:bg-[var(--color-button-primary-bg-active)]',
-        secondary:
-          'iu:bg-[var(--color-button-secondary-bg)] iu:text-[var(--color-button-secondary-text)] iu:hover:bg-[var(--color-button-secondary-bg-hover)]',
-        tertiary:
-          'iu:border iu:border-[var(--color-button-tertiary-border)] iu:bg-transparent iu:text-[var(--color-button-tertiary-text)] iu:hover:bg-[var(--color-bg-secondary)]',
-        ghost:
-          'iu:bg-transparent iu:text-[var(--color-button-ghost-text)] iu:hover:bg-[var(--color-button-ghost-bg-hover)]',
-        destructive:
-          'iu:bg-[var(--color-button-destructive-bg)] iu:text-[var(--color-button-destructive-text)] iu:hover:bg-[var(--color-button-destructive-bg-hover)] iu:active:bg-[var(--color-button-destructive-bg-active)] iu:disabled:text-[var(--color-button-disabled-text-destructive)]',
-      },
-      size: {
-        lg: 'iu:h-14 iu:px-6 iu:text-base',
-        md: 'iu:h-11 iu:px-4 iu:text-sm',
-        sm: 'iu:h-9 iu:px-3 iu:text-xs',
-      },
+/** Base e estilos compartilhados com o IconButton (não fazem parte da API pública). */
+export const buttonBase =
+  'iu:inline-flex iu:items-center iu:justify-center iu:gap-2 iu:whitespace-nowrap iu:rounded-full iu:font-medium iu:transition-colors iu:focus-visible:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-button-focus-ring)] iu:focus-visible:ring-offset-2 iu:disabled:pointer-events-none iu:disabled:bg-[var(--color-button-disabled-bg)] iu:disabled:text-[var(--color-button-disabled-text)]'
+
+export const buttonVariantStyles = {
+  primary:
+    'iu:bg-[var(--color-button-primary-bg)] iu:text-[var(--color-button-primary-text)] iu:hover:bg-[var(--color-button-primary-bg-hover)] iu:active:bg-[var(--color-button-primary-bg-active)]',
+  secondary:
+    'iu:bg-[var(--color-button-secondary-bg)] iu:text-[var(--color-button-secondary-text)] iu:hover:bg-[var(--color-button-secondary-bg-hover)]',
+  tertiary:
+    'iu:border iu:border-[var(--color-button-tertiary-border)] iu:bg-transparent iu:text-[var(--color-button-tertiary-text)] iu:hover:bg-[var(--color-bg-secondary)]',
+  ghost:
+    'iu:bg-transparent iu:text-[var(--color-button-ghost-text)] iu:hover:bg-[var(--color-button-ghost-bg-hover)]',
+  destructive:
+    'iu:bg-[var(--color-button-destructive-bg)] iu:text-[var(--color-button-destructive-text)] iu:hover:bg-[var(--color-button-destructive-bg-hover)] iu:active:bg-[var(--color-button-destructive-bg-active)] iu:disabled:text-[var(--color-button-disabled-text-destructive)]',
+}
+
+const buttonVariants = cva(buttonBase, {
+  variants: {
+    variant: buttonVariantStyles,
+    size: {
+      lg: 'iu:h-14 iu:px-6 iu:text-base',
+      md: 'iu:h-11 iu:px-4 iu:text-sm',
+      sm: 'iu:h-9 iu:px-3 iu:text-xs',
     },
-    defaultVariants: { variant: 'primary', size: 'md' },
   },
-)
+  defaultVariants: { variant: 'primary', size: 'md' },
+})
 
 export type ButtonProps = Omit<ComponentProps<'button'>, 'children'> &
   VariantProps<typeof buttonVariants> & {

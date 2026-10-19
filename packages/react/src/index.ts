@@ -1,6 +1,7 @@
 export { Button, type ButtonProps } from './components/button'
 export { Checkbox, type CheckboxProps } from './components/checkbox'
 export { Field, type FieldProps } from './components/field'
+export { IconButton, type IconButtonProps } from './components/icon-button'
 export { Input, type InputProps } from './components/input'
 export { Radio, type RadioProps } from './components/radio'
 export {
