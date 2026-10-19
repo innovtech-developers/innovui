@@ -1,5 +1,5 @@
 /**
- * InnovUI — site shell, modo claro.
+ * InnovUI — site shell, modo claro e escuro.
  * Usa os mesmos tokens do design system real (@innovui/react/src/styles/tokens.css):
  * roxo Comhub (purple/600 #9035ee), escala de cinza neutra, Inter como fonte única.
  * Nenhuma paleta/fonte inventada só para o site — o site usa a própria marca.
@@ -75,14 +75,37 @@
   --ec-gtrBrdCol: rgb(102 116 140 / 0.3);
 }
 
-/* design system ainda não publicou tokens dark (PRODUCT.md) — espelha o claro em vez de
-   deixar o SO forçar um tema quebrado */
+/* Modo escuro: mesma escala de cinza invertida e o roxo clareado, com os valores Dark do
+   design system (Semantic/Component). `@innovui/react/styles.css` também reage ao
+   `data-theme="dark"` do Starlight, então demos, portais (Toast, Modal, Tooltip) e o site
+   trocam juntos. */
 :root[data-theme="dark"] {
-  --sl-color-bg: #ffffff;
-  --sl-color-bg-nav: #ffffff;
-  --sl-color-bg-sidebar: #ffffff;
-  --sl-color-text: #10172b;
-  --sl-color-accent: #9035ee;
+  --sl-color-bg: #10172b;
+  --sl-color-bg-nav: #10172b;
+  --sl-color-bg-sidebar: #10172b;
+  --sl-color-bg-inline-code: #354156;
+  --sl-color-bg-accent: #a456fb;
+
+  --sl-color-white: #f8fafc;
+  --sl-color-gray-1: #ccd5e2;
+  --sl-color-gray-2: #96a3b9;
+  --sl-color-gray-3: #96a3b9;
+  --sl-color-gray-4: #66748c;
+  --sl-color-gray-5: #354156;
+  --sl-color-gray-6: #20293c;
+  --sl-color-gray-7: #10172b;
+  --sl-color-black: #10172b;
+
+  --sl-color-text: #f8fafc;
+  --sl-color-text-accent: #bd84ff;
+  --sl-color-text-invert: #10172b;
+  --sl-color-hairline: #354156;
+  --sl-color-hairline-light: #20293c;
+  --sl-color-hairline-shade: #49556a;
+
+  --sl-color-accent-low: #561d89;
+  --sl-color-accent: #a456fb;
+  --sl-color-accent-high: #d6b4ff;
 }
 
 body {
@@ -166,7 +189,7 @@ kbd {
 .specimen-plate {
   position: relative;
   min-width: 0;
-  background: #f8fafc;
+  background: var(--color-bg-secondary);
   border: 1px solid var(--sl-color-hairline);
   border-radius: 12px;
   padding: 2rem;
@@ -191,7 +214,7 @@ kbd {
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
-  background: #ffffff;
+  background: var(--color-bg-primary);
   border: 1px solid var(--sl-color-hairline);
   border-radius: 8px;
 }
@@ -231,7 +254,7 @@ kbd {
   width: 0.85rem;
   height: 0.85rem;
   border-radius: 9999px;
-  border: 1px solid rgb(16 23 43 / 0.15);
+  border: 1px solid var(--color-border-default);
   flex-shrink: 0;
 }
 
@@ -266,7 +289,7 @@ kbd {
 .specimen-plate__chip {
   font-family: "Space Mono", monospace;
   font-size: 0.75rem;
-  background: #ffffff;
+  background: var(--color-bg-primary);
   border: 1px solid var(--sl-color-hairline-shade);
   border-radius: 9999px;
   color: var(--sl-color-gray-3);
@@ -279,18 +302,18 @@ kbd {
 }
 
 .specimen-plate__chip:hover {
-  border-color: #9035ee;
-  color: #7b24d1;
+  border-color: var(--color-interactive-primary);
+  color: var(--color-interactive-primary-hover);
 }
 
 .specimen-plate__chip[aria-pressed="true"] {
-  background: #9035ee;
-  border-color: #9035ee;
-  color: #fff;
+  background: var(--color-button-primary-bg);
+  border-color: var(--color-button-primary-bg);
+  color: var(--color-button-primary-text);
 }
 
 .specimen-plate__chip:focus-visible {
-  outline: 2px solid #9035ee;
+  outline: 2px solid var(--color-interactive-primary);
   outline-offset: 2px;
 }
 
@@ -332,7 +355,8 @@ kbd {
 /* ===== Specimen demo stage (fundo das demos React vivas nas páginas de componente) ===== */
 
 .specimen-demo {
-  background: #f8fafc;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
   border: 1px solid var(--sl-color-hairline);
   border-radius: 8px;
   padding: 1.5rem;
@@ -365,26 +389,39 @@ kbd {
 }
 
 .lp-button:focus-visible {
-  outline: 2px solid #bd84ff;
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }
 
 .lp-button--primary {
-  background: #9035ee;
-  color: #fff;
+  background: var(--color-button-primary-bg);
+  color: var(--color-button-primary-text);
 }
 
 .lp-button--primary:hover {
-  background: #7b24d1;
+  background: var(--color-button-primary-bg-hover);
 }
 
 .lp-button--ghost {
   background: transparent;
-  color: #7b24d1;
+  color: var(--color-interactive-primary-hover);
   border: 1px solid var(--sl-color-hairline-shade);
 }
 
 .lp-button--ghost:hover {
-  background: #f2e8ff;
-  border-color: #9035ee;
+  background: var(--color-button-secondary-bg-hover);
+  border-color: var(--color-interactive-primary);
+}
+
+/* Valor hex do token na placa: mostra o do modo ativo (claro por padrão, escuro no dark). */
+.specimen-plate__hex--dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .specimen-plate__hex--light {
+  display: none;
+}
+
+:root[data-theme="dark"] .specimen-plate__hex--dark {
+  display: inline;
 }

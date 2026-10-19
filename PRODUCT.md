@@ -35,7 +35,7 @@ Nenhum outro componente de UI no mercado é construído diretamente a partir das
 - CSS compilado e distribuído pela própria lib (`@innovui/react/styles.css`); não exige Tailwind no projeto consumidor.
 - Tema via CSS custom properties, sem `ThemeProvider` em JS.
 - Escopo de componentes: os 25 componentes atualmente desenhados no Figma do Comhub Design System (fases 0–3, ver SPEC.md); componentes além do Figma só entram como "derivados do DS" (reaproveitando tokens existentes, nunca inventando novos).
-- Modo escuro: estrutura de tokens existe no Figma, mas os valores ainda não foram lidos/publicados (gap conhecido, ver PLAN.md T2.1).
+- Modo escuro: publicado (T2.1). `class="dark"` ou `data-theme="dark"` resolve os mesmos tokens no modo Dark do Figma; não há ativação automática por `prefers-color-scheme`.
 - Licença MIT, open source, repositório em `github.com/innovtech-developers/innovui`.
 
 ## Brand Commitments

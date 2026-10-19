@@ -25,8 +25,6 @@ export default defineConfig({
       },
       components: {
         Hero: './src/components/HerbariumHero.astro',
-        // sem tokens de modo escuro publicados ainda, o seletor padrão só fingiria escolha
-        ThemeSelect: './src/components/EmptyThemeSelect.astro',
         // pictograma de categoria ao lado do H1 nas páginas de componente — cumpre o
         // direction contract original ("cada categoria de componente leva um pictograma
         // desenhado à mão"), nunca executado até agora.

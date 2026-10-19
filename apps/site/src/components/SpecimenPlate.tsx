@@ -4,12 +4,40 @@ import { useState } from 'react'
 type Variant = NonNullable<ButtonProps['variant']>
 type Size = NonNullable<ButtonProps['size']>
 
-const VARIANT_TOKENS: Record<Variant, { swatch: string; token: string }> = {
-  primary: { swatch: '#9035ee', token: 'button/primary/bg' },
-  secondary: { swatch: '#faf5ff', token: 'button/secondary/bg' },
-  tertiary: { swatch: '#10172b', token: 'button/tertiary/text' },
-  ghost: { swatch: '#9035ee', token: 'button/ghost/text' },
-  destructive: { swatch: '#d3221e', token: 'button/destructive/bg' },
+const VARIANT_TOKENS: Record<
+  Variant,
+  { swatch: string; dark: string; cssVar: string; token: string }
+> = {
+  primary: {
+    swatch: '#9035ee',
+    dark: '#a456fb',
+    cssVar: '--color-button-primary-bg',
+    token: 'button/primary/bg',
+  },
+  secondary: {
+    swatch: '#faf5ff',
+    dark: '#561d89',
+    cssVar: '--color-button-secondary-bg',
+    token: 'button/secondary/bg',
+  },
+  tertiary: {
+    swatch: '#10172b',
+    dark: '#f8fafc',
+    cssVar: '--color-button-tertiary-text',
+    token: 'button/tertiary/text',
+  },
+  ghost: {
+    swatch: '#9035ee',
+    dark: '#bd84ff',
+    cssVar: '--color-button-ghost-text',
+    token: 'button/ghost/text',
+  },
+  destructive: {
+    swatch: '#d3221e',
+    dark: '#e54240',
+    cssVar: '--color-button-destructive-bg',
+    token: 'button/destructive/bg',
+  },
 }
 
 /** Quebra o nome do token em "/" para não precisar de overflow-wrap:anywhere (que corta palavras ao meio). */
@@ -83,10 +111,11 @@ export function SpecimenPlate() {
           <dd className="specimen-plate__swatch">
             <span
               className="specimen-plate__swatch-chip"
-              style={{ backgroundColor: tokens.swatch }}
+              style={{ backgroundColor: `var(${tokens.cssVar})` }}
               aria-hidden="true"
             />
-            {tokens.swatch}
+            <span className="specimen-plate__hex--light">{tokens.swatch}</span>
+            <span className="specimen-plate__hex--dark">{tokens.dark}</span>
           </dd>
         </div>
       </dl>
