@@ -244,6 +244,8 @@
   --color-status-neutral-text: #49556a;
   --color-status-neutral-bg: #f8fafc;
   --color-status-neutral-border: #e3e8f0;
+  --color-status-pending-text: #9c6100;
+  --color-status-pending-bg: #fdf9c0;
 
   /* ---- Component: Button ---- */
   --color-button-primary-text: #ffffff;
