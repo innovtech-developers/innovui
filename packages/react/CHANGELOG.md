@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 0.2.0
+
+### Minor Changes
+
+- [`4f2a7f0`](https://github.com/innovtech-developers/innovui/commit/4f2a7f0715ed89e8fdf9d3335b0a0b627f718c44) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona o componente `IconButton` — versão quadrada do Button, só com ícone, com os mesmos estilos, estados e tokens e `aria-label` obrigatório.
+
 ## 0.1.0
 
 ### Minor Changes
