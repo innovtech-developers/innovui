@@ -1,6 +1,12 @@
 export { Alert, type AlertProps } from './components/alert'
 export { Badge, type BadgeProps } from './components/badge'
 export { Banner, type BannerProps } from './components/banner'
+export {
+  Breadcrumb,
+  BreadcrumbItem,
+  type BreadcrumbItemProps,
+  type BreadcrumbProps,
+} from './components/breadcrumb'
 export { Button, type ButtonProps } from './components/button'
 export { Checkbox, type CheckboxProps } from './components/checkbox'
 export { Field, type FieldProps } from './components/field'
@@ -21,6 +27,7 @@ export {
 } from './components/select'
 export { Skeleton, type SkeletonProps } from './components/skeleton'
 export { Spinner, type SpinnerProps } from './components/spinner'
+export { Step, type StepProps, Stepper, type StepperProps } from './components/stepper'
 export { Switch, type SwitchProps } from './components/switch'
 export {
   Tab,

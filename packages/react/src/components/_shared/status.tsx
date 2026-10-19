@@ -58,3 +58,21 @@ export function CloseIcon(props: ComponentProps<'svg'>) {
     </svg>
   )
 }
+
+/** ✓ de 16px; herda a cor do texto (currentColor). */
+export function CheckIcon(props: ComponentProps<'svg'>) {
+  return (
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" {...strokeProps} {...props}>
+      <path d="M13.3333 4L6 11.3333L2.66667 8" />
+    </svg>
+  )
+}
+
+/** › de 12px; herda a cor do texto (currentColor). */
+export function ChevronRightIcon(props: ComponentProps<'svg'>) {
+  return (
+    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" {...strokeProps} {...props}>
+      <path d="M4.5 9L7.5 6L4.5 3" />
+    </svg>
+  )
+}
