@@ -13,6 +13,7 @@ export {
   type SelectOptionProps,
   type SelectProps,
 } from './components/select'
+export { Skeleton, type SkeletonProps } from './components/skeleton'
 export { Spinner, type SpinnerProps } from './components/spinner'
 export { Switch, type SwitchProps } from './components/switch'
 export { Tag, type TagProps } from './components/tag'
