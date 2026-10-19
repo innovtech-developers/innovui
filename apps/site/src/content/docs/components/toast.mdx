@@ -1,0 +1,90 @@
+---
+title: Toast
+description: Notificação temporária e flutuante, disparada por código.
+---
+
+import { ToastDemo } from '../../../components/demos/ToastDemo'
+
+Notificação **temporária** e flutuante, que confirma o resultado de uma ação e some sozinha (~5s). Para mensagens que precisam ficar na tela, use o [Alert](/components/alert/) (em bloco) ou o [Banner](/components/banner/) (no topo).
+
+<ToastDemo client:load />
+
+Diferente dos outros componentes, o Toast é **disparado por código**: envolva o app uma vez com `ToastProvider` e chame `useToast()` de qualquer componente abaixo dele.
+
+```tsx
+import { ToastProvider, useToast } from '@innovui/react'
+
+// 1. Uma vez, na raiz do app
+<ToastProvider>
+  <App />
+</ToastProvider>
+
+// 2. Em qualquer componente
+function SaveButton() {
+  const { toast } = useToast()
+
+  return (
+    <Button onClick={() => toast({ status: 'success', title: 'Salvo', description: 'Alterações salvas.' })}>
+      Salvar
+    </Button>
+  )
+}
+```
+
+No Next.js (App Router), o `ToastProvider` já é um Client Component: pode ser usado direto no `layout.tsx`.
+
+## Com ação
+
+```tsx
+toast({
+  status: 'neutral',
+  description: 'Item removido da lista.',
+  action: { label: 'Desfazer', onClick: restore },
+})
+```
+
+Clicar na ação chama o `onClick` e fecha o toast.
+
+## `useToast()`
+
+| Retorno | Descrição |
+|---|---|
+| `toast(options)` | Exibe um toast e devolve o seu `id`. |
+| `dismiss(id)` | Fecha um toast por código. |
+
+### Opções de `toast()`
+
+| Opção | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `description` | `ReactNode` | — | **Obrigatória.** A mensagem. |
+| `title` | `ReactNode` | — | Resumo (opcional). |
+| `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral'` | `'info'` | Cor semântica e ícone. |
+| `action` | `{ label: string; onClick: () => void }` | — | Ação contextual, que também fecha o toast. |
+| `duration` | `number` | `5000` | Tempo até fechar sozinho, em ms. |
+
+### Props do `ToastProvider`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `string` | `'Notificações ({hotkey})'` | Nome acessível da região; `{hotkey}` vira o atalho (F8). |
+| `dismissLabel` | `string` | `'Fechar'` | Nome acessível do botão de fechar. |
+
+## Comportamento
+
+- Os toasts aparecem no canto inferior direito e se empilham.
+- O timer pausa quando o mouse está sobre o toast ou o foco está nele, e quando a aba perde o foco.
+- Dá para dispensar arrastando (swipe) ou com `Esc`; `F8` leva o foco para a região de notificações.
+
+## Acessibilidade
+
+- `error` e `warning` são anunciados de forma assertiva (interrompem o leitor de tela); `success`, `info` e `neutral`, com calma.
+- Toasts somem sozinhos: **não** coloque informação que o usuário precise ler com calma, nem a única forma de completar uma tarefa. Para isso, use o [Alert](/components/alert/).
+- O botão de fechar e a ação são `<button>` reais, com foco visível.
+
+### Quando usar
+
+Confirmação de ação (salvo, copiado, enviado), erros transitórios, desfazer.
+
+### Quando não usar
+
+Validação de formulário (use o Alert), mensagens globais ([Banner](/components/banner/)) e conteúdo longo.
