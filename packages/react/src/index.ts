@@ -1,4 +1,6 @@
+export { Alert, type AlertProps } from './components/alert'
 export { Badge, type BadgeProps } from './components/badge'
+export { Banner, type BannerProps } from './components/banner'
 export { Button, type ButtonProps } from './components/button'
 export { Checkbox, type CheckboxProps } from './components/checkbox'
 export { Field, type FieldProps } from './components/field'
