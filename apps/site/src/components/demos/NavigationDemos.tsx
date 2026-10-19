@@ -1,4 +1,16 @@
-import { SegmentedControl, SegmentedItem, Tab, TabList, TabPanel, Tabs } from '@innovui/react'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  SegmentedControl,
+  SegmentedItem,
+  Step,
+  Stepper,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+} from '@innovui/react'
 import { useState } from 'react'
 import { Stage } from './Stage'
 
@@ -79,6 +91,59 @@ export function SegmentedDemo() {
           Visualização atual: <strong>{view}</strong>
         </span>
       </div>
+    </Stage>
+  )
+}
+
+export function StepperDemo() {
+  const [current, setCurrent] = useState(1)
+  const steps = ['Conta', 'Endereço', 'Pagamento', 'Confirmação']
+
+  return (
+    <Stage>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.25rem',
+          alignItems: 'flex-start',
+        }}
+      >
+        <Stepper current={current} aria-label="Etapas do cadastro">
+          {steps.map((label) => (
+            <Step key={label}>{label}</Step>
+          ))}
+        </Stepper>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={current === 0}
+            onClick={() => setCurrent(current - 1)}
+          >
+            Voltar
+          </Button>
+          <Button
+            size="sm"
+            disabled={current === steps.length}
+            onClick={() => setCurrent(current + 1)}
+          >
+            {current >= steps.length - 1 ? 'Concluir' : 'Avançar'}
+          </Button>
+        </div>
+      </div>
+    </Stage>
+  )
+}
+
+export function BreadcrumbDemo() {
+  return (
+    <Stage>
+      <Breadcrumb>
+        <BreadcrumbItem href="#">Dashboard</BreadcrumbItem>
+        <BreadcrumbItem href="#">Configurações</BreadcrumbItem>
+        <BreadcrumbItem current>Perfil</BreadcrumbItem>
+      </Breadcrumb>
     </Stage>
   )
 }

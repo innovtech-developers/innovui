@@ -1,0 +1,67 @@
+---
+title: Breadcrumb
+description: Trilha de navegação que mostra onde o usuário está na hierarquia de páginas.
+---
+
+import { BreadcrumbDemo } from '../../../components/demos/NavigationDemos'
+
+Mostra a **hierarquia de navegação** (Dashboard › Configurações › Perfil). Os itens anteriores são links e o último é a página atual. Para fluxos sequenciais, use o [Stepper](/components/stepper/).
+
+<BreadcrumbDemo client:load />
+
+```tsx
+import { Breadcrumb, BreadcrumbItem } from '@innovui/react'
+
+<Breadcrumb>
+  <BreadcrumbItem href="/">Dashboard</BreadcrumbItem>
+  <BreadcrumbItem href="/config">Configurações</BreadcrumbItem>
+  <BreadcrumbItem current>Perfil</BreadcrumbItem>
+</Breadcrumb>
+```
+
+O separador (›) é desenhado automaticamente depois de cada item, menos do último.
+
+## Com o roteador do seu app
+
+Use `asChild` para o item usar o seu próprio componente de link, sem criar um `<a>` dentro de outro:
+
+```tsx
+import Link from 'next/link'
+
+<BreadcrumbItem asChild>
+  <Link href="/config">Configurações</Link>
+</BreadcrumbItem>
+```
+
+## Props
+
+### `Breadcrumb`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `aria-label` | `string` | `'Breadcrumb'` | Nome da navegação. |
+| `className` | `string` | — | Aplicada no `<nav>`. |
+
+### `BreadcrumbItem`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `href` | `string` | — | Destino do link. |
+| `current` | `boolean` | `false` | Marca a página atual: não é link e ganha `aria-current="page"`. |
+| `asChild` | `boolean` | `false` | Usa o filho como o link (ex.: o `Link` do roteador). |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`. |
+
+## Acessibilidade
+
+- É um `<nav>` com uma lista ordenada, no padrão WAI-ARIA de breadcrumb.
+- A página atual tem `aria-current="page"` e não é link.
+- Os separadores são decorativos (`aria-hidden`).
+- Foco visível com anel de 2px nos links.
+
+### Quando usar
+
+Sites e apps com hierarquia de 3 ou mais níveis de páginas.
+
+### Quando não usar
+
+Fluxos sequenciais ([Stepper](/components/stepper/)) e navegação plana, de um único nível.
