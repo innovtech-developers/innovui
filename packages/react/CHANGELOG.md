@@ -1,5 +1,21 @@
 # @innovui/react
 
+## 0.4.0
+
+### Minor Changes
+
+- [`38cea69`](https://github.com/innovtech-developers/innovui/commit/38cea6963ebdce3b071964e8583d144a95199fa2) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona Tooltip (4 posições, seta e título opcional) e Modal (+ `ModalClose`, com backdrop, foco preso e `Esc`) — fecha a Fase 3 (Navegação e Overlay), construídos sobre o Radix UI Tooltip e Dialog, com tokens extraídos do Figma.
+
+- [`535707d`](https://github.com/innovtech-developers/innovui/commit/535707d13ab69591807a7e324c25d595a8309ffd) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona o modo escuro. Os mesmos tokens semânticos e de componente passam a resolver para os valores do modo Dark do design system quando há `class="dark"` ou `data-theme="dark"` no `<html>` (ou em qualquer elemento): nenhum componente muda. O fundo do Modal fica mais opaco no escuro (`--surface-overlay-opacity`: 50% → 70%). A ativação não é automática por `prefers-color-scheme`; veja "Tema e customização" na documentação.
+
+- [`67c3dbf`](https://github.com/innovtech-developers/innovui/commit/67c3dbf079883e79fd1fdde753dd7011450a2918) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona Tabs (`Tabs`, `TabList`, `Tab`, `TabPanel`) e SegmentedControl (`SegmentedControl` + `SegmentedItem`) — início da Fase 3 (Navegação), construídos sobre o Radix UI Tabs e Radio Group, com navegação por teclado e tokens extraídos do Figma.
+
+- [`aa9032b`](https://github.com/innovtech-developers/innovui/commit/aa9032b988b48397fd7f4a029f8ec6928c5731ce) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Adiciona Stepper (`Stepper` + `Step`, com o estado de cada passo derivado de `current`) e Breadcrumb (`Breadcrumb` + `BreadcrumbItem`, com `asChild` para links de roteador) — continuação da Fase 3 (Navegação), com tokens extraídos do Figma e acessibilidade (`aria-current`).
+
+### Patch Changes
+
+- [`5d07c0a`](https://github.com/innovtech-developers/innovui/commit/5d07c0ad216d193ff14f4e2be53986e96cce72c8) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Corrige o `Stepper` em Server Components: o arquivo usava `createContext` sem `'use client'`, o que quebrava o `next build` de quem importava o componente numa página de servidor.
+
 ## 0.3.0
 
 ### Minor Changes

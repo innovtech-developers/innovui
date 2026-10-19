@@ -1,6 +1,6 @@
 {
   "name": "@innovui/react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Biblioteca de componentes React do design system InnovUI.",
   "type": "module",
   "license": "MIT",
