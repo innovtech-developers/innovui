@@ -110,7 +110,7 @@ describe('Toast', () => {
   })
 
   it('não tem violações de acessibilidade', async () => {
-    const { container } = setup({
+    setup({
       status: 'error',
       title: 'Falha',
       description: 'Não foi possível salvar.',
@@ -118,6 +118,15 @@ describe('Toast', () => {
     })
     await userEvent.click(screen.getByText('disparar'))
     await screen.findByText('Falha')
-    expect(await axe(container)).toHaveNoViolations()
+    // O viewport fica no <body> (portal), fora do container do render.
+    expect(await axe(document.body)).toHaveNoViolations()
+  })
+
+  it('renderiza o viewport no <body>, fora do contêiner do app', async () => {
+    const { container } = setup({ description: 'Mensagem' })
+    await userEvent.click(screen.getByText('disparar'))
+    const message = await screen.findByText('Mensagem')
+    expect(container).not.toContainElement(message)
+    expect(document.body).toContainElement(message)
   })
 })

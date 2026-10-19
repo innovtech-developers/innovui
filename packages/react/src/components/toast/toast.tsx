@@ -6,10 +6,12 @@ import {
   type ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '../../utils/cn'
 import { CloseIcon, type Status, StatusIcon, statusText } from '../_shared/status'
 import { Button } from '../button'
@@ -52,6 +54,9 @@ export function ToastProvider({
 }: ToastProviderProps) {
   const [items, setItems] = useState<ToastItem[]>([])
   const nextId = useRef(0)
+  // O viewport vai para o <body>, para escapar de stacking contexts e overflow dos ancestrais.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const dismiss = useCallback(
     (id: number) => setItems((current) => current.filter((item) => item.id !== id)),
@@ -101,10 +106,14 @@ export function ToastProvider({
             </RadixToast.Close>
           </RadixToast.Root>
         ))}
-        <RadixToast.Viewport
-          label={label}
-          className="iu:fixed iu:right-4 iu:bottom-4 iu:z-50 iu:m-0 iu:flex iu:w-[360px] iu:max-w-[calc(100vw-2rem)] iu:list-none iu:flex-col iu:gap-2 iu:p-0 iu:outline-none"
-        />
+        {mounted &&
+          createPortal(
+            <RadixToast.Viewport
+              label={label}
+              className="iu:fixed iu:right-4 iu:bottom-4 iu:z-50 iu:m-0 iu:flex iu:w-[360px] iu:max-w-[calc(100vw-2rem)] iu:list-none iu:flex-col iu:gap-2 iu:p-0 iu:outline-none"
+            />,
+            document.body,
+          )}
       </RadixToast.Provider>
     </ToastContext.Provider>
   )
