@@ -59,7 +59,7 @@ Passos manuais de configuração, fora do alcance do código, feitos uma vez por
 
 1. **Permitir PR por Actions** — `github.com/organizations/innovtech-developers/settings/actions` → *Workflow permissions* → marcar "Allow GitHub Actions to create and approve pull requests". Sem isso, o `release.yml` falha ao tentar abrir o PR "Version Packages" (o bloqueio é uma política de org, não do repositório).
 2. **Criar a org `@innovui` no npm** — [npmjs.com](https://www.npmjs.com) → *Add Organization* → `innovui` (plano gratuito, pacotes públicos). Sem isso, não há onde publicar `@innovui/react`.
-3. **Secret `NPM_TOKEN`** — gerar um [Granular Access Token](https://docs.npmjs.com/creating-and-viewing-access-tokens) com permissão de publish em `@innovui/*`, e adicionar em `Settings → Secrets and variables → Actions` do repositório. Depois do primeiro publish, pode migrar para [Trusted Publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) e remover o token.
+3. **Trusted Publisher no npm** — em `npmjs.com/package/@innovui/react/access` → *Trusted Publisher* → GitHub Actions: organização `innovtech-developers`, repositório `innovui`, workflow `release.yml`. Sem token: o `release.yml` publica via OIDC (`id-token: write`) e gera a provenance automaticamente.
 4. **Secrets `COOLIFY_WEBHOOK` e `COOLIFY_TOKEN`** — no Coolify, criar a aplicação do site apontando para este repositório (`apps/site/Dockerfile`), copiar a *deploy webhook URL* e gerar um token de API; adicionar os dois como secrets do repositório.
 
 Até esses passos serem feitos, `pnpm lint/typecheck/test/build` (CI) continuam funcionando normalmente — só o publish no npm e o deploy no Coolify ficam pendentes.
