@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 1.0.0
+
+### Major Changes
+
+- [#18](https://github.com/innovtech-developers/innovui/pull/18) [`662326c`](https://github.com/innovtech-developers/innovui/commit/662326ca1e7bf85552749db1fb0877b3177bba62) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Primeira versão estável. O design system do Figma está completo (ações, formulários, feedback, navegação e sobreposições) e mais as peças derivadas dele (Card, Avatar, Stack, Table, Combobox, DatePicker e outras), com modo claro e escuro, animações de entrada e saída que respeitam `prefers-reduced-motion`, e README e metadados do pacote. A partir daqui, mudanças que quebram a API só entram em uma nova versão major.
+
 ## 0.8.0
 
 ### Minor Changes
