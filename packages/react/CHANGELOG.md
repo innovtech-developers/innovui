@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 0.6.0
+
+### Minor Changes
+
+- [#7](https://github.com/innovtech-developers/innovui/pull/7) [`cc9b30f`](https://github.com/innovtech-developers/innovui/commit/cc9b30f30ee733500caa1a8b44b7392c02345fab) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Ajustes confirmados pelo designer: o Toast passa a aparecer no canto superior direito e sua ação é um Button ghost médio (44px), como as ações de Alert e Banner nas docs; o item ativo do SegmentedControl ganha fundo de superfície (branco no claro) com sombra e o texto dos inativos escurece no hover; no modo escuro, `border/default` sobe para gray/500 e `border/strong` para gray/400 (e os tokens de campo, seleção e status neutro que os usam), para as bordas não sumirem contra a superfície. O backdrop do Modal e do Drawer ganha blur de 16px. Novo token `--color-surface-primary`.
+
 ## 0.5.0
 
 ### Minor Changes
