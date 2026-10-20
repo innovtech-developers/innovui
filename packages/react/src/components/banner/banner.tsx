@@ -9,7 +9,7 @@ export type BannerProps = ComponentProps<'div'> & {
   status?: Status
   /** Mostra o ícone semântico do status. */
   showIcon?: boolean
-  /** Ação ao lado da mensagem (ex.: um `<Button variant="ghost" size="sm">`). */
+  /** Ação ao lado da mensagem (ex.: um `<Button variant="ghost">`). */
   action?: ReactNode
   /** Mostra o botão de fechar (×) e o chama ao clicar. */
   onDismiss?: () => void

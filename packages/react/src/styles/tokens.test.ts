@@ -46,6 +46,27 @@ describe('tokens: modo escuro', () => {
     expect(css).not.toContain('prefers-color-scheme: dark')
   })
 
+  it('as bordas aparecem contra a superfície no escuro (border/default ≠ surface/elevated)', () => {
+    expect(dark['--color-border-default']).toBe('#66748c') // gray/500
+    expect(dark['--color-border-strong']).toBe('#96a3b9') // gray/400, um passo acima do default
+    expect(dark['--color-border-default']).not.toBe(dark['--color-surface-elevated'])
+    expect(dark['--color-border-default']).not.toBe(dark['--color-bg-tertiary'])
+  })
+
+  it('os tokens de componente que seguem as bordas acompanham os novos valores', () => {
+    for (const name of [
+      '--color-field-border',
+      '--color-field-border-disabled',
+      '--color-selection-border-disabled',
+      '--color-status-neutral-border',
+    ]) {
+      expect(dark[name], name).toBe(dark['--color-border-default'])
+    }
+    for (const name of ['--color-field-border-hover', '--color-selection-toggle-track-off-hover']) {
+      expect(dark[name], name).toBe(dark['--color-border-strong'])
+    }
+  })
+
   it('o Backdrop do Modal fica mais opaco no escuro (opacity/70)', () => {
     expect(light['--surface-overlay-opacity']).toMatch(/^0\.5/)
     expect(dark['--surface-overlay-opacity']).toBe('0.7')

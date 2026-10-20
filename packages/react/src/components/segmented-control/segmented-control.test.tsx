@@ -58,11 +58,22 @@ describe('SegmentedControl', () => {
     expect(screen.getByRole('radio', { name: 'Lista' })).toBeChecked()
   })
 
-  it('o item marcado ganha o fundo sólido', () => {
+  it('o item marcado ganha fundo de superfície com sombra (estilo iOS)', () => {
     render(<Example />)
-    expect(screen.getByRole('radio', { name: 'Lista' })).toHaveClass(
-      'iu:data-[state=checked]:bg-[var(--color-bg-primary)]',
+    const checked = screen.getByRole('radio', { name: 'Lista' })
+    expect(checked).toHaveClass(
+      'iu:data-[state=checked]:bg-[var(--color-surface-primary)]',
+      'iu:data-[state=checked]:shadow-sm',
     )
+    expect(checked.className).not.toContain('bg-[var(--color-bg-primary)]')
+  })
+
+  it('o hover escurece o texto dos itens inativos habilitados, sem afetar o marcado', () => {
+    render(<Example />)
+    const hover = 'iu:data-[state=unchecked]:enabled:hover:text-[var(--color-text-primary)]'
+    expect(screen.getByRole('radio', { name: 'Grade' })).toHaveClass(hover)
+    expect(screen.getByRole('radio', { name: 'Grade' })).toHaveAttribute('data-state', 'unchecked')
+    expect(screen.getByRole('radio', { name: 'Lista' })).toHaveAttribute('data-state', 'checked')
   })
 
   it('mescla className e repassa props HTML', () => {

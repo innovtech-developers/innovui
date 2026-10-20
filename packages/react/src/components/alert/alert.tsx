@@ -19,7 +19,7 @@ export type AlertProps = Omit<ComponentProps<'div'>, 'title'> & {
   title?: ReactNode
   /** Mostra o ícone semântico do status. */
   showIcon?: boolean
-  /** Ação contextual (ex.: um `<Button variant="ghost" size="sm">`). */
+  /** Ação contextual (ex.: um `<Button variant="ghost">`). */
   action?: ReactNode
   /** Mostra o botão de fechar (×) e o chama ao clicar. */
   onDismiss?: () => void
