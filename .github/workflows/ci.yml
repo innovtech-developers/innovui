@@ -7,13 +7,22 @@ on:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Na main nada é cancelado: o deploy do site decide pelo diff de cada commit, e um CI cancelado
+  # faria o deploy pular a mudança daquele commit.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TELEMETRY_DISABLED: 1
+      # O Turborepo só roda typecheck/test/build nos pacotes que mudaram (e nos que dependem deles):
+      # no PR, desde a base; no push na main, desde o commit anterior.
+      TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # o --affected precisa do histórico para comparar com a base
 
       - uses: pnpm/action-setup@v4
 
@@ -24,10 +33,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ github.sha }}
+          restore-keys: turbo-
+
       - run: pnpm lint
 
-      - run: pnpm typecheck
-
-      - run: pnpm test:coverage
-
-      - run: pnpm build
+      - run: pnpm turbo run typecheck test:coverage build --affected
