@@ -6,6 +6,11 @@
  * (coleções Semantic e Component, lidas direto das variáveis). Ativa com `class="dark"` ou
  * `data-theme="dark"` em qualquer elemento (normalmente o <html>); os componentes não mudam,
  * só o valor resolvido de cada token. Não há ativação automática por prefers-color-scheme.
+ *
+ * Ajustes de contraste (provisórios): 11 variáveis do escuro e 2 do claro seguem as sugestões do
+ * designer (documento "Pendências de Design") e, por isso, divergem das variáveis do Figma até
+ * ele atualizá-las. Cada valor alterado traz ao lado o comentário "ajuste: Figma <valor original>".
+ * Quando o Figma for atualizado, reler as variáveis e remover as marcas.
  */
 
 @theme {
@@ -220,7 +225,7 @@
   --color-bg-tertiary: #f1f5f9;
   --color-bg-inverse: #10172b;
   --color-bg-skeleton: #e3e8f0;
-  --color-bg-success-emphasis: #47c559;
+  --color-bg-success-emphasis: #37a345; /* ajuste: Figma #47c559 */
 
   --color-border-default: #e3e8f0;
   --color-border-strong: #96a3b9;
@@ -234,7 +239,7 @@
   --color-interactive-primary-hover: #7b24d1;
   --color-interactive-disabled: #e3e8f0;
 
-  --color-status-success-text: #37a345;
+  --color-status-success-text: #2c803a; /* ajuste: Figma #37a345 */
   --color-status-success-bg: #f1fdf4;
   --color-status-success-border: #47c559;
   --color-status-error-text: #d3221e;
@@ -321,12 +326,12 @@
 
   /* ---- Semantic (modo escuro) ---- */
   --color-text-primary: #f8fafc;
-  --color-text-secondary: #96a3b9;
+  --color-text-secondary: #ccd5e2; /* ajuste: Figma #96a3b9 */
   --color-text-tertiary: #66748c;
   --color-text-disabled: #49556a;
   --color-text-inverse: #10172b;
   --color-text-inverse-secondary: #66748c;
-  --color-text-brand: #bd84ff;
+  --color-text-brand: #d6b4ff; /* ajuste: Figma #bd84ff */
 
   --color-bg-primary: #10172b;
   --color-bg-secondary: #20293c;
@@ -343,23 +348,23 @@
   --color-surface-overlay: #10172b;
   --surface-overlay-opacity: 0.7;
 
-  --color-interactive-primary: #a456fb;
-  --color-interactive-primary-hover: #bd84ff;
+  --color-interactive-primary: #bd84ff; /* ajuste: Figma #a456fb */
+  --color-interactive-primary-hover: #d6b4ff; /* ajuste: Figma #bd84ff */
   --color-interactive-disabled: #354156;
 
   --color-status-success-text: #63de7c;
   --color-status-success-bg: #1f532b;
   --color-status-success-border: #63de7c;
-  --color-status-error-text: #ef706f;
+  --color-status-error-text: #f5a4a4; /* ajuste: Figma #ef706f */
   --color-status-error-bg: #7a1c1a;
   --color-status-error-border: #ef706f;
   --color-status-warning-text: #e5b200;
   --color-status-warning-bg: #402003;
   --color-status-warning-border: #c48900;
-  --color-status-info-text: #6ca6fd;
+  --color-status-info-text: #9ac5ff; /* ajuste: Figma #6ca6fd */
   --color-status-info-bg: #1e3a8a;
   --color-status-info-border: #6ca6fd;
-  --color-status-neutral-text: #96a3b9;
+  --color-status-neutral-text: #ccd5e2; /* ajuste: Figma #96a3b9 */
   --color-status-neutral-bg: #20293c;
   --color-status-neutral-border: #354156;
   --color-status-pending-text: #e5b200;
@@ -367,20 +372,20 @@
 
   /* ---- Component: Button ---- */
   --color-button-primary-text: #10172b;
-  --color-button-primary-bg: #a456fb;
-  --color-button-primary-bg-hover: #bd84ff;
-  --color-button-primary-bg-active: #d6b4ff;
-  --color-button-secondary-text: #bd84ff;
+  --color-button-primary-bg: #bd84ff; /* ajuste: Figma #a456fb */
+  --color-button-primary-bg-hover: #d6b4ff; /* ajuste: Figma #bd84ff */
+  --color-button-primary-bg-active: #e8d5ff; /* ajuste: Figma #d6b4ff */
+  --color-button-secondary-text: #d6b4ff; /* ajuste: Figma #bd84ff */
   --color-button-secondary-bg: #561d89;
   --color-button-secondary-bg-hover: #6822ab;
   --color-button-tertiary-text: #f8fafc;
   --color-button-tertiary-border: #49556a;
-  --color-button-ghost-text: #bd84ff;
+  --color-button-ghost-text: #d6b4ff; /* ajuste: Figma #bd84ff */
   --color-button-ghost-bg-hover: #561d89;
   --color-button-destructive-text: #10172b;
-  --color-button-destructive-bg: #e54240;
-  --color-button-destructive-bg-hover: #e54240;
-  --color-button-destructive-bg-active: #ef706f;
+  --color-button-destructive-bg: #ef706f; /* ajuste: Figma #e54240 */
+  --color-button-destructive-bg-hover: #f5a4a4; /* ajuste: Figma #e54240 */
+  --color-button-destructive-bg-active: #facac9; /* ajuste: Figma #ef706f */
   --color-button-disabled-bg: #354156;
   --color-button-disabled-text: #66748c;
   --color-button-disabled-text-destructive: #49556a;
@@ -393,7 +398,7 @@
   /* ---- Component: Field (Input, Textarea, Select) ---- */
   --color-field-text: #f8fafc;
   --color-field-text-placeholder: #66748c;
-  --color-field-text-label: #96a3b9;
+  --color-field-text-label: #ccd5e2; /* ajuste: Figma #96a3b9 */
   --color-field-text-disabled: #49556a;
   --color-field-bg: #10172b;
   --color-field-bg-disabled: #20293c;
@@ -416,7 +421,7 @@
   --color-selection-border-unselected: #49556a;
   --color-selection-text-label: #f8fafc;
   --color-selection-indicator-selected: #10172b;
-  --color-selection-bg-selected: #a456fb;
+  --color-selection-bg-selected: #bd84ff; /* ajuste: Figma #a456fb */
   --color-selection-border-selected: #bd84ff;
   --color-selection-focus-ring: #bd84ff;
   --color-selection-bg-disabled: #354156;
@@ -424,5 +429,5 @@
   --color-selection-text-disabled: #49556a;
   --color-selection-toggle-track-off: #49556a;
   --color-selection-toggle-track-off-hover: #66748c;
-  --color-selection-toggle-track-on-hover: #bd84ff;
+  --color-selection-toggle-track-on-hover: #d6b4ff; /* ajuste: Figma #bd84ff */
 }
