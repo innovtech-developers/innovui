@@ -104,11 +104,7 @@ export function AlertActionDemo() {
         <Alert
           status="warning"
           title="Alterações não salvas"
-          action={
-            <Button variant="ghost" size="sm">
-              Salvar agora
-            </Button>
-          }
+          action={<Button variant="ghost">Salvar agora</Button>}
           onDismiss={() => setOpen(false)}
         >
           Você tem edições pendentes neste formulário.
@@ -131,11 +127,7 @@ export function BannerDemo() {
         {open && (
           <Banner
             status="info"
-            action={
-              <Button variant="ghost" size="sm">
-                Saiba mais
-              </Button>
-            }
+            action={<Button variant="ghost">Saiba mais</Button>}
             onDismiss={() => setOpen(false)}
           >
             Manutenção programada hoje às 22h. O sistema ficará indisponível por 30 minutos.

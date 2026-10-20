@@ -231,6 +231,7 @@
   --color-border-strong: #96a3b9;
   --color-border-focus: #bd84ff;
 
+  --color-surface-primary: #ffffff;
   --color-surface-elevated: #ffffff;
   --color-surface-overlay: #10172b;
   --surface-overlay-opacity: 0.5; /* opacity/50 no claro, opacity/70 no escuro (Backdrop do Modal) */
@@ -340,10 +341,11 @@
   --color-bg-skeleton: #49556a;
   --color-bg-success-emphasis: #37a345;
 
-  --color-border-default: #354156;
-  --color-border-strong: #66748c;
+  --color-border-default: #66748c;
+  --color-border-strong: #96a3b9;
   --color-border-focus: #bd84ff;
 
+  --color-surface-primary: #20293c;
   --color-surface-elevated: #354156;
   --color-surface-overlay: #10172b;
   --surface-overlay-opacity: 0.7;
@@ -366,7 +368,7 @@
   --color-status-info-border: #6ca6fd;
   --color-status-neutral-text: #ccd5e2; /* ajuste: Figma #96a3b9 */
   --color-status-neutral-bg: #20293c;
-  --color-status-neutral-border: #354156;
+  --color-status-neutral-border: #66748c;
   --color-status-pending-text: #e5b200;
   --color-status-pending-bg: #402003;
 
@@ -402,10 +404,10 @@
   --color-field-text-disabled: #49556a;
   --color-field-bg: #10172b;
   --color-field-bg-disabled: #20293c;
-  --color-field-border: #354156;
-  --color-field-border-hover: #66748c;
+  --color-field-border: #66748c;
+  --color-field-border-hover: #96a3b9;
   --color-field-border-error: #ef706f;
-  --color-field-border-disabled: #354156;
+  --color-field-border-disabled: #66748c;
   --color-field-focus-ring: #bd84ff;
 
   /* ---- Component: Select (Dropdown, Option) ---- */
@@ -425,9 +427,9 @@
   --color-selection-border-selected: #bd84ff;
   --color-selection-focus-ring: #bd84ff;
   --color-selection-bg-disabled: #354156;
-  --color-selection-border-disabled: #354156;
+  --color-selection-border-disabled: #66748c;
   --color-selection-text-disabled: #49556a;
   --color-selection-toggle-track-off: #49556a;
-  --color-selection-toggle-track-off-hover: #66748c;
+  --color-selection-toggle-track-off-hover: #96a3b9;
   --color-selection-toggle-track-on-hover: #d6b4ff; /* ajuste: Figma #bd84ff */
 }

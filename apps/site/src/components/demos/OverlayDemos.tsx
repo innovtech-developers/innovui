@@ -66,7 +66,7 @@ export function ModalDemo() {
         footer={
           <>
             <ModalClose asChild>
-              <Button variant="secondary">Cancelar</Button>
+              <Button variant="ghost">Cancelar</Button>
             </ModalClose>
             <ModalClose asChild>
               <Button variant="destructive">Excluir</Button>
@@ -96,7 +96,7 @@ export function ModalControlledDemo() {
         title="Convidar pessoas"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setOpen(false)}>
+            <Button variant="ghost" onClick={() => setOpen(false)}>
               Cancelar
             </Button>
             <Button onClick={() => setOpen(false)}>Enviar convites</Button>

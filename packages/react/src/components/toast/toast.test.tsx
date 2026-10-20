@@ -182,4 +182,32 @@ describe('Toast', () => {
     expect(container).not.toContainElement(message)
     expect(document.body).toContainElement(message)
   })
+
+  it('aparece no canto superior direito', () => {
+    setup({ description: 'x' })
+    const viewport = screen
+      .getByRole('region', { name: 'Notificações (F8)' })
+      .querySelector('ol') as HTMLElement
+    expect(viewport).toHaveClass('iu:top-4', 'iu:right-4')
+    expect(viewport).not.toHaveClass('iu:bottom-4')
+  })
+
+  it('a ação é um Button ghost médio (44px), como no design', async () => {
+    setup({ description: 'x', action: { label: 'Desfazer', onClick: () => {} } })
+    await userEvent.click(screen.getByText('disparar'))
+    const action = await screen.findByRole('button', { name: 'Desfazer' })
+    expect(action).toHaveClass('iu:h-11')
+    expect(action).not.toHaveClass('iu:h-9')
+  })
+
+  it('o cartão usa a superfície elevada com borda e sombra, nos dois temas', async () => {
+    setup({ description: 'Mensagem' })
+    await userEvent.click(screen.getByText('disparar'))
+    const card = (await screen.findByText('Mensagem')).closest('li') as HTMLElement
+    expect(card).toHaveClass(
+      'iu:bg-[var(--color-surface-elevated)]',
+      'iu:border-[var(--color-border-default)]',
+      'iu:shadow-md',
+    )
+  })
 })

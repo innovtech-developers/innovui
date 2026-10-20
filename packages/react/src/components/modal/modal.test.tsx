@@ -158,9 +158,20 @@ describe('Modal', () => {
       </Modal>,
     )
     expect(screen.getByRole('dialog')).toHaveClass('iu:rounded-lg', 'iu:shadow-2xl', 'iu:mt-2')
-    expect(
-      document.querySelector('[data-state="open"].iu\\:opacity-\\(--surface-overlay-opacity\\)'),
-    ).toHaveClass('iu:bg-[var(--color-surface-overlay)]')
+  })
+
+  it('o backdrop usa surface/overlay na opacidade do tema, com blur de 16px', () => {
+    render(
+      <Modal open title="T">
+        Corpo
+      </Modal>,
+    )
+    const backdrop = document.querySelector('[data-state="open"].iu\\:backdrop-blur-\\[16px\\]')
+    expect(backdrop).toBeInTheDocument()
+    expect(backdrop?.className).toContain('var(--color-surface-overlay)')
+    expect(backdrop?.className).toContain('var(--surface-overlay-opacity)')
+    // a opacidade vai na cor: com `opacity` no elemento o blur desbotaria junto
+    expect(backdrop?.className).not.toMatch(/(^|\s)iu:opacity-/)
   })
 
   it('não tem violações de acessibilidade', async () => {
