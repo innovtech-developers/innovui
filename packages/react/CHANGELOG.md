@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 0.8.0
+
+### Minor Changes
+
+- [#16](https://github.com/innovtech-developers/innovui/pull/16) [`1cd0c65`](https://github.com/innovtech-developers/innovui/commit/1cd0c652228dc9b058a49739fe7b637cdf9a701f) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Arrastar para fechar o Drawer: o backdrop clareia junto com o painel; quando o gesto começa rolando o conteúdo e este chega ao começo, o painel assume o resto do arraste (e devolve a rolagem se o dedo recuar); e corrigido um salto ao soltar antes do limite, em que a animação de entrada do painel reiniciava durante a volta. Novo `showHandle` (padrão `true`): barrinha de arraste do Figma (40px) nos painéis `top` e `bottom`.
+
 ## 0.7.0
 
 ### Minor Changes
