@@ -1,0 +1,15 @@
+/*
+ * Ordem das layers: as do Starlight ficam entre o preflight do Tailwind (base) e as utilitárias
+ * da lib. Sem isso, o reset do Starlight (`button { font: inherit }`, `h1, h2 { font-weight: 700 }`)
+ * vence `iu:text-sm`/`iu:font-medium` e as demos mostram o componente com a tipografia errada.
+ */
+@layer theme,
+  base,
+  starlight.base,
+  starlight.reset,
+  starlight.core,
+  starlight.content,
+  starlight.components,
+  starlight.utils,
+  components,
+  utilities;

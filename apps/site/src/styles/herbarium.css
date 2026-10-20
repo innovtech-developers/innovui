@@ -112,12 +112,21 @@ body {
   font-feature-settings: "cv05", "cv11";
 }
 
+/* em layer: sem ela vence as utilitárias da lib */
+@layer starlight.content {
+  h1,
+  h2,
+  h3 {
+    font-family: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* o peso fica fora da layer e restrito ao conteúdo da página: o Modal (portal no body) usa o seu */
 h1,
-h2,
-h3 {
-  font-family: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+.sl-markdown-content h2,
+.sl-markdown-content h3 {
   font-weight: 700;
-  letter-spacing: -0.02em;
 }
 
 .site-title {
