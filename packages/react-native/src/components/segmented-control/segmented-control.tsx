@@ -3,8 +3,15 @@
 import { createContext, type ReactNode, useContext, useState } from 'react'
 import { Pressable, type PressableProps, Text, View, type ViewProps } from 'react-native'
 import { cn } from '../../utils/cn'
+import { type Rect, SlidingIndicator, useItemLayouts } from '../_shared/sliding-indicator'
 
-type SegmentedContext = { value: string | undefined; select: (value: string) => void }
+type SegmentedContext = {
+  value: string | undefined
+  select: (value: string) => void
+  /** O pill já mediu o item marcado: os itens deixam de desenhar o próprio fundo. */
+  slid: boolean
+  setLayout: (value: string, rect: Rect) => void
+}
 
 const Context = createContext<SegmentedContext | null>(null)
 
@@ -25,10 +32,13 @@ export function SegmentedControl({
   value,
   defaultValue,
   onValueChange,
+  children,
   ...props
 }: SegmentedControlProps) {
   const [uncontrolled, setUncontrolled] = useState(defaultValue)
   const current = value ?? uncontrolled
+  const { layouts, setLayout } = useItemLayouts()
+  const active = current === undefined ? undefined : layouts[current]
 
   const select = (next: string) => {
     if (next === current) return
@@ -37,7 +47,7 @@ export function SegmentedControl({
   }
 
   return (
-    <Context.Provider value={{ value: current, select }}>
+    <Context.Provider value={{ value: current, select, slid: active !== undefined, setLayout }}>
       <View
         accessibilityRole="radiogroup"
         className={cn(
@@ -45,7 +55,11 @@ export function SegmentedControl({
           className,
         )}
         {...props}
-      />
+      >
+        {/* o fundo do item marcado é do indicador: fica sob os itens e desliza para o próximo */}
+        <SlidingIndicator target={active} className="rounded-md bg-surface-primary shadow-sm" />
+        {children}
+      </View>
     </Context.Provider>
   )
 }
@@ -62,6 +76,7 @@ export function SegmentedItem({
   children,
   disabled,
   accessibilityState,
+  onLayout,
   ...props
 }: SegmentedItemProps) {
   const group = useContext(Context)
@@ -76,9 +91,13 @@ export function SegmentedItem({
       accessibilityState={{ ...accessibilityState, checked, disabled: isDisabled }}
       disabled={isDisabled}
       onPress={() => group.select(value)}
+      onLayout={(event) => {
+        group.setLayout(value, event.nativeEvent.layout)
+        onLayout?.(event)
+      }}
       className={cn(
         'items-center justify-center rounded-md px-4 py-2',
-        checked ? 'bg-surface-primary shadow-sm' : 'active:bg-bg-secondary',
+        checked ? !group.slid && 'bg-surface-primary shadow-sm' : 'active:bg-bg-secondary',
         className,
       )}
       {...props}

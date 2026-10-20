@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
+import { StyleSheet } from 'react-native'
 import { SegmentedControl, SegmentedItem } from './segmented-control'
 
 function Example({ onValueChange }: { onValueChange?: (value: string) => void }) {
@@ -89,5 +90,44 @@ describe('SegmentedControl', () => {
     )
     expect(screen.getByLabelText('x').props.className).toContain('mt-4')
     expect(radio('A').props.className).toContain('ml-2')
+  })
+
+  describe('indicador deslizante', () => {
+    beforeEach(() => jest.useFakeTimers())
+    afterEach(() => jest.useRealTimers())
+
+    const measure = (name: string, x: number, width: number) =>
+      fireEvent(radio(name), 'layout', {
+        nativeEvent: { layout: { x, y: 4, width, height: 36 } },
+      })
+    const indicator = () =>
+      StyleSheet.flatten(screen.UNSAFE_getAllByProps({ pointerEvents: 'none' }).at(-1)?.props.style)
+
+    it('antes de medir, o item marcado desenha o próprio fundo e não há pill', () => {
+      render(<Example />)
+      expect(screen.UNSAFE_queryAllByProps({ pointerEvents: 'none' })).toHaveLength(0)
+      expect(radio('Lista').props.className).toContain('bg-surface-primary')
+    })
+
+    it('depois de medir, o pill assume o fundo e o item deixa de desenhá-lo', () => {
+      render(<Example />)
+      measure('Lista', 4, 60)
+      measure('Grade', 68, 70)
+      expect(indicator()).toMatchObject({ left: 4, top: 4, width: 60, height: 36 })
+      expect(radio('Lista').props.className).not.toContain('bg-surface-primary')
+    })
+
+    it('ao escolher outro item, o pill desliza e se redimensiona até ele', () => {
+      render(<Example />)
+      measure('Lista', 4, 60)
+      measure('Grade', 68, 70)
+      fireEvent.press(radio('Grade'))
+      act(() => jest.advanceTimersByTime(100))
+      const mid = indicator()
+      expect(mid.left).toBeGreaterThan(4)
+      expect(mid.left).toBeLessThan(68)
+      act(() => jest.advanceTimersByTime(300))
+      expect(indicator()).toMatchObject({ left: 68, top: 4, width: 70, height: 36 })
+    })
   })
 })

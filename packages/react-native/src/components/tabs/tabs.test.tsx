@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
-import { Text } from 'react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
+import { StyleSheet, Text } from 'react-native'
 import { Tab, TabList, TabPanel, Tabs, type TabsProps } from './tabs'
 
 function Example(props: TabsProps) {
@@ -87,5 +87,49 @@ describe('Tabs', () => {
     expect(screen.getByText('B').props.className).not.toContain('text-text-brand')
     expect(tab('A').props.className).toContain('px-8')
     expect(tab('A').props.className).not.toContain('px-3')
+  })
+
+  describe('indicador deslizante', () => {
+    beforeEach(() => jest.useFakeTimers())
+    afterEach(() => jest.useRealTimers())
+
+    const measure = (name: string, x: number, width: number) =>
+      fireEvent(tab(name), 'layout', {
+        nativeEvent: { layout: { x, y: 0, width, height: 36 } },
+      })
+    const indicator = () =>
+      StyleSheet.flatten(screen.UNSAFE_getAllByProps({ pointerEvents: 'none' }).at(-1)?.props.style)
+    const underline = (name: string) =>
+      tab(name).findAll(
+        (node: { props: { className?: unknown } }) =>
+          typeof node.props.className === 'string' && node.props.className.includes('h-0.5'),
+      )[0]
+
+    it('antes de medir, a aba ativa desenha o próprio sublinhado e não há indicador', () => {
+      render(<Example />)
+      expect(screen.UNSAFE_queryAllByProps({ pointerEvents: 'none' })).toHaveLength(0)
+      expect(underline('Geral').props.className).toContain('bg-interactive-primary')
+    })
+
+    it('depois de medir, o indicador assume: aparece na base da aba ativa, e a aba para de desenhar', () => {
+      render(<Example />)
+      measure('Geral', 0, 60)
+      measure('Conta', 60, 90)
+      expect(indicator()).toMatchObject({ left: 0, top: 34, width: 60, height: 2 })
+      expect(underline('Geral').props.className).not.toContain('bg-interactive-primary')
+    })
+
+    it('ao trocar de aba, desliza e se redimensiona até a nova', () => {
+      render(<Example />)
+      measure('Geral', 0, 60)
+      measure('Conta', 60, 90)
+      fireEvent.press(tab('Conta'))
+      act(() => jest.advanceTimersByTime(100))
+      const mid = indicator()
+      expect(mid.left).toBeGreaterThan(0)
+      expect(mid.left).toBeLessThan(60)
+      act(() => jest.advanceTimersByTime(300))
+      expect(indicator()).toMatchObject({ left: 60, top: 34, width: 90, height: 2 })
+    })
   })
 })

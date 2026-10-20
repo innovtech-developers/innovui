@@ -11,10 +11,22 @@ import {
   type ViewProps,
 } from 'react-native'
 import { cn } from '../../utils/cn'
+import { type Rect, SlidingIndicator, useItemLayouts } from '../_shared/sliding-indicator'
 
-type TabsContextValue = { value: string | undefined; setValue: (value: string) => void }
+type TabsContextValue = {
+  value: string | undefined
+  setValue: (value: string) => void
+  /** Posição de cada aba no contêiner da lista, para o indicador deslizante. */
+  layouts: Record<string, Rect>
+  setLayout: (value: string, rect: Rect) => void
+}
 
-const TabsContext = createContext<TabsContextValue>({ value: undefined, setValue: () => {} })
+const TabsContext = createContext<TabsContextValue>({
+  value: undefined,
+  setValue: () => {},
+  layouts: {},
+  setLayout: () => {},
+})
 
 export type TabsProps = ViewProps & {
   className?: string
@@ -30,6 +42,7 @@ export function Tabs({ className, value, defaultValue, onValueChange, ...props }
   const [internal, setInternal] = useState(defaultValue)
   const current = value !== undefined ? value : internal
 
+  const { layouts, setLayout } = useItemLayouts()
   const context = useMemo(
     () => ({
       value: current,
@@ -37,8 +50,10 @@ export function Tabs({ className, value, defaultValue, onValueChange, ...props }
         if (value === undefined) setInternal(next)
         onValueChange?.(next)
       },
+      layouts,
+      setLayout,
     }),
-    [current, value, onValueChange],
+    [current, value, onValueChange, layouts, setLayout],
   )
 
   return (
@@ -53,7 +68,9 @@ export type TabListProps = Omit<ScrollViewProps, 'horizontal' | 'style'> & {
 }
 
 /** Lista de gatilhos. Rola na horizontal quando as abas não cabem na tela. */
-export function TabList({ className, ...props }: TabListProps) {
+export function TabList({ className, children, ...props }: TabListProps) {
+  const { value, layouts } = useContext(TabsContext)
+  const active = value === undefined ? undefined : layouts[value]
   return (
     <ScrollView
       horizontal
@@ -62,7 +79,14 @@ export function TabList({ className, ...props }: TabListProps) {
       className={cn('grow-0', className)}
       contentContainerClassName="items-start"
       {...props}
-    />
+    >
+      {/* a linha de 2px é do indicador: fica na base da aba ativa e desliza para a próxima */}
+      <SlidingIndicator
+        target={active && { ...active, y: active.y + active.height - 2, height: 2 }}
+        className="bg-interactive-primary"
+      />
+      {children}
+    </ScrollView>
   )
 }
 
@@ -82,11 +106,14 @@ export function Tab({
   children,
   disabled,
   onPress,
+  onLayout,
   accessibilityState,
   ...props
 }: TabProps) {
-  const { value: active, setValue } = useContext(TabsContext)
+  const { value: active, setValue, layouts, setLayout } = useContext(TabsContext)
   const selected = active === value
+  // antes de o indicador medir a aba ativa, ela ainda se desenha sozinha
+  const slid = active !== undefined && layouts[active] !== undefined
 
   return (
     <Pressable
@@ -96,6 +123,10 @@ export function Tab({
       onPress={(event) => {
         setValue(value)
         onPress?.(event)
+      }}
+      onLayout={(event) => {
+        setLayout(value, event.nativeEvent.layout)
+        onLayout?.(event)
       }}
       className={cn('items-start gap-[6px] px-3 pt-2', className)}
       {...props}
@@ -117,7 +148,10 @@ export function Tab({
         )}
       </View>
       <View
-        className={cn('h-0.5 self-stretch bg-transparent', selected && 'bg-interactive-primary')}
+        className={cn(
+          'h-0.5 self-stretch bg-transparent',
+          selected && !slid && 'bg-interactive-primary',
+        )}
       />
     </Pressable>
   )
