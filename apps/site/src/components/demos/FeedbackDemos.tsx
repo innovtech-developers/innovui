@@ -1,5 +1,5 @@
 import { Alert, Badge, Banner, Button, Skeleton, Tag } from '@innovui/react'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Stage } from './Stage'
 
 const row = { display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' } as const
@@ -150,15 +150,26 @@ export function BannerDemo() {
   )
 }
 
+const SKELETON_VARIANTS = ['text', 'title', 'avatar', 'rectangle', 'card'] as const
+
 export function SkeletonVariantsDemo() {
   return (
     <Stage>
-      <div style={{ display: 'flex', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1.5rem' }}>
-        <Skeleton variant="text" />
-        <Skeleton variant="title" />
-        <Skeleton variant="avatar" />
-        <Skeleton variant="rectangle" />
-        <Skeleton variant="card" />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'max-content 1fr',
+          alignItems: 'center',
+          columnGap: '1.5rem',
+          rowGap: '1rem',
+        }}
+      >
+        {SKELETON_VARIANTS.map((variant) => (
+          <Fragment key={variant}>
+            <code style={{ fontSize: '0.8125rem' }}>{variant}</code>
+            <Skeleton variant={variant} />
+          </Fragment>
+        ))}
       </div>
     </Stage>
   )
