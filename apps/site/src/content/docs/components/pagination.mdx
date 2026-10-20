@@ -1,0 +1,49 @@
+---
+title: Pagination
+description: Navegação entre páginas de uma lista ou tabela.
+---
+
+import { PaginationDemo, PaginationShortDemo } from '../../../components/demos/LayoutDemos'
+
+Navegação entre páginas de resultados, com botões de anterior e próxima e os números das páginas. Com muitas páginas, mostra a primeira, a última, a atual e as vizinhas, com reticências no meio. A quantidade de itens se mantém constante, então a barra não pula de tamanho ao navegar.
+
+<PaginationDemo client:load />
+
+```tsx
+import { Pagination } from '@innovui/react'
+
+const [page, setPage] = useState(1)
+
+<Pagination page={page} pageCount={20} onPageChange={setPage} />
+```
+
+O componente é controlado: você guarda o estado de `page` e busca os dados da página escolhida.
+
+## Poucas páginas
+
+Com até 7 páginas, todas aparecem.
+
+<PaginationShortDemo client:load />
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `page` | `number` | — | **Obrigatória.** Página atual, a partir de 1. |
+| `pageCount` | `number` | — | **Obrigatória.** Total de páginas. |
+| `onPageChange` | `(page: number) => void` | — | **Obrigatória.** Chamada com a página escolhida. |
+| `siblingCount` | `number` | `1` | Páginas vizinhas da atual, de cada lado. |
+| `previousLabel` | `string` | `'Página anterior'` | Nome acessível do botão de anterior. |
+| `nextLabel` | `string` | `'Próxima página'` | Nome acessível do botão de próxima. |
+| `aria-label` | `string` | `'Paginação'` | Nome da navegação; troque se houver mais de uma na página. |
+
+## Acessibilidade
+
+- É um `<nav>` com lista de botões. A página atual leva `aria-current="page"`, e cada botão diz "Página 3", não só "3".
+- Anterior fica desabilitado na primeira página e próxima na última.
+- As reticências são decorativas e escondidas dos leitores de tela.
+- Se cada página tem sua própria URL, prefira links reais ([Link](/components/link/)) para que o botão Voltar e o "abrir em nova aba" funcionem.
+
+### Quando não usar
+
+Listas que carregam mais itens ao rolar, ou conjuntos de poucos itens que cabem numa só página.

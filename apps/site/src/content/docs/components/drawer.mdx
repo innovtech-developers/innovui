@@ -1,0 +1,65 @@
+---
+title: Drawer
+description: Painel lateral que bloqueia o conteúdo de trás, para detalhes e formulários.
+---
+
+import { DrawerDemo, DrawerSidesDemo } from '../../../components/demos/PanelDemos'
+
+Painel colado a uma borda da tela, sobre um backdrop. Serve para mostrar detalhes de um item ou um formulário sem tirar a pessoa da página. Tem a mesma estrutura do [Modal](/components/modal/): cabeçalho com título e ×, corpo e rodapé opcional.
+
+<DrawerDemo client:load />
+
+```tsx
+import { Drawer, DrawerClose, Button } from '@innovui/react'
+
+<Drawer
+  title="Detalhes do pedido"
+  trigger={<Button variant="secondary">Abrir painel</Button>}
+  footer={
+    <>
+      <DrawerClose asChild>
+        <Button variant="secondary">Fechar</Button>
+      </DrawerClose>
+      <Button>Reenviar</Button>
+    </>
+  }
+>
+  Pedido #1042, pago por Pix.
+</Drawer>
+```
+
+## Lados
+
+<DrawerSidesDemo client:load />
+
+```tsx
+<Drawer side="left" title="Menu" … />
+```
+
+`right` (padrão) e `left` têm largura máxima de 400px; `top` e `bottom` ocupam a largura toda, com altura máxima de 80% da tela. Em telas estreitas, o painel lateral deixa 16px de margem.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `ReactNode` | — | **Obrigatória.** Título e nome acessível do painel. |
+| `children` | `ReactNode` | — | O corpo do painel; rola se for alto. |
+| `footer` | `ReactNode` | — | Ações do rodapé. Sem ele, não há rodapé. |
+| `trigger` | `ReactNode` | — | Elemento que abre o painel. Dispensável no modo controlado. |
+| `side` | `'right' \| 'left' \| 'top' \| 'bottom'` | `'right'` | Borda em que o painel fica. |
+| `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
+| `open` / `defaultOpen` / `onOpenChange` | — | — | Controle do estado de abertura. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+## Acessibilidade
+
+- Igual ao [Modal](/components/modal/): `role="dialog"` nomeado pelo `title`, foco preso enquanto aberto e devolvido ao trigger ao fechar, `Esc` ou clique no backdrop fecham.
+- O corpo é a descrição do painel (`aria-describedby`), e o conteúdo de trás fica inerte.
+
+### Quando usar
+
+Detalhes de um item de lista, filtros avançados e formulários de edição que se beneficiam de ver a página ao fundo.
+
+### Quando não usar
+
+Confirmações e decisões curtas ([Modal](/components/modal/)), painéis pequenos ancorados a um botão ([Popover](/components/popover/)) e conteúdo que merece a própria página.

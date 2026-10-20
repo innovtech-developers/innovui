@@ -1,0 +1,36 @@
+---
+title: Card
+description: Contêiner elevado para agrupar conteúdo relacionado.
+---
+
+import { CardDemo } from '../../../components/demos/ContentDemos'
+
+Agrupa conteúdo relacionado numa superfície elevada, com borda, cantos arredondados e sombra. Use para itens independentes (planos, resumos, resultados de uma lista), não para a página inteira.
+
+<CardDemo client:load />
+
+```tsx
+import { Card } from '@innovui/react'
+
+<Card>
+  <h3>Plano Pro</h3>
+  <p>Até 10 usuários.</p>
+</Card>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `padding` | `'none' \| 'md' \| 'lg'` | `'md'` | Espaço interno: 16px, 24px, ou nenhum (para mídia de ponta a ponta). |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+Aceita também as props nativas de `<div>`.
+
+## Acessibilidade
+
+O Card é só um contêiner, sem papel ARIA. Dê a ele um título (`<h3>`, por exemplo) na hierarquia da página. Se o card inteiro for clicável, torne o título um [Link](/components/link/) em vez de colocar `onClick` na `<div>`.
+
+### Quando não usar
+
+Para separar blocos sem moldura, use [Divider](/components/divider/). Para mensagens de status, use [Alert](/components/alert/).

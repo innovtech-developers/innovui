@@ -1,0 +1,42 @@
+---
+title: Avatar
+description: Imagem circular de uma pessoa ou entidade, com iniciais como fallback.
+---
+
+import { AvatarDemo, AvatarFallbackDemo } from '../../../components/demos/ContentDemos'
+
+Representa uma pessoa ou entidade com uma foto circular. Sem imagem, ou se ela não carregar, mostra as iniciais do nome. O tamanho `md` (40px) é o mesmo do [Skeleton](/components/skeleton/) `avatar`, então a troca durante o carregamento não desloca o layout.
+
+<AvatarDemo client:load />
+
+```tsx
+import { Avatar } from '@innovui/react'
+
+<Avatar name="Camila Souza" src="/avatars/camila.jpg" />
+<Avatar name="Yuki Tanaka" src="/avatars/yuki.jpg" size="lg" />
+```
+
+## Iniciais como fallback
+
+Sem `src`, ou quando a imagem não carrega, o Avatar mostra a primeira e a última inicial do `name`. O último da demo aponta para uma imagem inexistente: ele volta sozinho para as iniciais.
+
+<AvatarFallbackDemo client:load />
+
+```tsx
+<Avatar name="Ada Lovelace" />
+<Avatar name="Katherine Johnson" src="/imagem-quebrada.png" />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `name` | `string` | — | **Obrigatório.** Vira as iniciais (primeira e última palavra) e o rótulo acessível. |
+| `src` | `string` | — | URL da imagem. Sem ela, ou se falhar, mostra as iniciais. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 32, 40 ou 56px. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+## Acessibilidade
+
+- O contêiner tem `role="img"` e `aria-label={name}`; a `<img>` interna é decorativa (`alt=""`), então o leitor de tela anuncia o nome uma vez só, com imagem ou sem.
+- `name` é obrigatório de propósito: um avatar sem nome não diz nada a quem não vê a imagem.

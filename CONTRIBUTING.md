@@ -38,7 +38,7 @@ Tipos aceitos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `buil
 
 ## Como criar um componente novo
 
-1. Confira se o componente existe no [Figma do design system](https://www.figma.com/design/Qi9eahiHd9Zn6b0ZbffmKB). Se não existir, ele só pode ser construído reaproveitando os tokens já existentes (cor, espaço, raio, sombra, tipografia) — nunca com valores novos — e a página de doc leva o selo "Derivado do DS".
+1. Construa o componente reaproveitando os tokens já existentes (cor, espaço, raio, sombra, tipografia), nunca com valores novos.
 2. Crie a pasta `packages/react/src/components/<nome>/` com `<nome>.tsx`, `<nome>.test.tsx` e `index.ts`.
 3. Props estendem o elemento HTML nativo (`ComponentProps<'button'>`, etc.), aceitam `className` (mesclado com `cn()`) e repassam `ref`.
 4. Exporte o componente no barrel `packages/react/src/index.ts`.
