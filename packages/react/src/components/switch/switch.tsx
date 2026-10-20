@@ -49,7 +49,7 @@ export function Switch({
         />
         <span
           aria-hidden="true"
-          className="iu:pointer-events-none iu:absolute iu:inset-0 iu:rounded-full iu:bg-[var(--color-selection-toggle-track-off)] iu:transition-colors iu:peer-enabled:peer-hover:bg-[var(--color-selection-toggle-track-off-hover)] iu:peer-checked:bg-[var(--color-selection-bg-selected)] iu:peer-enabled:peer-checked:peer-hover:bg-[var(--color-selection-toggle-track-on-hover)] iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)] iu:peer-focus-visible:ring-offset-2 iu:peer-disabled:bg-[var(--color-selection-bg-disabled)]"
+          className="iu:pointer-events-none iu:absolute iu:inset-0 iu:rounded-full iu:bg-[var(--color-selection-toggle-track-off)] iu:transition-colors iu:peer-enabled:peer-hover:bg-[var(--color-selection-toggle-track-off-hover)] iu:peer-checked:bg-[var(--color-selection-bg-selected)] iu:peer-enabled:peer-checked:peer-hover:bg-[var(--color-selection-toggle-track-on-hover)] iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)] iu:peer-disabled:bg-[var(--color-selection-bg-disabled)]"
         />
         <span
           aria-hidden="true"

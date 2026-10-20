@@ -48,7 +48,7 @@ export function Checkbox({
             'iu:pointer-events-none iu:absolute iu:inset-0 iu:rounded iu:border-2 iu:border-[var(--color-selection-border-unselected)] iu:bg-[var(--color-selection-bg-unselected)] iu:transition-colors',
             'iu:peer-checked:border-[var(--color-selection-border-selected)] iu:peer-checked:bg-[var(--color-selection-bg-selected)]',
             'iu:peer-indeterminate:border-[var(--color-selection-border-selected)] iu:peer-indeterminate:bg-[var(--color-selection-bg-selected)]',
-            'iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)] iu:peer-focus-visible:ring-offset-2',
+            'iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)]',
             'iu:peer-disabled:border-[var(--color-selection-border-disabled)] iu:peer-disabled:bg-[var(--color-selection-bg-disabled)]',
             error &&
               'iu:border-[var(--color-status-error-border)] iu:peer-checked:border-[var(--color-status-error-border)] iu:peer-indeterminate:border-[var(--color-status-error-border)]',

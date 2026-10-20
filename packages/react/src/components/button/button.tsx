@@ -7,7 +7,7 @@ import { Spinner } from '../spinner/spinner'
 
 /** Base e estilos compartilhados com o IconButton (não fazem parte da API pública). */
 export const buttonBase =
-  'iu:inline-flex iu:items-center iu:justify-center iu:whitespace-nowrap iu:rounded-full iu:font-semibold iu:transition-colors iu:focus-visible:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-button-focus-ring)] iu:focus-visible:ring-offset-2 iu:disabled:pointer-events-none iu:disabled:bg-[var(--color-button-disabled-bg)] iu:disabled:text-[var(--color-button-disabled-text)]'
+  'iu:inline-flex iu:items-center iu:justify-center iu:whitespace-nowrap iu:rounded-full iu:font-semibold iu:transition-colors iu:focus-visible:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-button-focus-ring)] iu:focus-visible:ring-inset iu:disabled:pointer-events-none iu:disabled:bg-[var(--color-button-disabled-bg)] iu:disabled:text-[var(--color-button-disabled-text)]'
 
 export const buttonVariantStyles = {
   primary:
