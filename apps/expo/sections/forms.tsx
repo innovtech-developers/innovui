@@ -1,4 +1,5 @@
 import {
+  Calendar,
   Checkbox,
   Combobox,
   DatePicker,
@@ -67,6 +68,7 @@ export function Forms() {
         </SegmentedControl>
       </Section>
       <Section title="Datas e upload">
+        <Calendar />
         <DatePicker accessibilityLabel="Data" />
         <DateRangePicker accessibilityLabel="Período" />
         <Upload

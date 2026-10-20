@@ -8,7 +8,10 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Card,
+  Container,
   Divider,
+  Grid,
+  GridItem,
   List,
   ListItem,
   Pagination,
@@ -70,6 +73,27 @@ export function Display() {
             <Body>Conteúdo da seção B</Body>
           </AccordionItem>
         </Accordion>
+      </Section>
+      <Section title="Layout">
+        <Container>
+          <Grid columns={2} gap={2}>
+            <GridItem>
+              <Card>
+                <Body>Item 1</Body>
+              </Card>
+            </GridItem>
+            <GridItem>
+              <Card>
+                <Body>Item 2</Body>
+              </Card>
+            </GridItem>
+            <GridItem span="full">
+              <Card>
+                <Body>Linha inteira</Body>
+              </Card>
+            </GridItem>
+          </Grid>
+        </Container>
       </Section>
       <Section title="Navegação">
         <Breadcrumb>
