@@ -1,5 +1,23 @@
 # @innovui/react
 
+## 0.5.0
+
+### Minor Changes
+
+- [#5](https://github.com/innovtech-developers/innovui/pull/5) [`f906113`](https://github.com/innovtech-developers/innovui/commit/f90611312735439ccf2e88f78ece8fdbc9da50c2) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Fase 4: novos componentes Card, Avatar, Divider, Link, Stack, Popover, Menu, Drawer, Accordion, Container, Grid, List, Table, Pagination, Combobox, Slider, Upload, Calendar, DatePicker e DateRangePicker (período, com atalhos como "Últimos 7 dias").
+
+- [`01c9bbd`](https://github.com/innovtech-developers/innovui/commit/01c9bbdab1f91a4b434fd8b882c133e186886c5d) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Toast ganha `showIcon` e `dismissible`; Modal ganha `showHeaderDivider` e `showFooterDivider`, as opções que o Figma já tinha e a API não expunha.
+
+### Patch Changes
+
+- [`6cb8d33`](https://github.com/innovtech-developers/innovui/commit/6cb8d337142d84868fb9e8713e6b2217b8813675) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Ajusta o contraste de 13 cores (2 no claro, 11 no escuro) para que todo par de texto do design system chegue a 4,5:1: texto de sucesso no claro; `text/secondary`, `text/brand`, erro, info, primário e destrutivo no escuro (com a escada de hover e active dos botões). Os valores seguem as sugestões do designer e divergem temporariamente das variáveis do Figma. Um teste de contraste passa a proteger os pares nos dois modos.
+
+- [`5d01535`](https://github.com/innovtech-developers/innovui/commit/5d015359d75f08e612ec8ebd9a272032a99b601e) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Ajusta a geometria ao Figma: Button (padding md 24 e sm 16, texto do sm em 14px, peso semibold, gap 4 no sm, ghost com estado ativo e sem fundo cinza quando desabilitado), Input (padding md 12 e sm 8, recuo do texto e tamanho do ícone por tamanho), Textarea (padding por tamanho), Field (gap 4, texto de apoio 12px, ícone de erro, props `size` e `readOnly`) e Tag outline (20px de altura).
+
+- [`afdc81b`](https://github.com/innovtech-developers/innovui/commit/afdc81b0c07b3b8449a82e684440fab4a03f397b) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Ajusta estados ao Figma: Radio selecionado com o círculo preenchido, erro visível também em Checkbox e Radio marcados, labels em peso medium com área de toque de 44px, texto desabilitado pelos tokens (sem `opacity`), Switch desabilitado sem hover e sem sombra no knob, e Input, Textarea e Select somente leitura sem borda.
+
+- [`918b859`](https://github.com/innovtech-developers/innovui/commit/918b8593fdd5a32eb1e2f62c70c20c261c75d639) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - O foco do Button e do IconButton passa a ser um anel de 2px por dentro da borda, e Checkbox, Radio e Switch perdem o `ring-offset`, como no Figma.
+
 ## 0.4.0
 
 ### Minor Changes
