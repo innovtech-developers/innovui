@@ -133,12 +133,103 @@ describe('Drawer', () => {
     expect(backdrop?.className).toContain('var(--color-surface-overlay)')
   })
 
+  describe('barrinha de arraste', () => {
+    const handleOf = () => document.querySelector('[role=dialog] > [aria-hidden="true"]')
+
+    it.each(['top', 'bottom'] as const)(
+      'aparece em %s, decorativa e na cor border/strong',
+      (side) => {
+        render(
+          <Drawer open side={side} title="Filtros">
+            Conteúdo
+          </Drawer>,
+        )
+        const handle = handleOf()
+        expect(handle).toBeInTheDocument()
+        expect(handle?.firstElementChild).toHaveClass(
+          'iu:h-1',
+          'iu:w-10',
+          'iu:bg-[var(--color-border-strong)]',
+        )
+      },
+    )
+
+    it('fica na ponta de fora: no começo do painel em bottom e no fim em top', () => {
+      const { rerender } = render(
+        <Drawer open side="bottom" title="Filtros">
+          x
+        </Drawer>,
+      )
+      const dialog = screen.getByRole('dialog')
+      expect(dialog.firstElementChild).toBe(handleOf())
+      rerender(
+        <Drawer open side="top" title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(dialog.lastElementChild).toBe(handleOf())
+    })
+
+    it('o conteúdo vizinho encosta na faixa da barrinha, sem somar o padding', () => {
+      const { rerender } = render(
+        <Drawer open side="bottom" title="Filtros">
+          x
+        </Drawer>,
+      )
+      const header = () => screen.getByRole('heading', { name: 'Filtros' }).parentElement
+      expect(header()).toHaveClass('iu:pt-0')
+      rerender(
+        <Drawer open side="bottom" showHandle={false} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(header()).not.toHaveClass('iu:pt-0')
+      // em top, quem encosta é o rodapé (ou o corpo, sem rodapé)
+      rerender(
+        <Drawer open side="top" footer={<span>ok</span>} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(screen.getByText('ok').parentElement).toHaveClass('iu:pb-0')
+      rerender(
+        <Drawer open side="top" title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(screen.getByText('x')).toHaveClass('iu:pb-2')
+    })
+
+    it.each(['left', 'right'] as const)('não aparece em %s', (side) => {
+      render(
+        <Drawer open side={side} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(handleOf()).not.toBeInTheDocument()
+    })
+
+    it('some com showHandle={false} e com swipeToClose={false} (não promete um gesto que não existe)', () => {
+      const { rerender } = render(
+        <Drawer open side="bottom" showHandle={false} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(handleOf()).not.toBeInTheDocument()
+      rerender(
+        <Drawer open side="bottom" swipeToClose={false} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(handleOf()).not.toBeInTheDocument()
+    })
+  })
+
   describe('arrastar para fechar (toque)', () => {
     // jsdom não faz layout: o painel mede 400px nos dois eixos.
     beforeEach(() => {
-      // cada leitura do relógio avança 100ms: os gestos dos testes são lentos, salvo onde dito
+      // cada leitura do relógio avança 1s: os gestos dos testes são lentos, salvo onde dito
       let t = 0
-      vi.spyOn(performance, 'now').mockImplementation(() => (t += 100))
+      vi.spyOn(performance, 'now').mockImplementation(() => (t += 1000))
       vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(400)
       vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(400)
     })
@@ -236,6 +327,77 @@ describe('Drawer', () => {
       )
       swipe(screen.getByLabelText('Nome'), [100, 300], [380, 300])
       expect(onOpenChange).not.toHaveBeenCalled()
+    })
+
+    it('o backdrop clareia junto com o painel e volta se o gesto não fecha', () => {
+      render(
+        <Drawer open title="Filtros">
+          Conteúdo
+        </Drawer>,
+      )
+      const dialog = screen.getByRole('dialog')
+      const backdrop = document.querySelector(
+        '[data-state="open"].iu\\:backdrop-blur-\\[16px\\]',
+      ) as HTMLElement
+      fireEvent.touchStart(dialog, at(100, 300))
+      fireEvent.touchMove(dialog, at(200, 300)) // 100px de 400
+      expect(backdrop.style.opacity).toBe('0.75')
+      fireEvent.touchEnd(dialog)
+      expect(backdrop.style.opacity).toBe('')
+    })
+
+    describe('conteúdo que rola no eixo do arraste', () => {
+      function setup() {
+        const onOpenChange = vi.fn()
+        render(
+          <Drawer open onOpenChange={onOpenChange} title="Filtros">
+            <div data-testid="scroller" style={{ overflowX: 'auto' }}>
+              largo
+            </div>
+          </Drawer>,
+        )
+        const scroller = screen.getByTestId('scroller')
+        for (const [prop, value] of [
+          ['scrollLeft', 50],
+          ['scrollWidth', 500],
+          ['clientWidth', 100],
+        ] as const)
+          Object.defineProperty(scroller, prop, { value, writable: true, configurable: true })
+        return { scroller, dialog: screen.getByRole('dialog'), onOpenChange }
+      }
+
+      it('rola o conteúdo em vez de arrastar enquanto ele ainda rola no sentido de fechar', () => {
+        const { scroller, dialog } = setup()
+        fireEvent.touchStart(scroller, at(100, 300))
+        fireEvent.touchMove(scroller, at(160, 300))
+        expect(dialog.style.translate).toBe('')
+      })
+
+      it('quando o conteúdo chega ao começo no mesmo gesto, o painel assume dali', () => {
+        const { scroller, dialog, onOpenChange } = setup()
+        fireEvent.touchStart(scroller, at(100, 300))
+        fireEvent.touchMove(scroller, at(120, 300)) // rolando
+        expect(dialog.style.translate).toBe('')
+        scroller.scrollLeft = 0 // o navegador rolou até o começo
+        fireEvent.touchMove(scroller, at(130, 300)) // o painel assume aqui: deslocamento 0
+        fireEvent.touchMove(scroller, at(160, 300))
+        expect(dialog.style.translate).toBe('30px 0')
+        fireEvent.touchEnd(scroller)
+        expect(onOpenChange).not.toHaveBeenCalled() // 30px de 400: volta
+        expect(dialog.style.translate).toBe('')
+      })
+
+      it('se o dedo recua além do ponto em que o painel assumiu, volta ao conteúdo', () => {
+        const { scroller, dialog } = setup()
+        fireEvent.touchStart(scroller, at(100, 300))
+        fireEvent.touchMove(scroller, at(120, 300))
+        scroller.scrollLeft = 0
+        fireEvent.touchMove(scroller, at(130, 300))
+        fireEvent.touchMove(scroller, at(170, 300))
+        expect(dialog.style.translate).toBe('40px 0')
+        fireEvent.touchMove(scroller, at(110, 300)) // recuou além da origem (130)
+        expect(dialog.style.translate).toBe('')
+      })
     })
 
     it('swipeToClose={false} desliga o gesto', () => {
