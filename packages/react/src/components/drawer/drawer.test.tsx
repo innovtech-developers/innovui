@@ -133,6 +133,69 @@ describe('Drawer', () => {
     expect(backdrop?.className).toContain('var(--color-surface-overlay)')
   })
 
+  describe('barrinha de arraste', () => {
+    const handleOf = () => document.querySelector('[role=dialog] > [aria-hidden="true"]')
+
+    it.each(['top', 'bottom'] as const)(
+      'aparece em %s, decorativa e na cor border/strong',
+      (side) => {
+        render(
+          <Drawer open side={side} title="Filtros">
+            Conteúdo
+          </Drawer>,
+        )
+        const handle = handleOf()
+        expect(handle).toBeInTheDocument()
+        expect(handle?.firstElementChild).toHaveClass(
+          'iu:h-1',
+          'iu:w-[108px]',
+          'iu:desktop:w-10',
+          'iu:bg-[var(--color-border-strong)]',
+        )
+      },
+    )
+
+    it('fica na ponta de fora: no começo do painel em bottom e no fim em top', () => {
+      const { rerender } = render(
+        <Drawer open side="bottom" title="Filtros">
+          x
+        </Drawer>,
+      )
+      const dialog = screen.getByRole('dialog')
+      expect(dialog.firstElementChild).toBe(handleOf())
+      rerender(
+        <Drawer open side="top" title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(dialog.lastElementChild).toBe(handleOf())
+    })
+
+    it.each(['left', 'right'] as const)('não aparece em %s', (side) => {
+      render(
+        <Drawer open side={side} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(handleOf()).not.toBeInTheDocument()
+    })
+
+    it('some com showHandle={false} e com swipeToClose={false} (não promete um gesto que não existe)', () => {
+      const { rerender } = render(
+        <Drawer open side="bottom" showHandle={false} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(handleOf()).not.toBeInTheDocument()
+      rerender(
+        <Drawer open side="bottom" swipeToClose={false} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(handleOf()).not.toBeInTheDocument()
+    })
+  })
+
   describe('arrastar para fechar (toque)', () => {
     // jsdom não faz layout: o painel mede 400px nos dois eixos.
     beforeEach(() => {

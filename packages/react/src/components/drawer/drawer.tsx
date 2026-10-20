@@ -44,6 +44,11 @@ export type DrawerProps = Pick<
      * conteúdo nem o toque em campos; `data-no-drag` num elemento tira ele do gesto. Padrão: `true`.
      */
     swipeToClose?: boolean
+    /**
+     * Barrinha de arraste na borda do painel, que avisa que ele fecha arrastando. Só aparece em
+     * `top` e `bottom`, e só com `swipeToClose`. Padrão: `true`.
+     */
+    showHandle?: boolean
     /** Nome acessível do botão de fechar (×). */
     closeLabel?: string
     className?: string
@@ -63,17 +68,30 @@ export function Drawer({
   trigger,
   closeLabel = 'Fechar',
   swipeToClose = true,
+  showHandle = true,
   side,
   className,
 }: DrawerProps) {
   const closeRef = useRef<HTMLButtonElement>(null)
-  const { panelRef, overlayRef } = useSwipeToClose(side ?? 'right', swipeToClose, closeRef)
+  const edge = side ?? 'right'
+  const { panelRef, overlayRef } = useSwipeToClose(edge, swipeToClose, closeRef)
+  const handle = showHandle && swipeToClose && (edge === 'top' || edge === 'bottom') && (
+    // Figma "Drawer/navigation": traço de 4px em `border/strong`, numa faixa de 24px. As variantes
+    // sm (108px) e xl (40px) viraram mobile e desktop (o `xl` do DS é o `desktop`, 1440px).
+    <div
+      aria-hidden="true"
+      className="iu:flex iu:h-6 iu:shrink-0 iu:items-center iu:justify-center"
+    >
+      <span className="iu:h-1 iu:w-[108px] iu:rounded-lg iu:bg-[var(--color-border-strong)] iu:desktop:w-10" />
+    </div>
+  )
   return (
     <Dialog.Root open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
         <Dialog.Overlay ref={overlayRef} className={overlayStyles} />
         <Dialog.Content ref={panelRef} className={cn(drawerVariants({ side }), className)}>
+          {edge === 'bottom' && handle}
           <div className="iu:flex iu:items-center iu:gap-4 iu:border-b iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
             <Dialog.Title className="iu:flex-1 iu:text-lg iu:leading-6 iu:font-semibold iu:text-[var(--color-text-primary)]">
               {title}
@@ -94,6 +112,7 @@ export function Drawer({
               {footer}
             </div>
           )}
+          {edge === 'top' && handle}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
