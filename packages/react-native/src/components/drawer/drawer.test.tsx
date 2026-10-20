@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { ScrollView, Text } from 'react-native'
+import { makeGesture } from '../../test/gesture'
 import { Button } from '../button/button'
 import { Drawer, DrawerClose } from './drawer'
 
@@ -149,56 +150,6 @@ describe('Drawer', () => {
   })
 
   describe('arrastar para fechar', () => {
-    /** Aplica a sequência de toques a `panHandlers`, como o sistema de respostas do RN faria. */
-    function makeGesture(sheet: { props: Record<string, (...args: never[]) => unknown> }) {
-      let start = { x: 0, y: 0, t: 0 }
-      let prev = start
-      let owner = false
-      const event = (x: number, y: number, t: number) => ({
-        touchHistory: {
-          indexOfSingleActiveTouch: 0,
-          mostRecentTimeStamp: t,
-          numberActiveTouches: 1,
-          touchBank: [
-            {
-              touchActive: true,
-              startPageX: start.x,
-              startPageY: start.y,
-              startTimeStamp: start.t,
-              currentPageX: x,
-              currentPageY: y,
-              currentTimeStamp: t,
-              previousPageX: prev.x,
-              previousPageY: prev.y,
-              previousTimeStamp: prev.t,
-            },
-          ],
-        },
-        nativeEvent: { pageX: x, pageY: y },
-      })
-      const call = (name: string, ...args: unknown[]) =>
-        (sheet.props[name] as (...a: unknown[]) => unknown)(...args)
-      return {
-        down(x: number, y: number, t = 0) {
-          start = prev = { x, y, t }
-          owner = false
-        },
-        /** Devolve se o painel tem o gesto depois deste movimento. */
-        move(x: number, y: number, t: number) {
-          const e = event(x, y, t)
-          if (!owner && call('onMoveShouldSetResponderCapture', e)) {
-            owner = true
-            call('onResponderGrant', e)
-          } else if (owner) call('onResponderMove', e)
-          prev = { x, y, t }
-          return owner
-        },
-        up(x: number, y: number, t: number) {
-          if (owner) call('onResponderRelease', event(x, y, t))
-        },
-      }
-    }
-
     const layout = (sheet: { props: Record<string, unknown> }, width = 400, height = 800) =>
       act(() =>
         (sheet.props.onLayout as (e: unknown) => void)({
