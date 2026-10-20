@@ -20,10 +20,10 @@ Isso cobre violações mecânicas (contraste, atributos ARIA ausentes ou inváli
 
 ## Contraste
 
-Os valores de cor vêm do design system (Figma), e o `jest-axe` **não mede contraste** (o jsdom não calcula cores renderizadas). Por isso a medição é outra: um teste automático (`tokens.test.ts`) calcula a razão de contraste WCAG de 42 pares de texto sobre fundo, nos dois modos, e falha o build se algum ficar abaixo de **4,5:1**. O ✓ branco do Stepper, que é um gráfico, precisa de 3:1.
+Os valores de cor vêm dos tokens do design system, e o `jest-axe` **não mede contraste** (o jsdom não calcula cores renderizadas). Por isso a medição é outra: um teste automático (`tokens.test.ts`) calcula a razão de contraste WCAG de 42 pares de texto sobre fundo, nos dois modos, e falha o build se algum ficar abaixo de **4,5:1**. O ✓ branco do Stepper, que é um gráfico, precisa de 3:1.
 
 **Exceções documentadas pelo design system** (conteúdo não essencial, abaixo de 4,5:1 de propósito): `text/tertiary`, `text/disabled` e o placeholder dos campos.
 
-**Ajustes provisórios.** Treze valores de cor (2 no claro e 11 no escuro) seguem as sugestões do designer para chegar a 4,5:1 e, por enquanto, diferem das variáveis do Figma: texto de sucesso no claro; `text/secondary`, `text/brand`, erro, info, `interactive/primary` e `interactive/destructive` no escuro. Cada um está marcado em `tokens.css` com o valor original do Figma. Quando o Figma for atualizado, os tokens são relidos e as marcas removidas.
+**Ajustes de contraste.** Treze valores de cor (2 no claro e 11 no escuro) foram ajustados para chegar a 4,5:1: texto de sucesso no claro; `text/secondary`, `text/brand`, erro, info, `interactive/primary` e `interactive/destructive` no escuro.
 
 Se o seu produto usa outras combinações de cor, valide o par novo nos dois modos e, onde a cor for o único sinal, junte um ícone e um rótulo (veja [Tema e customização](/tema/)).

@@ -3,7 +3,7 @@
 # astro.config.mjs) — repetir "InnovUI" aqui faria a aba mostrar "InnovUI | InnovUI". O
 # cabeçalho gigante do hero continua dizendo "InnovUI" via hero.title, como manda o brief.
 title: Componentes React do Comhub Design System
-description: Componentes React do design system da Comhub — tipados, acessíveis e extraídos direto do Figma.
+description: Componentes React do design system da Comhub — tipados, acessíveis e com tema claro e escuro.
 template: splash
 tableOfContents: false
 pagefind: false
@@ -38,7 +38,7 @@ hero:
       <h2 class="lp-fieldnotes__title">Tipado de ponta a ponta</h2>
       <p class="lp-fieldnotes__text">
         Props de cada componente totalmente tipadas, com autocomplete de variantes no editor.
-        Nenhum componente sai do Figma sem um tipo correspondente.
+        Todo componente exporta os tipos das suas props.
       </p>
     </div>
   </div>
@@ -124,8 +124,8 @@ hero:
     <div>
       <h2 class="lp-fieldnotes__title">Fiel ao design system</h2>
       <p class="lp-fieldnotes__text">
-        Tokens extraídos diretamente do Figma da Comhub — cor, tipografia, espaçamento, raio e
-        sombra. O Figma é a fonte de verdade; nada aqui foi inventado.
+        Tokens de cor, tipografia, espaçamento, raio e sombra, em modo claro e escuro. Os
+        componentes só usam esses tokens, então o tema muda num lugar só.
       </p>
     </div>
   </div>
