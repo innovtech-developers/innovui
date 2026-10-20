@@ -32,7 +32,7 @@ export function Switch({
     <label
       htmlFor={inputId}
       className={cn(
-        'iu:inline-flex iu:items-center iu:gap-2.5 iu:cursor-pointer iu:has-disabled:cursor-not-allowed iu:has-disabled:opacity-60',
+        'iu:inline-flex iu:items-center iu:gap-2.5 iu:cursor-pointer iu:has-disabled:cursor-not-allowed iu:group iu:min-h-11',
         className,
       )}
     >
@@ -49,15 +49,15 @@ export function Switch({
         />
         <span
           aria-hidden="true"
-          className="iu:pointer-events-none iu:absolute iu:inset-0 iu:rounded-full iu:bg-[var(--color-selection-toggle-track-off)] iu:transition-colors iu:peer-hover:bg-[var(--color-selection-toggle-track-off-hover)] iu:peer-checked:bg-[var(--color-selection-bg-selected)] iu:peer-checked:peer-hover:bg-[var(--color-selection-toggle-track-on-hover)] iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)] iu:peer-focus-visible:ring-offset-2 iu:peer-disabled:bg-[var(--color-selection-bg-disabled)]"
+          className="iu:pointer-events-none iu:absolute iu:inset-0 iu:rounded-full iu:bg-[var(--color-selection-toggle-track-off)] iu:transition-colors iu:peer-enabled:peer-hover:bg-[var(--color-selection-toggle-track-off-hover)] iu:peer-checked:bg-[var(--color-selection-bg-selected)] iu:peer-enabled:peer-checked:peer-hover:bg-[var(--color-selection-toggle-track-on-hover)] iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)] iu:peer-focus-visible:ring-offset-2 iu:peer-disabled:bg-[var(--color-selection-bg-disabled)]"
         />
         <span
           aria-hidden="true"
-          className="iu:pointer-events-none iu:absolute iu:left-0.5 iu:size-5 iu:translate-x-0 iu:rounded-full iu:bg-[var(--color-selection-indicator-selected)] iu:shadow-sm iu:transition-transform iu:peer-checked:translate-x-5"
+          className="iu:pointer-events-none iu:absolute iu:left-0.5 iu:size-5 iu:translate-x-0 iu:rounded-full iu:bg-[var(--color-selection-indicator-selected)] iu:transition-transform iu:peer-checked:translate-x-5"
         />
       </span>
       {label && (
-        <span className="iu:text-sm iu:text-[var(--color-selection-text-label)] iu:select-none">
+        <span className="iu:text-sm iu:font-medium iu:text-[var(--color-selection-text-label)] iu:select-none iu:group-has-disabled:text-[var(--color-selection-text-disabled)]">
           {label}
         </span>
       )}

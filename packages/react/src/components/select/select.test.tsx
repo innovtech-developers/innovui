@@ -65,6 +65,11 @@ describe('Select', () => {
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
   })
 
+  it('readOnly marca o trigger para o estilo sem borda do Figma', () => {
+    renderSelect({ readOnly: true })
+    expect(screen.getByRole('combobox')).toHaveAttribute('data-readonly', 'true')
+  })
+
   it('readOnly continua focável (diferente de disabled)', () => {
     renderSelect({ readOnly: true })
     expect(screen.getByRole('combobox')).not.toBeDisabled()

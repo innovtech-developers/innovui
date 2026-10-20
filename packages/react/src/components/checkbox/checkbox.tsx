@@ -30,7 +30,7 @@ export function Checkbox({
     <label
       htmlFor={inputId}
       className={cn(
-        'iu:inline-flex iu:items-center iu:gap-2 iu:cursor-pointer iu:has-disabled:cursor-not-allowed iu:has-disabled:opacity-60',
+        'iu:inline-flex iu:items-center iu:gap-3 iu:cursor-pointer iu:has-disabled:cursor-not-allowed iu:group iu:min-h-11',
         className,
       )}
     >
@@ -50,7 +50,8 @@ export function Checkbox({
             'iu:peer-indeterminate:border-[var(--color-selection-border-selected)] iu:peer-indeterminate:bg-[var(--color-selection-bg-selected)]',
             'iu:peer-focus-visible:ring-2 iu:peer-focus-visible:ring-[var(--color-selection-focus-ring)] iu:peer-focus-visible:ring-offset-2',
             'iu:peer-disabled:border-[var(--color-selection-border-disabled)] iu:peer-disabled:bg-[var(--color-selection-bg-disabled)]',
-            error && 'iu:border-[var(--color-status-error-border)]',
+            error &&
+              'iu:border-[var(--color-status-error-border)] iu:peer-checked:border-[var(--color-status-error-border)] iu:peer-indeterminate:border-[var(--color-status-error-border)]',
           )}
         />
         <svg
@@ -76,7 +77,7 @@ export function Checkbox({
         </svg>
       </span>
       {label && (
-        <span className="iu:text-sm iu:text-[var(--color-selection-text-label)] iu:select-none">
+        <span className="iu:text-sm iu:font-medium iu:text-[var(--color-selection-text-label)] iu:select-none iu:group-has-disabled:text-[var(--color-selection-text-disabled)]">
           {label}
         </span>
       )}

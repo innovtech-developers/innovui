@@ -31,6 +31,20 @@ describe('Radio', () => {
     expect(screen.getByRole('radio')).toBeDisabled()
   })
 
+  it('selecionado preenche o círculo e usa o indicador contrastante', () => {
+    const { container } = render(<Radio label="Mensal" defaultChecked />)
+    const [circle, dot] = container.querySelectorAll('span[aria-hidden="true"]')
+    expect(circle).toHaveClass('iu:peer-checked:bg-[var(--color-selection-bg-selected)]')
+    expect(dot).toHaveClass('iu:bg-[var(--color-selection-indicator-selected)]')
+  })
+
+  it('o erro vale também quando selecionado', () => {
+    const { container } = render(<Radio label="Mensal" error defaultChecked />)
+    expect(container.querySelector('span[aria-hidden="true"]')).toHaveClass(
+      'iu:peer-checked:border-[var(--color-status-error-border)]',
+    )
+  })
+
   it('aceita a prop error sem quebrar', () => {
     render(<Radio label="Campo obrigatório" error />)
     expect(screen.getByRole('radio')).toBeInTheDocument()

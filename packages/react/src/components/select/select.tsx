@@ -6,7 +6,7 @@ import { type ReactNode, useState } from 'react'
 import { cn } from '../../utils/cn'
 
 const selectTriggerVariants = cva(
-  'iu:group iu:inline-flex iu:w-full iu:items-center iu:justify-between iu:gap-2 iu:rounded-md iu:border iu:bg-[var(--color-field-bg)] iu:text-base iu:text-[var(--color-field-text)] iu:transition-colors iu:outline-none iu:border-[var(--color-field-border)] iu:data-[placeholder]:text-[var(--color-field-text-placeholder)] iu:hover:border-[var(--color-field-border-hover)] iu:focus-visible:border-[var(--color-field-border-hover)] iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-field-focus-ring)] iu:data-[state=open]:border-[var(--color-field-border-hover)] iu:data-[state=open]:ring-2 iu:data-[state=open]:ring-[var(--color-field-focus-ring)] iu:disabled:cursor-not-allowed iu:disabled:bg-[var(--color-field-bg-disabled)] iu:disabled:text-[var(--color-field-text-disabled)] iu:disabled:border-[var(--color-field-border-disabled)]',
+  'iu:group iu:inline-flex iu:w-full iu:items-center iu:justify-between iu:gap-2 iu:rounded-md iu:border iu:bg-[var(--color-field-bg)] iu:text-base iu:leading-6 iu:text-[var(--color-field-text)] iu:transition-colors iu:outline-none iu:border-[var(--color-field-border)] iu:data-[placeholder]:text-[var(--color-field-text-placeholder)] iu:hover:border-[var(--color-field-border-hover)] iu:focus-visible:border-[var(--color-field-border-hover)] iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-field-focus-ring)] iu:data-[state=open]:border-[var(--color-field-border-hover)] iu:data-[state=open]:ring-2 iu:data-[state=open]:ring-[var(--color-field-focus-ring)] iu:disabled:cursor-not-allowed iu:disabled:bg-[var(--color-field-bg-disabled)] iu:disabled:text-[var(--color-field-text-disabled)] iu:disabled:border-[var(--color-field-border-disabled)] iu:data-[readonly]:bg-[var(--color-field-bg-disabled)] iu:data-[readonly]:border-transparent iu:data-[readonly]:hover:border-transparent iu:data-[readonly]:focus-visible:border-transparent',
   {
     variants: {
       size: {
@@ -77,6 +77,7 @@ export function Select({
         aria-label={ariaLabel}
         className={cn(selectTriggerVariants({ size, error }), className)}
         aria-invalid={error || undefined}
+        data-readonly={readOnly || undefined}
       >
         <SelectPrimitive.Value placeholder={placeholder} />
         <SelectPrimitive.Icon asChild>

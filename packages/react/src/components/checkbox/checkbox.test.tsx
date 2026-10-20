@@ -37,6 +37,15 @@ describe('Checkbox', () => {
     expect((screen.getByRole('checkbox') as HTMLInputElement).indeterminate).toBe(true)
   })
 
+  it('o erro vale também quando marcado (borda de erro vence a borda de selecionado)', () => {
+    const { container } = render(<Checkbox label="Aceito" error defaultChecked />)
+    const box = container.querySelector('span[aria-hidden="true"]')
+    expect(box).toHaveClass(
+      'iu:peer-checked:border-[var(--color-status-error-border)]',
+      'iu:peer-indeterminate:border-[var(--color-status-error-border)]',
+    )
+  })
+
   it('aceita a prop error sem quebrar', () => {
     render(<Checkbox label="Campo obrigatório" error />)
     expect(screen.getByRole('checkbox')).toBeInTheDocument()
