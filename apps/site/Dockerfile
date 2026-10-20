@@ -7,8 +7,13 @@ RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY packages/react/package.json packages/react/package.json
+COPY packages/react-native/package.json packages/react-native/package.json
 COPY apps/site/package.json apps/site/package.json
-RUN pnpm install --frozen-lockfile
+COPY apps/expo/package.json apps/expo/package.json
+# O lockfile cobre o workspace inteiro, então todo package.json precisa estar na imagem, senão o
+# --frozen-lockfile falha (ERR_PNPM_OUTDATED_LOCKFILE). O filtro instala só o site e o que ele usa,
+# deixando Expo e React Native de fora.
+RUN pnpm install --frozen-lockfile --filter 'site...'
 
 COPY packages/react packages/react
 COPY apps/site apps/site
