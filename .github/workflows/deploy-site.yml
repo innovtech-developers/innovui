@@ -1,19 +1,53 @@
 name: Deploy site
 
 # Dispara só depois que o workflow CI passar na main (não o push em si),
-# para nunca re-deployar um commit quebrado.
+# para nunca re-deployar um commit quebrado. E só se o site foi afetado pelo commit:
+# mudou o próprio site ou um pacote de que ele depende (hoje, @innovui/react). Uma mudança só
+# no @innovui/react-native, por exemplo, não redeploya.
 on:
   workflow_run:
     workflows: [CI]
     branches: [main]
     types: [completed]
+  workflow_dispatch: # forçar um deploy sem mudança (ex.: o Coolify falhou)
 
 jobs:
   deploy:
-    if: github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    env:
+      TURBO_TELEMETRY_DISABLED: 1
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 2 # o commit e o anterior (primeiro pai, nos merges de PR)
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # Só o turbo (dependência da raiz) basta para montar o grafo de pacotes.
+      - run: pnpm install --frozen-lockfile --filter .
+
+      - name: O site foi afetado?
+        id: affected
+        env:
+          TURBO_SCM_BASE: HEAD^
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "site=true" >> "$GITHUB_OUTPUT"
+          else
+            count=$(pnpm exec turbo ls --affected --filter=site --output=json 2>/dev/null | jq '.packages.count')
+            echo "Pacotes afetados entre HEAD^ e HEAD, restritos ao site: $count"
+            [ "$count" -gt 0 ] && echo "site=true" >> "$GITHUB_OUTPUT" || echo "site=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Trigger Coolify deploy webhook
+        if: steps.affected.outputs.site == 'true'
         run: |
           curl --fail-with-body --silent --show-error --retry 3 --retry-delay 5 \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \

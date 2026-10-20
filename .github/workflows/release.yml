@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LEFTHOOK: 0 # o commit de versão do changesets/action não deve passar pelo commitlint local
+      TURBO_TELEMETRY_DISABLED: 1
+      TURBO_SCM_BASE: ${{ github.event.before }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,14 +33,19 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ github.sha }}
+          restore-keys: turbo-
+
       - run: pnpm lint
 
-      - run: pnpm typecheck
-
-      - run: pnpm test:coverage
+      - run: pnpm turbo run typecheck test:coverage --affected
 
       # Abre/atualiza o PR "Version Packages" quando há changesets pendentes.
-      # Quando esse PR é mergeado (sem changesets pendentes), publica no npm.
+      # Quando esse PR é mergeado (sem changesets pendentes), publica no npm só os pacotes cuja
+      # versão ainda não existe lá (o Changesets compara com o registro) e só compila `packages/*`.
       - uses: changesets/action@v1
         with:
           version: pnpm run version
