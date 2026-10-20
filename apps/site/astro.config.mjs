@@ -16,6 +16,12 @@ export default defineConfig({
       },
       // @innovui/react/styles.css carrega uma vez para o site inteiro: toda demo viva usa o
       // componente real, estilizado de verdade (sem isso o Button renderiza como <button> cru).
+      // o SVG é o favicon principal, mas o Safari não o usa: o .ico (que os navegadores também pedem
+      // sozinhos em /favicon.ico) e o apple-touch-icon cobrem o resto
+      head: [
+        { tag: 'link', attrs: { rel: 'icon', href: '/favicon.ico', sizes: '48x48' } },
+        { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } },
+      ],
       customCss: [
         './src/styles/layers.css',
         '@innovui/react/styles.css',
