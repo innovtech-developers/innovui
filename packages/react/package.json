@@ -2,8 +2,25 @@
   "name": "@innovui/react",
   "version": "0.8.0",
   "description": "Biblioteca de componentes React do design system InnovUI.",
+  "keywords": [
+    "react",
+    "react-19",
+    "design-system",
+    "components",
+    "ui",
+    "typescript",
+    "tailwindcss",
+    "accessibility",
+    "dark-mode",
+    "innovui",
+    "comhub"
+  ],
   "type": "module",
   "license": "MIT",
+  "homepage": "https://innovui.innovtechsolutions.com.br",
+  "bugs": {
+    "url": "https://github.com/innovtech-developers/innovui/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/innovtech-developers/innovui.git",
@@ -15,6 +32,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
