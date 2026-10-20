@@ -3,6 +3,7 @@
 import * as RadixTooltip from '@radix-ui/react-tooltip'
 import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { popStyles } from '../_shared/motion'
 
 export type TooltipProps = {
   /** O elemento que dispara o tooltip (precisa aceitar `ref` e foco, como um `<button>`). */
@@ -39,7 +40,8 @@ export function Tooltip({
           <RadixTooltip.Content
             side={side}
             className={cn(
-              'iu:z-50 iu:flex iu:max-w-[240px] iu:flex-col iu:gap-1 iu:rounded-sm iu:bg-[var(--color-bg-inverse)] iu:px-3 iu:py-2 iu:text-xs iu:leading-4',
+              popStyles,
+              'iu:origin-[var(--radix-tooltip-content-transform-origin)] iu:z-50 iu:flex iu:max-w-[240px] iu:flex-col iu:gap-1 iu:rounded-sm iu:bg-[var(--color-bg-inverse)] iu:px-3 iu:py-2 iu:text-xs iu:leading-4',
               className,
             )}
           >

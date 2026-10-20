@@ -3,6 +3,7 @@
 import * as RadixMenu from '@radix-ui/react-dropdown-menu'
 import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { popStyles } from '../_shared/motion'
 
 export type MenuProps = Pick<
   ComponentProps<typeof RadixMenu.Root>,
@@ -39,7 +40,8 @@ export function Menu({
           align={align}
           sideOffset={4}
           className={cn(
-            'iu:z-50 iu:min-w-[180px] iu:rounded-md iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:p-1 iu:shadow-md iu:outline-none',
+            popStyles,
+            'iu:origin-[var(--radix-dropdown-menu-content-transform-origin)] iu:z-50 iu:min-w-[180px] iu:rounded-md iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:p-1 iu:shadow-md iu:outline-none',
             className,
           )}
         >

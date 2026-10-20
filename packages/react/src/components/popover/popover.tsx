@@ -3,6 +3,7 @@
 import * as RadixPopover from '@radix-ui/react-popover'
 import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { popStyles } from '../_shared/motion'
 
 export type PopoverProps = Pick<
   ComponentProps<typeof RadixPopover.Root>,
@@ -43,7 +44,8 @@ export function Popover({
           sideOffset={8}
           aria-label={label}
           className={cn(
-            'iu:z-50 iu:w-max iu:max-w-xs iu:rounded-md iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:p-4 iu:text-sm iu:leading-5 iu:text-[var(--color-text-primary)] iu:shadow-md iu:outline-none',
+            popStyles,
+            'iu:origin-[var(--radix-popover-content-transform-origin)] iu:z-50 iu:w-max iu:max-w-xs iu:rounded-md iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:p-4 iu:text-sm iu:leading-5 iu:text-[var(--color-text-primary)] iu:shadow-md iu:outline-none',
             className,
           )}
         >

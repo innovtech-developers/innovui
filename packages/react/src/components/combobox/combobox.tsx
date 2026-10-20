@@ -3,6 +3,7 @@
 import * as Popover from '@radix-ui/react-popover'
 import { useEffect, useId, useRef, useState } from 'react'
 import { cn } from '../../utils/cn'
+import { popStyles } from '../_shared/motion'
 import { ChevronRightIcon } from '../_shared/status'
 import { Input, type InputProps } from '../input'
 
@@ -178,7 +179,7 @@ export function Combobox({
             }}
             // evita tirar o foco do campo ao clicar numa opção ou na barra de rolagem
             onMouseDown={(e) => e.preventDefault()}
-            className="iu:z-50 iu:max-h-60 iu:w-[var(--radix-popover-trigger-width)] iu:overflow-y-auto iu:rounded-md iu:border iu:border-[var(--color-select-dropdown-border)] iu:bg-[var(--color-select-dropdown-bg)] iu:p-1 iu:shadow-md iu:outline-none"
+            className={`${popStyles} iu:origin-[var(--radix-popover-content-transform-origin)] iu:z-50 iu:max-h-60 iu:w-[var(--radix-popover-trigger-width)] iu:overflow-y-auto iu:rounded-md iu:border iu:border-[var(--color-select-dropdown-border)] iu:bg-[var(--color-select-dropdown-bg)] iu:p-1 iu:shadow-md iu:outline-none`}
           >
             {shown.length === 0 ? (
               <div className="iu:px-3 iu:py-2 iu:text-base iu:text-[var(--color-text-secondary)]">
