@@ -10,6 +10,15 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: 'Salvar alterações' })).toBeInTheDocument()
   })
 
+  it('segue o padding e a tipografia do Figma por tamanho', () => {
+    const { rerender } = render(<Button size="sm">A</Button>)
+    expect(screen.getByRole('button')).toHaveClass('iu:px-4', 'iu:text-sm', 'iu:gap-1')
+    rerender(<Button size="md">A</Button>)
+    expect(screen.getByRole('button')).toHaveClass('iu:px-6', 'iu:text-sm', 'iu:gap-2')
+    rerender(<Button size="lg">A</Button>)
+    expect(screen.getByRole('button')).toHaveClass('iu:px-6', 'iu:text-base')
+  })
+
   it('usa type="button" por padrão, para não submeter formulários sem querer', () => {
     render(<Button>Ação</Button>)
     expect(screen.getByRole('button')).toHaveAttribute('type', 'button')

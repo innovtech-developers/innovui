@@ -13,7 +13,7 @@ describe('Tag', () => {
   it('no estilo outline, tem borda e não tem fundo', () => {
     render(<Tag variant="outline">Design</Tag>)
     const tag = screen.getByText('Design')
-    expect(tag).toHaveClass('iu:border')
+    expect(tag).toHaveClass('iu:inset-ring')
     expect(tag).not.toHaveClass('iu:bg-[var(--color-bg-secondary)]')
   })
 

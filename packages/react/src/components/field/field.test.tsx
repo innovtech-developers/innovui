@@ -46,6 +46,45 @@ describe('Field', () => {
     expect(screen.getByLabelText('E-mail')).toHaveAttribute('aria-invalid', 'true')
   })
 
+  it('mostra o ícone de status antes da mensagem de erro', () => {
+    const { container } = render(
+      <Field label="E-mail" error supportingText="E-mail inválido">
+        <Input />
+      </Field>,
+    )
+    expect(screen.getByText('E-mail inválido').querySelector('svg')).toBeInTheDocument()
+    expect(container.querySelectorAll('svg')).toHaveLength(1)
+  })
+
+  it('não mostra o ícone sem erro', () => {
+    render(
+      <Field label="E-mail" supportingText="Usaremos para contato">
+        <Input />
+      </Field>,
+    )
+    expect(screen.getByText('Usaremos para contato').querySelector('svg')).toBeNull()
+  })
+
+  it('propaga readOnly e size para o controle', () => {
+    render(
+      <Field label="Nome" readOnly size="sm">
+        <Input />
+      </Field>,
+    )
+    const input = screen.getByLabelText('Nome')
+    expect(input).toHaveAttribute('readonly')
+    expect(input).toHaveClass('iu:h-10')
+  })
+
+  it('usa rótulo de 12px no tamanho sm', () => {
+    render(
+      <Field label="Nome" size="sm">
+        <Input />
+      </Field>,
+    )
+    expect(screen.getByText('Nome')).toHaveClass('iu:text-xs')
+  })
+
   it('propaga disabled para o controle', () => {
     render(
       <Field label="E-mail" disabled>

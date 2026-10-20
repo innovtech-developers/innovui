@@ -7,7 +7,7 @@ import { Spinner } from '../spinner/spinner'
 
 /** Base e estilos compartilhados com o IconButton (não fazem parte da API pública). */
 export const buttonBase =
-  'iu:inline-flex iu:items-center iu:justify-center iu:gap-2 iu:whitespace-nowrap iu:rounded-full iu:font-medium iu:transition-colors iu:focus-visible:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-button-focus-ring)] iu:focus-visible:ring-offset-2 iu:disabled:pointer-events-none iu:disabled:bg-[var(--color-button-disabled-bg)] iu:disabled:text-[var(--color-button-disabled-text)]'
+  'iu:inline-flex iu:items-center iu:justify-center iu:whitespace-nowrap iu:rounded-full iu:font-semibold iu:transition-colors iu:focus-visible:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-button-focus-ring)] iu:focus-visible:ring-offset-2 iu:disabled:pointer-events-none iu:disabled:bg-[var(--color-button-disabled-bg)] iu:disabled:text-[var(--color-button-disabled-text)]'
 
 export const buttonVariantStyles = {
   primary:
@@ -15,9 +15,9 @@ export const buttonVariantStyles = {
   secondary:
     'iu:bg-[var(--color-button-secondary-bg)] iu:text-[var(--color-button-secondary-text)] iu:hover:bg-[var(--color-button-secondary-bg-hover)]',
   tertiary:
-    'iu:border iu:border-[var(--color-button-tertiary-border)] iu:bg-transparent iu:text-[var(--color-button-tertiary-text)] iu:hover:bg-[var(--color-bg-secondary)]',
+    'iu:border iu:border-[var(--color-button-tertiary-border)] iu:bg-transparent iu:text-[var(--color-button-tertiary-text)] iu:hover:bg-[var(--color-bg-secondary)] iu:disabled:bg-transparent',
   ghost:
-    'iu:bg-transparent iu:text-[var(--color-button-ghost-text)] iu:hover:bg-[var(--color-button-ghost-bg-hover)]',
+    'iu:bg-transparent iu:text-[var(--color-button-ghost-text)] iu:hover:bg-[var(--color-button-ghost-bg-hover)] iu:active:bg-[var(--color-button-secondary-bg-hover)] iu:disabled:bg-transparent',
   destructive:
     'iu:bg-[var(--color-button-destructive-bg)] iu:text-[var(--color-button-destructive-text)] iu:hover:bg-[var(--color-button-destructive-bg-hover)] iu:active:bg-[var(--color-button-destructive-bg-active)] iu:disabled:text-[var(--color-button-disabled-text-destructive)]',
 }
@@ -26,9 +26,9 @@ const buttonVariants = cva(buttonBase, {
   variants: {
     variant: buttonVariantStyles,
     size: {
-      lg: 'iu:h-14 iu:px-6 iu:text-base',
-      md: 'iu:h-11 iu:px-4 iu:text-sm',
-      sm: 'iu:h-9 iu:px-3 iu:text-xs',
+      lg: 'iu:h-14 iu:gap-2 iu:px-6 iu:text-base',
+      md: 'iu:h-11 iu:gap-2 iu:px-6 iu:text-sm',
+      sm: 'iu:h-9 iu:gap-1 iu:px-4 iu:text-sm',
     },
   },
   defaultVariants: { variant: 'primary', size: 'md' },

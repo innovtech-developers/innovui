@@ -10,8 +10,8 @@ const inputVariants = cva(
     variants: {
       size: {
         lg: 'iu:h-14 iu:px-4 iu:text-base',
-        md: 'iu:h-12 iu:px-4 iu:text-base',
-        sm: 'iu:h-10 iu:px-3 iu:text-sm',
+        md: 'iu:h-12 iu:px-3 iu:text-base',
+        sm: 'iu:h-10 iu:px-2 iu:text-sm',
       },
       error: {
         true: 'iu:border-[var(--color-field-border-error)] iu:hover:border-[var(--color-field-border-error)] iu:focus-visible:border-[var(--color-field-border-error)]',
@@ -20,6 +20,31 @@ const inputVariants = cva(
     defaultVariants: { size: 'md' },
   },
 )
+
+// Posição do ícone e recuo do texto por tamanho (Figma: padding + ícone 24/20/24 + gap 8/8/4).
+const iconSlot = {
+  lg: {
+    icon: 'iu:size-5',
+    left: 'iu:left-4',
+    right: 'iu:right-4',
+    padL: 'iu:pl-11',
+    padR: 'iu:pr-11',
+  },
+  md: {
+    icon: 'iu:size-6',
+    left: 'iu:left-3',
+    right: 'iu:right-3',
+    padL: 'iu:pl-11',
+    padR: 'iu:pr-11',
+  },
+  sm: {
+    icon: 'iu:size-6',
+    left: 'iu:left-2',
+    right: 'iu:right-2',
+    padL: 'iu:pl-9',
+    padR: 'iu:pr-9',
+  },
+}
 
 export type InputProps = Omit<ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
@@ -38,6 +63,8 @@ export function Input({
   disabled,
   ...props
 }: InputProps) {
+  const slot = iconSlot[size ?? 'md']
+
   if (!leadingIcon && !trailingIcon) {
     return (
       <input
@@ -54,7 +81,13 @@ export function Input({
       className={cn('iu:relative iu:flex iu:items-center', disabled && 'iu:pointer-events-none')}
     >
       {leadingIcon && (
-        <span className="iu:absolute iu:left-3 iu:flex iu:items-center iu:text-[var(--color-field-text-placeholder)]">
+        <span
+          className={cn(
+            'iu:absolute iu:flex iu:items-center iu:text-[var(--color-field-text-placeholder)] iu:[&_svg]:size-full',
+            slot.icon,
+            slot.left,
+          )}
+        >
           {leadingIcon}
         </span>
       )}
@@ -63,14 +96,20 @@ export function Input({
         aria-invalid={error || undefined}
         className={cn(
           inputVariants({ size, error }),
-          leadingIcon && 'iu:pl-10',
-          trailingIcon && 'iu:pr-10',
+          leadingIcon && slot.padL,
+          trailingIcon && slot.padR,
           className,
         )}
         {...props}
       />
       {trailingIcon && (
-        <span className="iu:absolute iu:right-3 iu:flex iu:items-center iu:text-[var(--color-field-text-placeholder)]">
+        <span
+          className={cn(
+            'iu:absolute iu:flex iu:items-center iu:text-[var(--color-field-text-placeholder)] iu:[&_svg]:size-full',
+            slot.icon,
+            slot.right,
+          )}
+        >
           {trailingIcon}
         </span>
       )}

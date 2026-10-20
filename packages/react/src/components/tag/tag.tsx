@@ -9,7 +9,8 @@ const tagVariants = cva(
     variants: {
       variant: {
         filled: 'iu:bg-[var(--color-bg-secondary)]',
-        outline: 'iu:border iu:border-[var(--color-border-default)]',
+        // anel interno (não `border`): a borda do Figma é INSIDE e a altura continua 20px
+        outline: 'iu:inset-ring iu:inset-ring-[var(--color-border-default)]',
       },
     },
     defaultVariants: { variant: 'filled' },

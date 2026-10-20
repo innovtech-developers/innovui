@@ -43,6 +43,13 @@ describe('Input', () => {
     expect(screen.getByTestId('trailing')).toBeInTheDocument()
   })
 
+  it('recua o texto conforme o tamanho (padding + ícone + gap do Figma)', () => {
+    const { rerender } = render(<Input size="md" leadingIcon={<span />} />)
+    expect(screen.getByRole('textbox')).toHaveClass('iu:pl-11')
+    rerender(<Input size="sm" leadingIcon={<span />} trailingIcon={<span />} />)
+    expect(screen.getByRole('textbox')).toHaveClass('iu:pl-9', 'iu:pr-9')
+  })
+
   it('fica desabilitado com ícones (pointer-events no wrapper)', () => {
     render(<Input disabled leadingIcon={<span data-testid="leading" />} />)
     expect(screen.getByRole('textbox')).toBeDisabled()
