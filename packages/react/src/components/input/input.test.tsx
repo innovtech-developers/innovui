@@ -76,4 +76,17 @@ describe('Input', () => {
     )
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('o foco é uma linha só na cor do anel (2px por dentro), sem a borda cinza de hover', () => {
+    render(<Input aria-label="Nome" />)
+    const input = screen.getByLabelText('Nome')
+    expect(input).toHaveClass(
+      'iu:focus-visible:border-[var(--color-field-focus-ring)]',
+      'iu:focus-visible:ring-1',
+      'iu:focus-visible:ring-inset',
+      'iu:focus-visible:ring-[var(--color-field-focus-ring)]',
+    )
+    expect(input.className).not.toContain('focus-visible:border-[var(--color-field-border-hover)]')
+    expect(input.className).not.toContain('focus-visible:ring-2')
+  })
 })

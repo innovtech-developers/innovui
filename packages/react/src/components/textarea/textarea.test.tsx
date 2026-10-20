@@ -41,4 +41,17 @@ describe('Textarea', () => {
     const { container } = render(<Textarea aria-label="Descrição" />)
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('o foco é uma linha só na cor do anel (2px por dentro), sem a borda cinza de hover', () => {
+    render(<Textarea aria-label="Mensagem" />)
+    const textarea = screen.getByLabelText('Mensagem')
+    expect(textarea).toHaveClass(
+      'iu:focus-visible:border-[var(--color-field-focus-ring)]',
+      'iu:focus-visible:ring-1',
+      'iu:focus-visible:ring-inset',
+    )
+    expect(textarea.className).not.toContain(
+      'focus-visible:border-[var(--color-field-border-hover)]',
+    )
+  })
 })
