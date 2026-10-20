@@ -171,6 +171,35 @@ describe('Drawer', () => {
       expect(dialog.lastElementChild).toBe(handleOf())
     })
 
+    it('o conteúdo vizinho encosta na faixa da barrinha, sem somar o padding', () => {
+      const { rerender } = render(
+        <Drawer open side="bottom" title="Filtros">
+          x
+        </Drawer>,
+      )
+      const header = () => screen.getByRole('heading', { name: 'Filtros' }).parentElement
+      expect(header()).toHaveClass('iu:pt-0')
+      rerender(
+        <Drawer open side="bottom" showHandle={false} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(header()).not.toHaveClass('iu:pt-0')
+      // em top, quem encosta é o rodapé (ou o corpo, sem rodapé)
+      rerender(
+        <Drawer open side="top" footer={<span>ok</span>} title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(screen.getByText('ok').parentElement).toHaveClass('iu:pb-0')
+      rerender(
+        <Drawer open side="top" title="Filtros">
+          x
+        </Drawer>,
+      )
+      expect(screen.getByText('x')).toHaveClass('iu:pb-2')
+    })
+
     it.each(['left', 'right'] as const)('não aparece em %s', (side) => {
       render(
         <Drawer open side={side} title="Filtros">

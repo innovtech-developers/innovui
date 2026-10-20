@@ -75,7 +75,8 @@ export function Drawer({
   const closeRef = useRef<HTMLButtonElement>(null)
   const edge = side ?? 'right'
   const { panelRef, overlayRef } = useSwipeToClose(edge, swipeToClose, closeRef)
-  const handle = showHandle && swipeToClose && (edge === 'top' || edge === 'bottom') && (
+  const hasHandle = showHandle && swipeToClose && (edge === 'top' || edge === 'bottom')
+  const handle = hasHandle && (
     // Figma "Drawer/navigation": traço de 4px em `border/strong`, numa faixa de 24px. As variantes
     // sm (108px) e xl (40px) viraram mobile e desktop (o `xl` do DS é o `desktop`, 1440px).
     <div
@@ -92,7 +93,13 @@ export function Drawer({
         <Dialog.Overlay ref={overlayRef} className={overlayStyles} />
         <Dialog.Content ref={panelRef} className={cn(drawerVariants({ side }), className)}>
           {edge === 'bottom' && handle}
-          <div className="iu:flex iu:items-center iu:gap-4 iu:border-b iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
+          {/* ao lado da barrinha, o conteúdo vizinho encosta na faixa de 24px (sem somar o padding) */}
+          <div
+            className={cn(
+              'iu:flex iu:items-center iu:gap-4 iu:border-b iu:border-[var(--color-border-default)] iu:px-6 iu:py-4',
+              hasHandle && edge === 'bottom' && 'iu:pt-0',
+            )}
+          >
             <Dialog.Title className="iu:flex-1 iu:text-lg iu:leading-6 iu:font-semibold iu:text-[var(--color-text-primary)]">
               {title}
             </Dialog.Title>
@@ -103,12 +110,22 @@ export function Drawer({
             </Dialog.Close>
           </div>
           <Dialog.Description asChild>
-            <div className="iu:flex iu:flex-1 iu:flex-col iu:gap-4 iu:overflow-y-auto iu:p-6 iu:text-sm iu:leading-5 iu:text-[var(--color-text-secondary)]">
+            <div
+              className={cn(
+                'iu:flex iu:flex-1 iu:flex-col iu:gap-4 iu:overflow-y-auto iu:p-6 iu:text-sm iu:leading-5 iu:text-[var(--color-text-secondary)]',
+                hasHandle && edge === 'top' && !footer && 'iu:pb-2',
+              )}
+            >
               {children}
             </div>
           </Dialog.Description>
           {footer && (
-            <div className="iu:flex iu:items-center iu:justify-end iu:gap-2 iu:border-t iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
+            <div
+              className={cn(
+                'iu:flex iu:items-center iu:justify-end iu:gap-2 iu:border-t iu:border-[var(--color-border-default)] iu:px-6 iu:py-4',
+                hasHandle && edge === 'top' && 'iu:pb-0',
+              )}
+            >
               {footer}
             </div>
           )}
