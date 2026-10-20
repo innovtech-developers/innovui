@@ -16,7 +16,11 @@ export default defineConfig({
       },
       // @innovui/react/styles.css carrega uma vez para o site inteiro: toda demo viva usa o
       // componente real, estilizado de verdade (sem isso o Button renderiza como <button> cru).
-      customCss: ['./src/styles/layers.css', '@innovui/react/styles.css', './src/styles/herbarium.css'],
+      customCss: [
+        './src/styles/layers.css',
+        '@innovui/react/styles.css',
+        './src/styles/herbarium.css',
+      ],
       // Tema único e claro para os blocos de código: sem isso o Expressive Code escolhe
       // dark/light pelo `data-theme` (que por padrão renderiza "dark" no SSR), e o bloco de
       // código vira uma janela quase preta solta dentro da página kraft clara.
