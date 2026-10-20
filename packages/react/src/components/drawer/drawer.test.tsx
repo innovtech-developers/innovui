@@ -136,9 +136,9 @@ describe('Drawer', () => {
   describe('arrastar para fechar (toque)', () => {
     // jsdom não faz layout: o painel mede 400px nos dois eixos.
     beforeEach(() => {
-      // cada leitura do relógio avança 100ms: os gestos dos testes são lentos, salvo onde dito
+      // cada leitura do relógio avança 1s: os gestos dos testes são lentos, salvo onde dito
       let t = 0
-      vi.spyOn(performance, 'now').mockImplementation(() => (t += 100))
+      vi.spyOn(performance, 'now').mockImplementation(() => (t += 1000))
       vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(400)
       vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(400)
     })
@@ -236,6 +236,77 @@ describe('Drawer', () => {
       )
       swipe(screen.getByLabelText('Nome'), [100, 300], [380, 300])
       expect(onOpenChange).not.toHaveBeenCalled()
+    })
+
+    it('o backdrop clareia junto com o painel e volta se o gesto não fecha', () => {
+      render(
+        <Drawer open title="Filtros">
+          Conteúdo
+        </Drawer>,
+      )
+      const dialog = screen.getByRole('dialog')
+      const backdrop = document.querySelector(
+        '[data-state="open"].iu\\:backdrop-blur-\\[16px\\]',
+      ) as HTMLElement
+      fireEvent.touchStart(dialog, at(100, 300))
+      fireEvent.touchMove(dialog, at(200, 300)) // 100px de 400
+      expect(backdrop.style.opacity).toBe('0.75')
+      fireEvent.touchEnd(dialog)
+      expect(backdrop.style.opacity).toBe('')
+    })
+
+    describe('conteúdo que rola no eixo do arraste', () => {
+      function setup() {
+        const onOpenChange = vi.fn()
+        render(
+          <Drawer open onOpenChange={onOpenChange} title="Filtros">
+            <div data-testid="scroller" style={{ overflowX: 'auto' }}>
+              largo
+            </div>
+          </Drawer>,
+        )
+        const scroller = screen.getByTestId('scroller')
+        for (const [prop, value] of [
+          ['scrollLeft', 50],
+          ['scrollWidth', 500],
+          ['clientWidth', 100],
+        ] as const)
+          Object.defineProperty(scroller, prop, { value, writable: true, configurable: true })
+        return { scroller, dialog: screen.getByRole('dialog'), onOpenChange }
+      }
+
+      it('rola o conteúdo em vez de arrastar enquanto ele ainda rola no sentido de fechar', () => {
+        const { scroller, dialog } = setup()
+        fireEvent.touchStart(scroller, at(100, 300))
+        fireEvent.touchMove(scroller, at(160, 300))
+        expect(dialog.style.translate).toBe('')
+      })
+
+      it('quando o conteúdo chega ao começo no mesmo gesto, o painel assume dali', () => {
+        const { scroller, dialog, onOpenChange } = setup()
+        fireEvent.touchStart(scroller, at(100, 300))
+        fireEvent.touchMove(scroller, at(120, 300)) // rolando
+        expect(dialog.style.translate).toBe('')
+        scroller.scrollLeft = 0 // o navegador rolou até o começo
+        fireEvent.touchMove(scroller, at(130, 300)) // o painel assume aqui: deslocamento 0
+        fireEvent.touchMove(scroller, at(160, 300))
+        expect(dialog.style.translate).toBe('30px 0')
+        fireEvent.touchEnd(scroller)
+        expect(onOpenChange).not.toHaveBeenCalled() // 30px de 400: volta
+        expect(dialog.style.translate).toBe('')
+      })
+
+      it('se o dedo recua além do ponto em que o painel assumiu, volta ao conteúdo', () => {
+        const { scroller, dialog } = setup()
+        fireEvent.touchStart(scroller, at(100, 300))
+        fireEvent.touchMove(scroller, at(120, 300))
+        scroller.scrollLeft = 0
+        fireEvent.touchMove(scroller, at(130, 300))
+        fireEvent.touchMove(scroller, at(170, 300))
+        expect(dialog.style.translate).toBe('40px 0')
+        fireEvent.touchMove(scroller, at(110, 300)) // recuou além da origem (130)
+        expect(dialog.style.translate).toBe('')
+      })
     })
 
     it('swipeToClose={false} desliga o gesto', () => {

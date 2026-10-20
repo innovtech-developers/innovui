@@ -67,12 +67,12 @@ export function Drawer({
   className,
 }: DrawerProps) {
   const closeRef = useRef<HTMLButtonElement>(null)
-  const panelRef = useSwipeToClose(side ?? 'right', swipeToClose, closeRef)
+  const { panelRef, overlayRef } = useSwipeToClose(side ?? 'right', swipeToClose, closeRef)
   return (
     <Dialog.Root open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
-        <Dialog.Overlay className={overlayStyles} />
+        <Dialog.Overlay ref={overlayRef} className={overlayStyles} />
         <Dialog.Content ref={panelRef} className={cn(drawerVariants({ side }), className)}>
           <div className="iu:flex iu:items-center iu:gap-4 iu:border-b iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
             <Dialog.Title className="iu:flex-1 iu:text-lg iu:leading-6 iu:font-semibold iu:text-[var(--color-text-primary)]">
