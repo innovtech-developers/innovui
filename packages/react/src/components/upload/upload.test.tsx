@@ -128,4 +128,16 @@ describe('Upload', () => {
     const { container } = render(<Upload onFilesChange={() => {}} description="PDF até 5 MB" />)
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('o foco é uma linha só na cor do anel (2px por dentro), sem a borda cinza de hover', () => {
+    render(<Upload onFilesChange={() => {}} />)
+    const label = area() as HTMLElement
+    expect(label.className).toContain(
+      'iu:has-[input:focus-visible]:border-[var(--color-field-focus-ring)]',
+    )
+    expect(label.className).toContain('iu:has-[input:focus-visible]:ring-1')
+    expect(label.className).not.toContain(
+      'has-[input:focus-visible]:border-[var(--color-field-border-hover)]',
+    )
+  })
 })

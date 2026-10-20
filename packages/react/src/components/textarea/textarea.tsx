@@ -5,7 +5,7 @@ import type { ComponentProps } from 'react'
 import { cn } from '../../utils/cn'
 
 const textareaVariants = cva(
-  'iu:w-full iu:resize-y iu:bg-[var(--color-field-bg)] iu:text-[var(--color-field-text)] iu:placeholder:text-[var(--color-field-text-placeholder)] iu:rounded-md iu:border iu:border-[var(--color-field-border)] iu:transition-colors iu:outline-none iu:hover:border-[var(--color-field-border-hover)] iu:focus-visible:border-[var(--color-field-border-hover)] iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-field-focus-ring)] iu:disabled:cursor-not-allowed iu:disabled:bg-[var(--color-field-bg-disabled)] iu:disabled:text-[var(--color-field-text-disabled)] iu:disabled:border-[var(--color-field-border-disabled)] iu:read-only:bg-[var(--color-field-bg-disabled)] iu:[&[readonly]]:border-transparent iu:[&[readonly]]:hover:border-transparent iu:[&[readonly]]:focus-visible:border-transparent',
+  'iu:w-full iu:resize-y iu:bg-[var(--color-field-bg)] iu:text-[var(--color-field-text)] iu:placeholder:text-[var(--color-field-text-placeholder)] iu:rounded-md iu:border iu:border-[var(--color-field-border)] iu:transition-colors iu:outline-none iu:hover:border-[var(--color-field-border-hover)] iu:focus-visible:border-[var(--color-field-focus-ring)] iu:focus-visible:ring-1 iu:focus-visible:ring-inset iu:focus-visible:ring-[var(--color-field-focus-ring)] iu:disabled:cursor-not-allowed iu:disabled:bg-[var(--color-field-bg-disabled)] iu:disabled:text-[var(--color-field-text-disabled)] iu:disabled:border-[var(--color-field-border-disabled)] iu:read-only:bg-[var(--color-field-bg-disabled)] iu:[&[readonly]]:border-transparent iu:[&[readonly]]:hover:border-transparent iu:[&[readonly]]:focus-visible:border-transparent',
   {
     variants: {
       size: {

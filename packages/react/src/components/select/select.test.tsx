@@ -89,4 +89,15 @@ describe('Select', () => {
     const { container } = renderSelect()
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('foco e aberto são uma linha só na cor do anel (2px por dentro), sem a borda cinza de hover', () => {
+    renderSelect()
+    const trigger = screen.getByRole('combobox')
+    for (const state of ['focus-visible', 'data-[state=open]']) {
+      expect(trigger.className).toContain(`iu:${state}:border-[var(--color-field-focus-ring)]`)
+      expect(trigger.className).toContain(`iu:${state}:ring-1`)
+      expect(trigger.className).toContain(`iu:${state}:ring-inset`)
+      expect(trigger.className).not.toContain(`${state}:border-[var(--color-field-border-hover)]`)
+    }
+  })
 })
