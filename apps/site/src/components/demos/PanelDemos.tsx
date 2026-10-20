@@ -88,7 +88,7 @@ export function DrawerDemo() {
         footer={
           <>
             <DrawerClose asChild>
-              <Button variant="secondary">Fechar</Button>
+              <Button variant="ghost">Fechar</Button>
             </DrawerClose>
             <Button>Reenviar</Button>
           </>

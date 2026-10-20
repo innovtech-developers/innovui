@@ -4,6 +4,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { overlayStyles } from '../_shared/overlay'
 import { CloseIcon } from '../_shared/status'
 import { IconButton } from '../icon-button'
 
@@ -61,7 +62,7 @@ export function Modal({
     <Dialog.Root open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
-        <Dialog.Overlay className="iu:fixed iu:inset-0 iu:z-50 iu:bg-[var(--color-surface-overlay)] iu:opacity-(--surface-overlay-opacity)" />
+        <Dialog.Overlay className={overlayStyles} />
         <Dialog.Content className={cn(modalVariants({ size }), className)}>
           <div
             className={cn(

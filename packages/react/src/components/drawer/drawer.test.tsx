@@ -121,4 +121,15 @@ describe('Drawer', () => {
     )
     expect(await axe(document.body)).toHaveNoViolations()
   })
+
+  it('o backdrop é o mesmo do Modal: surface/overlay com blur de 16px', () => {
+    render(
+      <Drawer open title="T">
+        x
+      </Drawer>,
+    )
+    const backdrop = document.querySelector('[data-state="open"].iu\\:backdrop-blur-\\[16px\\]')
+    expect(backdrop).toBeInTheDocument()
+    expect(backdrop?.className).toContain('var(--color-surface-overlay)')
+  })
 })

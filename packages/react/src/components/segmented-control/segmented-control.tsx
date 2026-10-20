@@ -28,7 +28,7 @@ export function SegmentedItem({ className, ...props }: SegmentedItemProps) {
   return (
     <RadioGroup.Item
       className={cn(
-        'iu:inline-flex iu:cursor-pointer iu:items-center iu:justify-center iu:whitespace-nowrap iu:rounded-md iu:px-4 iu:py-2 iu:text-sm iu:leading-5 iu:text-[var(--color-text-secondary)] iu:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-border-focus)] iu:data-[state=checked]:bg-[var(--color-bg-primary)] iu:data-[state=checked]:font-medium iu:data-[state=checked]:text-[var(--color-text-primary)] iu:disabled:cursor-not-allowed iu:disabled:text-[var(--color-text-disabled)]',
+        'iu:inline-flex iu:cursor-pointer iu:items-center iu:justify-center iu:whitespace-nowrap iu:rounded-md iu:px-4 iu:py-2 iu:text-sm iu:leading-5 iu:text-[var(--color-text-secondary)] iu:outline-none iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-border-focus)] iu:data-[state=unchecked]:enabled:hover:bg-[var(--color-bg-secondary)] iu:data-[state=unchecked]:enabled:hover:text-[var(--color-text-primary)] iu:data-[state=checked]:bg-[var(--color-surface-primary)] iu:data-[state=checked]:font-medium iu:data-[state=checked]:text-[var(--color-text-primary)] iu:data-[state=checked]:shadow-sm iu:disabled:cursor-not-allowed iu:disabled:text-[var(--color-text-disabled)]',
         className,
       )}
       {...props}
