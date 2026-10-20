@@ -61,6 +61,8 @@ Clicar na ação chama o `onClick` e fecha o toast.
 | `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral'` | `'info'` | Cor semântica e ícone. |
 | `action` | `{ label: string; onClick: () => void }` | — | Ação contextual, que também fecha o toast. |
 | `duration` | `number` | `5000` | Tempo até fechar sozinho, em ms. |
+| `showIcon` | `boolean` | `true` | Mostra o ícone do status. |
+| `dismissible` | `boolean` | `true` | Mostra o botão ×. Sem ele, o toast ainda fecha pelo `duration`. |
 
 ### Props do `ToastProvider`
 

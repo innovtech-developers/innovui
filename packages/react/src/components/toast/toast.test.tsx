@@ -57,6 +57,20 @@ describe('Toast', () => {
     expect(await screen.findAllByText('Mensagem')).toHaveLength(2)
   })
 
+  it('dismissible={false} esconde o botão de fechar', async () => {
+    setup({ description: 'Mensagem', dismissible: false })
+    await userEvent.click(screen.getByText('disparar'))
+    expect(await screen.findByText('Mensagem')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Fechar' })).not.toBeInTheDocument()
+  })
+
+  it('showIcon={false} esconde o ícone do status', async () => {
+    setup({ description: 'Mensagem', showIcon: false })
+    await userEvent.click(screen.getByText('disparar'))
+    const toast = (await screen.findByText('Mensagem')).closest('li') as HTMLElement
+    expect(toast.querySelector('svg[width="20"]')).toBeNull()
+  })
+
   it('o botão de fechar remove o toast', async () => {
     setup({ description: 'Mensagem' })
     await userEvent.click(screen.getByText('disparar'))

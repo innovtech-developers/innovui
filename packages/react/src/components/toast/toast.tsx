@@ -26,6 +26,10 @@ export type ToastOptions = {
   action?: { label: string; onClick: () => void }
   /** Tempo até fechar sozinho, em ms. Padrão: 5000. */
   duration?: number
+  /** Mostra o ícone do status. Padrão: `true`. */
+  showIcon?: boolean
+  /** Mostra o botão de fechar (×). Sem ele, o toast ainda fecha pelo `duration`. Padrão: `true`. */
+  dismissible?: boolean
 }
 
 type ToastItem = ToastOptions & { id: number }
@@ -79,39 +83,52 @@ export function ToastProvider({
     <ToastContext.Provider value={value}>
       <RadixToast.Provider duration={5000}>
         {children}
-        {items.map(({ id, status = 'info', title, description, action, duration }) => (
-          <RadixToast.Root
-            key={id}
-            // Erro e aviso interrompem o leitor de tela; o resto é anunciado com calma.
-            type={status === 'error' || status === 'warning' ? 'foreground' : 'background'}
-            duration={duration}
-            onOpenChange={(open) => !open && dismiss(id)}
-            className={cn(
-              'iu:flex iu:items-start iu:gap-3 iu:rounded-md iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:py-3 iu:pr-3 iu:pl-4 iu:text-sm iu:leading-5 iu:shadow-md',
-              statusText[status],
-            )}
-          >
-            <StatusIcon status={status} className="iu:shrink-0" />
-            <div className="iu:flex iu:min-w-0 iu:flex-1 iu:flex-col iu:items-start iu:gap-1">
-              {title && <RadixToast.Title className="iu:font-medium">{title}</RadixToast.Title>}
-              <RadixToast.Description className="iu:text-[var(--color-text-primary)]">
-                {description}
-              </RadixToast.Description>
-              {action && (
-                <RadixToast.Action asChild altText={action.label}>
-                  <Button variant="ghost" size="sm" onClick={action.onClick}>
-                    {action.label}
-                  </Button>
-                </RadixToast.Action>
+        {items.map(
+          ({
+            id,
+            status = 'info',
+            title,
+            description,
+            action,
+            duration,
+            showIcon = true,
+            dismissible = true,
+          }) => (
+            <RadixToast.Root
+              key={id}
+              // Erro e aviso interrompem o leitor de tela; o resto é anunciado com calma.
+              type={status === 'error' || status === 'warning' ? 'foreground' : 'background'}
+              duration={duration}
+              onOpenChange={(open) => !open && dismiss(id)}
+              className={cn(
+                'iu:flex iu:items-start iu:gap-3 iu:rounded-md iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:py-3 iu:pr-3 iu:pl-4 iu:text-sm iu:leading-5 iu:shadow-md',
+                statusText[status],
               )}
-            </div>
-            <RadixToast.Close asChild>
-              <IconButton aria-label={dismissLabel} variant="ghost" size="sm">
-                <CloseIcon />
-              </IconButton>
-            </RadixToast.Close>
-          </RadixToast.Root>
-        ))}
+            >
+              {showIcon && <StatusIcon status={status} className="iu:shrink-0" />}
+              <div className="iu:flex iu:min-w-0 iu:flex-1 iu:flex-col iu:items-start iu:gap-1">
+                {title && <RadixToast.Title className="iu:font-medium">{title}</RadixToast.Title>}
+                <RadixToast.Description className="iu:text-[var(--color-text-primary)]">
+                  {description}
+                </RadixToast.Description>
+                {action && (
+                  <RadixToast.Action asChild altText={action.label}>
+                    <Button variant="ghost" size="sm" onClick={action.onClick}>
+                      {action.label}
+                    </Button>
+                  </RadixToast.Action>
+                )}
+              </div>
+              {dismissible && (
+                <RadixToast.Close asChild>
+                  <IconButton aria-label={dismissLabel} variant="ghost" size="sm">
+                    <CloseIcon />
+                  </IconButton>
+                </RadixToast.Close>
+              )}
+            </RadixToast.Root>
+          ),
+        )}
         {mounted &&
           createPortal(
             <RadixToast.Viewport

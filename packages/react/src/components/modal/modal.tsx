@@ -32,6 +32,10 @@ export type ModalProps = Pick<
     trigger?: ReactNode
     /** Mostra o botão de fechar (×) no cabeçalho. */
     showClose?: boolean
+    /** Linha entre o cabeçalho e o corpo. Padrão: `true`. */
+    showHeaderDivider?: boolean
+    /** Linha entre o corpo e o rodapé (só aparece com `footer`). Padrão: `true`. */
+    showFooterDivider?: boolean
     /** Nome acessível do botão de fechar. */
     closeLabel?: string
     className?: string
@@ -47,6 +51,8 @@ export function Modal({
   footer,
   trigger,
   showClose = true,
+  showHeaderDivider = true,
+  showFooterDivider = true,
   closeLabel = 'Fechar',
   size,
   className,
@@ -57,7 +63,12 @@ export function Modal({
       <Dialog.Portal>
         <Dialog.Overlay className="iu:fixed iu:inset-0 iu:z-50 iu:bg-[var(--color-surface-overlay)] iu:opacity-(--surface-overlay-opacity)" />
         <Dialog.Content className={cn(modalVariants({ size }), className)}>
-          <div className="iu:flex iu:items-center iu:gap-4 iu:border-b iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
+          <div
+            className={cn(
+              'iu:flex iu:items-center iu:gap-4 iu:px-6 iu:py-4',
+              showHeaderDivider && 'iu:border-b iu:border-[var(--color-border-default)]',
+            )}
+          >
             <Dialog.Title className="iu:flex-1 iu:text-lg iu:leading-6 iu:font-semibold iu:text-[var(--color-text-primary)]">
               {title}
             </Dialog.Title>
@@ -75,7 +86,12 @@ export function Modal({
             </div>
           </Dialog.Description>
           {footer && (
-            <div className="iu:flex iu:items-center iu:justify-end iu:gap-2 iu:border-t iu:border-[var(--color-border-default)] iu:px-6 iu:py-4">
+            <div
+              className={cn(
+                'iu:flex iu:items-center iu:justify-end iu:gap-2 iu:px-6 iu:py-4',
+                showFooterDivider && 'iu:border-t iu:border-[var(--color-border-default)]',
+              )}
+            >
               {footer}
             </div>
           )}

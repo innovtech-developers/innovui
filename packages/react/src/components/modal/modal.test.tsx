@@ -35,6 +35,31 @@ describe('Modal', () => {
     expect(dialog).toHaveAccessibleDescription('Esta ação não pode ser desfeita.')
   })
 
+  it('os divisores aparecem por padrão e podem ser desligados', () => {
+    const { rerender } = render(
+      <Modal open title="Título" footer={footer}>
+        Corpo
+      </Modal>,
+    )
+    const header = screen.getByText('Título').parentElement as HTMLElement
+    const bottom = screen.getByRole('button', { name: 'Confirmar' }).parentElement as HTMLElement
+    expect(header).toHaveClass('iu:border-b')
+    expect(bottom).toHaveClass('iu:border-t')
+    rerender(
+      <Modal
+        open
+        title="Título"
+        footer={footer}
+        showHeaderDivider={false}
+        showFooterDivider={false}
+      >
+        Corpo
+      </Modal>,
+    )
+    expect(header).not.toHaveClass('iu:border-b')
+    expect(bottom).not.toHaveClass('iu:border-t')
+  })
+
   it('renderiza o rodapé só quando há footer', () => {
     const { rerender } = render(
       <Modal open title="T">
