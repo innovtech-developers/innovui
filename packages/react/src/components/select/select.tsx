@@ -4,6 +4,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { type ReactNode, useState } from 'react'
 import { cn } from '../../utils/cn'
+import { popStyles } from '../_shared/motion'
 
 const selectTriggerVariants = cva(
   'iu:group iu:inline-flex iu:w-full iu:items-center iu:justify-between iu:gap-2 iu:rounded-md iu:border iu:bg-[var(--color-field-bg)] iu:text-base iu:leading-6 iu:text-[var(--color-field-text)] iu:transition-colors iu:outline-none iu:border-[var(--color-field-border)] iu:data-[placeholder]:text-[var(--color-field-text-placeholder)] iu:hover:border-[var(--color-field-border-hover)] iu:focus-visible:border-[var(--color-field-focus-ring)] iu:focus-visible:ring-1 iu:focus-visible:ring-inset iu:focus-visible:ring-[var(--color-field-focus-ring)] iu:data-[state=open]:border-[var(--color-field-focus-ring)] iu:data-[state=open]:ring-1 iu:data-[state=open]:ring-inset iu:data-[state=open]:ring-[var(--color-field-focus-ring)] iu:disabled:cursor-not-allowed iu:disabled:bg-[var(--color-field-bg-disabled)] iu:disabled:text-[var(--color-field-text-disabled)] iu:disabled:border-[var(--color-field-border-disabled)] iu:data-[readonly]:bg-[var(--color-field-bg-disabled)] iu:data-[readonly]:border-transparent iu:data-[readonly]:hover:border-transparent iu:data-[readonly]:focus-visible:border-transparent',
@@ -101,7 +102,7 @@ export function Select({
         <SelectPrimitive.Content
           position="popper"
           sideOffset={4}
-          className="iu:z-50 iu:overflow-hidden iu:rounded-md iu:border iu:border-[var(--color-select-dropdown-border)] iu:bg-[var(--color-select-dropdown-bg)] iu:p-1 iu:shadow-md iu:w-[var(--radix-select-trigger-width)]"
+          className={`${popStyles} iu:origin-[var(--radix-select-content-transform-origin)] iu:z-50 iu:overflow-hidden iu:rounded-md iu:border iu:border-[var(--color-select-dropdown-border)] iu:bg-[var(--color-select-dropdown-bg)] iu:p-1 iu:shadow-md iu:w-[var(--radix-select-trigger-width)]`}
         >
           <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
         </SelectPrimitive.Content>

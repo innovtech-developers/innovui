@@ -149,6 +149,56 @@ describe('Toast', () => {
     }
   })
 
+  it('quando um toast sai, os de baixo deslizam para o novo lugar em vez de pular', async () => {
+    // jsdom não faz layout: o `offsetTop` vem da posição na lista (80px por toast).
+    const animate = vi.fn()
+    const top = vi.spyOn(HTMLElement.prototype, 'offsetTop', 'get').mockImplementation(function (
+      this: HTMLElement,
+    ) {
+      return this.parentElement ? [...this.parentElement.children].indexOf(this) * 80 : 0
+    })
+    window.HTMLElement.prototype.animate = animate
+    try {
+      function Two() {
+        const { toast, dismiss } = useToast()
+        return (
+          <>
+            <button
+              type="button"
+              onClick={() => {
+                toast({ description: 'Primeiro' })
+                toast({ description: 'Segundo' })
+              }}
+            >
+              dois
+            </button>
+            <button type="button" onClick={() => dismiss(0)}>
+              fechar-0
+            </button>
+          </>
+        )
+      }
+      render(
+        <ToastProvider>
+          <Two />
+        </ToastProvider>,
+      )
+      await userEvent.click(screen.getByText('dois'))
+      expect(await screen.findByText('Segundo')).toBeInTheDocument()
+      expect(animate).not.toHaveBeenCalled()
+      await userEvent.click(screen.getByText('fechar-0'))
+      expect(animate).toHaveBeenCalledWith([{ translate: '0 80px' }, { translate: '0 0' }], {
+        duration: 200,
+        easing: 'ease-out',
+        composite: 'add',
+      })
+    } finally {
+      top.mockRestore()
+      // o jsdom não define `animate`: remove o mock
+      delete (window.HTMLElement.prototype as { animate?: unknown }).animate
+    }
+  })
+
   it('useToast fora do ToastProvider lança erro claro', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => render(<Trigger options={{ description: 'x' }} />)).toThrow(

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'jest-axe'
 import { describe, expect, it, vi } from 'vitest'
@@ -66,6 +66,16 @@ describe('Tabs', () => {
     const tab = screen.getByRole('tab', { name: 'Geral' })
     expect(tab).toHaveClass('iu:data-[state=active]:text-[var(--color-text-brand)]')
     expect(tab.querySelector('[aria-hidden="true"]')).toHaveClass('iu:h-0.5')
+  })
+
+  it('o sublinhado é um indicador único na lista, que assume o desenho das abas depois de medir', () => {
+    render(<Example />)
+    const list = screen.getByRole('tablist')
+    expect(list).toHaveAttribute('data-slide')
+    const indicator = list.querySelector(':scope > span[aria-hidden="true"]')
+    expect(indicator).toHaveClass('iu:absolute')
+    // o indicador é decorativo: não entra na ordem de abas nem na árvore de acessibilidade
+    expect(within(list).getAllByRole('tab')).toHaveLength(3)
   })
 
   it('mescla className e repassa props HTML', () => {

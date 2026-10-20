@@ -4,12 +4,13 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { dialogStyles } from '../_shared/motion'
 import { overlayStyles } from '../_shared/overlay'
 import { CloseIcon } from '../_shared/status'
 import { IconButton } from '../icon-button'
 
 const modalVariants = cva(
-  'iu:fixed iu:top-1/2 iu:left-1/2 iu:z-50 iu:flex iu:max-h-[calc(100vh-2rem)] iu:w-[calc(100vw-2rem)] iu:-translate-x-1/2 iu:-translate-y-1/2 iu:flex-col iu:overflow-hidden iu:rounded-lg iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:shadow-2xl iu:outline-none',
+  `${dialogStyles} iu:fixed iu:top-1/2 iu:left-1/2 iu:z-50 iu:flex iu:max-h-[calc(100vh-2rem)] iu:w-[calc(100vw-2rem)] iu:-translate-x-1/2 iu:-translate-y-1/2 iu:flex-col iu:overflow-hidden iu:rounded-lg iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:shadow-2xl iu:outline-none`,
   {
     variants: {
       size: { sm: 'iu:max-w-[480px]', md: 'iu:max-w-[640px]', lg: 'iu:max-w-[800px]' },

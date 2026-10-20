@@ -3,6 +3,7 @@
 import * as RadixAccordion from '@radix-ui/react-accordion'
 import type { ComponentProps, ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import { accordionStyles } from '../_shared/motion'
 import { ChevronRightIcon } from '../_shared/status'
 
 export type AccordionProps = ComponentProps<typeof RadixAccordion.Root>
@@ -27,13 +28,19 @@ export function AccordionItem({ className, title, children, ...props }: Accordio
       {...props}
     >
       <RadixAccordion.Header className="iu:flex">
-        <RadixAccordion.Trigger className="iu:group iu:flex iu:flex-1 iu:cursor-pointer iu:items-center iu:justify-between iu:gap-4 iu:rounded-sm iu:py-4 iu:text-left iu:text-sm iu:leading-5 iu:font-medium iu:text-[var(--color-text-primary)] iu:outline-none iu:hover:text-[var(--color-interactive-primary-hover)] iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-border-focus)] iu:disabled:cursor-not-allowed iu:disabled:text-[var(--color-text-disabled)]">
+        <RadixAccordion.Trigger className="iu:group iu:flex iu:flex-1 iu:cursor-pointer iu:items-center iu:justify-between iu:gap-4 iu:rounded-sm iu:py-4 iu:text-left iu:text-sm iu:leading-5 iu:font-medium iu:text-[var(--color-text-primary)] iu:transition-colors iu:outline-none iu:hover:text-[var(--color-interactive-primary-hover)] iu:focus-visible:ring-2 iu:focus-visible:ring-[var(--color-border-focus)] iu:disabled:cursor-not-allowed iu:disabled:text-[var(--color-text-disabled)]">
           {title}
           <ChevronRightIcon className="iu:shrink-0 iu:text-[var(--color-text-secondary)] iu:transition-transform iu:group-data-[state=open]:rotate-90 iu:motion-reduce:transition-none" />
         </RadixAccordion.Trigger>
       </RadixAccordion.Header>
-      <RadixAccordion.Content className="iu:pb-4 iu:text-sm iu:leading-5 iu:text-[var(--color-text-secondary)]">
-        {children}
+      {/* o respiro de baixo fica num filho: com `height` animada, padding no próprio conteúdo não encolhe a 0 */}
+      <RadixAccordion.Content
+        className={cn(
+          accordionStyles,
+          'iu:overflow-hidden iu:text-sm iu:leading-5 iu:text-[var(--color-text-secondary)]',
+        )}
+      >
+        <div className="iu:pb-4">{children}</div>
       </RadixAccordion.Content>
     </RadixAccordion.Item>
   )

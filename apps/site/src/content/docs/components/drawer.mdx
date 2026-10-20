@@ -38,6 +38,12 @@ import { Drawer, DrawerClose, Button } from '@innovui/react'
 
 `right` (padrão) e `left` têm largura máxima de 400px; `top` e `bottom` ocupam a largura toda, com altura máxima de 80% da tela. Em telas estreitas, o painel lateral deixa 16px de margem.
 
+## Arrastar para fechar
+
+No celular, arrastar o painel para a borda de onde ele veio fecha (para a direita no `right`, para baixo no `bottom`, e assim por diante). O painel acompanha o dedo; passando de 40% do tamanho, ou soltando com um gesto rápido, ele fecha, e senão volta ao lugar. O gesto vale para o painel inteiro, mas não rouba a rolagem do conteúdo (só arrasta quando o corpo está no começo, no `top`/`bottom`) nem o toque em campos de texto e sliders. Para tirar outro elemento do gesto, use `data-no-drag`.
+
+Só vale para toque: no mouse, continuam o `Esc`, o × e o clique no backdrop. Para um painel com formulário em edição, em que fechar sem querer perde dados, desligue com `swipeToClose={false}`.
+
 ## Props
 
 | Prop | Tipo | Padrão | Descrição |
@@ -47,6 +53,7 @@ import { Drawer, DrawerClose, Button } from '@innovui/react'
 | `footer` | `ReactNode` | — | Ações do rodapé. Sem ele, não há rodapé. |
 | `trigger` | `ReactNode` | — | Elemento que abre o painel. Dispensável no modo controlado. |
 | `side` | `'right' \| 'left' \| 'top' \| 'bottom'` | `'right'` | Borda em que o painel fica. |
+| `swipeToClose` | `boolean` | `true` | Fecha arrastando o painel para a borda (só toque). |
 | `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
 | `open` / `defaultOpen` / `onOpenChange` | — | — | Controle do estado de abertura. |
 | `className` | `string` | — | Mesclado via `tailwind-merge`. |

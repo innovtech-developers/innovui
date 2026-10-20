@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'jest-axe'
 import { describe, expect, it, vi } from 'vitest'
@@ -66,6 +66,15 @@ describe('SegmentedControl', () => {
       'iu:data-[state=checked]:shadow-sm',
     )
     expect(checked.className).not.toContain('bg-[var(--color-bg-primary)]')
+  })
+
+  it('o fundo do item marcado é um indicador único no grupo, que assume o desenho do item depois de medir', () => {
+    render(<Example />)
+    const group = screen.getByRole('radiogroup')
+    expect(group).toHaveAttribute('data-slide')
+    const indicator = group.querySelector(':scope > span[aria-hidden="true"]')
+    expect(indicator).toHaveClass('iu:absolute', 'iu:bg-[var(--color-surface-primary)]')
+    expect(within(group).getAllByRole('radio')).toHaveLength(3)
   })
 
   it('o hover escurece o texto dos itens inativos habilitados, sem afetar o marcado', () => {

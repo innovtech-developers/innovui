@@ -5,3 +5,99 @@
  */
 @import "tailwindcss" prefix(iu);
 @import "./tokens.css";
+
+/**
+ * Entrada e saída dos overlays. O Radix marca `data-state="open|closed"` e espera o fim da
+ * animação antes de desmontar. Em `scale` e `translate` (não `transform`) para somar ao
+ * `-translate-1/2` do Modal. Aplicadas só com `motion-safe:` (ver `_shared/motion.ts`).
+ */
+@theme {
+  --animate-fade-in: iu-fade-in 150ms ease-out;
+  --animate-fade-out: iu-fade-out 150ms ease-in;
+  --animate-pop-in: iu-pop-in 150ms ease-out;
+  --animate-pop-out: iu-pop-out 100ms ease-in;
+  --animate-dialog-in: iu-dialog-in 200ms ease-out;
+  --animate-dialog-out: iu-dialog-out 150ms ease-in;
+  --animate-drawer-in: iu-drawer-in 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-drawer-out: iu-drawer-out 200ms ease-in;
+  --animate-toast-in: iu-toast-in 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-toast-out: iu-toast-out 150ms ease-in;
+  --animate-accordion-down: iu-accordion-down 200ms ease-out;
+  --animate-accordion-up: iu-accordion-up 200ms ease-out;
+
+  @keyframes iu-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes iu-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes iu-pop-in {
+    from {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+  @keyframes iu-pop-out {
+    to {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+  @keyframes iu-dialog-in {
+    from {
+      opacity: 0;
+      scale: 0.95;
+    }
+  }
+  @keyframes iu-dialog-out {
+    to {
+      opacity: 0;
+      scale: 0.95;
+    }
+  }
+  /* `--iu-slide` (x y) vem do `side` do Drawer */
+  @keyframes iu-drawer-in {
+    from {
+      translate: var(--iu-slide);
+    }
+  }
+  @keyframes iu-drawer-out {
+    to {
+      translate: var(--iu-slide);
+    }
+  }
+  @keyframes iu-toast-in {
+    from {
+      opacity: 0;
+      translate: calc(100% + 1rem) 0;
+    }
+  }
+  /* `--radix-accordion-content-height` é medido pelo Radix a cada abertura */
+  @keyframes iu-accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes iu-accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  /* depois de um swipe, o Radix informa onde o gesto terminou */
+  @keyframes iu-toast-out {
+    to {
+      opacity: 0;
+      translate: var(--radix-toast-swipe-end-x, calc(100% + 1rem)) 0;
+    }
+  }
+}
