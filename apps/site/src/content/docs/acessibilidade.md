@@ -18,20 +18,12 @@ Todo componente tem um teste automatizado com [jest-axe](https://github.com/nick
 
 Isso cobre violações mecânicas (contraste, atributos ARIA ausentes ou inválidos, labels faltando). Não substitui teste manual com leitor de tela — se você encontrar um problema de uso real, [abra uma issue](https://github.com/innovtech-developers/innovui/issues).
 
-## Contraste: exceções conhecidas
+## Contraste
 
-Os valores de cor vêm direto do design system (Figma), e o `jest-axe` **não mede contraste** (o jsdom não calcula cores renderizadas). Por isso medimos à mão os pares de token e estes ficam **abaixo de 4.5:1**:
+Os valores de cor vêm do design system (Figma), e o `jest-axe` **não mede contraste** (o jsdom não calcula cores renderizadas). Por isso a medição é outra: um teste automático (`tokens.test.ts`) calcula a razão de contraste WCAG de 42 pares de texto sobre fundo, nos dois modos, e falha o build se algum ficar abaixo de **4,5:1**. O ✓ branco do Stepper, que é um gráfico, precisa de 3:1.
 
-| Par | Claro | Escuro |
-|---|---|---|
-| `text/tertiary` e `text/disabled` sobre o fundo | 2.55 / 1.48 | 3.77 / 2.37 |
-| Placeholder dos campos (`field/text/placeholder`) | 2.55 | 3.77 |
-| Texto de sucesso sobre `bg/success` (Badge, Alert, Banner, Toast) | 3.10 | — |
-| Texto de erro sobre `bg/error` | — | 3.59 |
-| Texto de info sobre `bg/info` | — | 4.20 |
-| `text/secondary` sobre `surface/elevated` e `bg/tertiary` (ex.: corpo do Modal) | — | 4.03 |
-| Botão secundário (`button/secondary`) | — | 4.09 |
-| Botão destrutivo (texto sobre `button/destructive/bg`) | — | 4.40 |
-| ✓ do Stepper (branco sobre `bg/success-emphasis`) | 2.23 | — |
+**Exceções documentadas pelo design system** (conteúdo não essencial, abaixo de 4,5:1 de propósito): `text/tertiary`, `text/disabled` e o placeholder dos campos.
 
-`text/tertiary`, `text/disabled` e o placeholder são exceções documentadas do design system (conteúdo não essencial). Os demais pares são decisões de cor do Figma que mantivemos fiéis; se o seu produto exige AA nesses casos, sobrescreva o token (veja [Tema e customização](/tema/)) ou combine o texto com um ícone e um rótulo, para que a cor nunca seja o único sinal.
+**Ajustes provisórios.** Treze valores de cor (2 no claro e 11 no escuro) seguem as sugestões do designer para chegar a 4,5:1 e, por enquanto, diferem das variáveis do Figma: texto de sucesso no claro; `text/secondary`, `text/brand`, erro, info, `interactive/primary` e `interactive/destructive` no escuro. Cada um está marcado em `tokens.css` com o valor original do Figma. Quando o Figma for atualizado, os tokens são relidos e as marcas removidas.
+
+Se o seu produto usa outras combinações de cor, valide o par novo nos dois modos e, onde a cor for o único sinal, junte um ícone e um rótulo (veja [Tema e customização](/tema/)).
