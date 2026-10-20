@@ -1,0 +1,75 @@
+---
+title: Stack
+description: Empilha filhos numa direção com espaçamento uniforme.
+---
+
+Empilha filhos numa direção com espaçamento uniforme, usando flexbox e a escala de `gap` do design system.
+
+```tsx
+import { Stack, Button } from '@innovui/react-native'
+
+<Stack gap={3}>
+  <Button>Salvar</Button>
+  <Button variant="tertiary">Cancelar</Button>
+</Stack>
+```
+
+## Direção
+
+```tsx
+<Stack direction="column">{/* padrão */}</Stack>
+<Stack direction="row">{/* lado a lado */}</Stack>
+```
+
+## Espaçamento
+
+O `gap` segue a escala de base 4: `0`, `1` (4), `2` (8), `3` (12), `4` (16), `6` (24) e `8` (32).
+
+```tsx
+<Stack gap={2}>{children}</Stack>
+```
+
+## Alinhamento e quebra
+
+```tsx
+<Stack direction="row" align="center" justify="between">
+  <Text className="text-text-primary">Título</Text>
+  <Button size="sm">Ação</Button>
+</Stack>
+
+<Stack direction="row" gap={2} wrap>
+  <Tag>Design</Tag>
+  <Tag>Código</Tag>
+  <Tag>Produto</Tag>
+</Stack>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `direction` | `'column' \| 'row'` | `'column'` | Direção do eixo principal. |
+| `gap` | `0 \| 1 \| 2 \| 3 \| 4 \| 6 \| 8` | `4` | Espaçamento entre filhos (pontos = valor x 4). |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | n/d | Alinhamento no eixo cruzado (`items-*`). |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between'` | n/d | Distribuição no eixo principal (`justify-*`). |
+| `wrap` | `boolean` | `false` | Permite quebrar linha (`flex-wrap`). |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`.
+
+## Acessibilidade
+
+O Stack é só layout e não define role. A ordem dos filhos é a ordem de leitura do leitor de tela.
+
+### Quando usar
+
+Organizar elementos em coluna ou linha com espaçamento consistente.
+
+### Quando não usar
+
+Para layouts em colunas de largura igual (use [Grid](/react-native/components/grid/)) ou para centralizar com largura máxima (use [Container](/react-native/components/container/)).
+
+## Diferenças em relação à web
+
+- É um `View` com flexbox: o React Native não tem `display: block`, então tudo é flex por padrão.
+- O `gap` aceita só os valores da escala acima.

@@ -1,0 +1,84 @@
+---
+title: Checkbox
+description: Caixa de seleção para marcar uma ou mais opções.
+---
+
+Caixa de seleção com rótulo. Funciona controlado (`checked` e `onCheckedChange`) ou não controlado (`defaultChecked`).
+
+```tsx
+import { useState } from 'react'
+import { Checkbox } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [aceito, setAceito] = useState(false)
+
+  return (
+    <Checkbox
+      label="Li e aceito os termos"
+      checked={aceito}
+      onCheckedChange={setAceito}
+    />
+  )
+}
+```
+
+## Estados
+
+```tsx
+<Checkbox label="Desmarcado" />
+<Checkbox label="Marcado" defaultChecked />
+<Checkbox label="Parcial" indeterminate />
+<Checkbox label="Com erro" error />
+<Checkbox label="Desabilitado" disabled />
+<Checkbox label="Desabilitado marcado" disabled defaultChecked />
+```
+
+Com `indeterminate`, o traço aparece e o estado é anunciado como "misto". Ao tocar, o checkbox passa para marcado (`onCheckedChange(true)`), como no input nativo. Controle `indeterminate` por conta própria, por exemplo num "selecionar todos".
+
+```tsx
+const todos = itens.every((i) => i.marcado)
+const alguns = itens.some((i) => i.marcado)
+
+<Checkbox
+  label="Selecionar todos"
+  checked={todos}
+  indeterminate={alguns && !todos}
+  onCheckedChange={(v) => marcarTodos(v)}
+/>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `ReactNode` | — | Rótulo. Uma `string` recebe o estilo padrão; outros nós você estiliza. |
+| `checked` | `boolean` | — | Estado controlado. Sem ele, o componente guarda o próprio estado. |
+| `defaultChecked` | `boolean` | `false` | Estado inicial no modo não controlado. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Chamado com o novo valor a cada toque. |
+| `indeterminate` | `boolean` | `false` | Seleção parcial. |
+| `error` | `boolean` | — | Borda vermelha. |
+| `disabled` | `boolean` | `false` | Desabilita o toque. |
+| `className` | `string` | — | Classes Uniwind da linha toda, mescladas via `tailwind-merge`. |
+
+Aceita também as demais props do `Pressable` (`accessibilityLabel`, `accessibilityHint`, `testID`, `hitSlop`...), exceto `style`, `children` e `onPress`.
+
+## Acessibilidade
+
+- Usa `accessibilityRole="checkbox"` e `accessibilityState.checked` (`true`, `false` ou `'mixed'` no indeterminado) e `disabled`.
+- A área de toque tem no mínimo 44px de altura e inclui o rótulo.
+- Se o `label` não for texto, passe `accessibilityLabel`.
+- O erro não depende só da cor: mostre também uma mensagem de texto.
+
+## Diferenças em relação à web
+
+- `onChange` vira `onCheckedChange(boolean)`.
+- Não existe `name`, `value` nem envio de formulário: o estado fica no seu código.
+- Não existe hover nem foco por teclado.
+
+### Quando usar
+
+Escolhas independentes, em que o usuário pode marcar várias opções, ou um aceite isolado.
+
+### Quando não usar
+
+Uma única escolha entre várias ([Radio](/react-native/components/radio/) ou [SegmentedControl](/react-native/components/segmented-control/)) e ajustes com efeito imediato ([Switch](/react-native/components/switch/)).

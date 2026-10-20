@@ -1,0 +1,74 @@
+---
+title: Alert
+description: Mensagem contextual em bloco, persistente, com status semântico.
+---
+
+Mensagem contextual em bloco e **persistente**. Para avisos temporários use o [Toast](/react-native/components/toast/); para mensagens globais, o [Banner](/react-native/components/banner/).
+
+```tsx
+import { Alert } from '@innovui/react-native'
+
+<Alert status="success" title="Pagamento confirmado">
+  Enviamos o comprovante para o seu e-mail.
+</Alert>
+```
+
+## Status
+
+```tsx
+<Alert status="info">Informação neutra para o usuário.</Alert>
+<Alert status="success">Operação concluída.</Alert>
+<Alert status="warning">Revise os dados antes de continuar.</Alert>
+<Alert status="error">Não foi possível concluir.</Alert>
+<Alert status="neutral">Nota sem urgência.</Alert>
+```
+
+## Título, ação e fechar
+
+```tsx
+<Alert
+  status="warning"
+  title="Cartão expira em breve"
+  action={<Button variant="ghost" size="sm" onPress={openCards}>Atualizar</Button>}
+  onDismiss={() => setVisible(false)}
+>
+  O cartão final 4242 vence no próximo mês.
+</Alert>
+```
+
+O botão de fechar aparece só quando há `onDismiss`. O ícone do status aparece por padrão; use `showIcon={false}` para ocultá-lo.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral'` | `'info'` | Cor e ícone semânticos. |
+| `title` | `string` | n/d | Resumo do alerta (opcional). |
+| `children` | `ReactNode` | n/d | A mensagem. Uma `string` vira `Text`; outros nós são renderizados como estão. |
+| `showIcon` | `boolean` | `true` | Mostra o ícone do status. |
+| `action` | `ReactNode` | n/d | Ação contextual, abaixo da mensagem. |
+| `onDismiss` | `() => void` | n/d | Mostra o botão de fechar (×) e o chama ao tocar. |
+| `dismissLabel` | `string` | `'Fechar'` | Nome acessível do botão de fechar. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`.
+
+## Acessibilidade
+
+- Os status `error` e `warning` usam `accessibilityRole="alert"`; os demais não definem role.
+- O botão de fechar é um [IconButton](/react-native/components/icon-button/) com `accessibilityLabel` igual a `dismissLabel`. Traduza ou personalize o rótulo se precisar.
+- A cor nunca é o único sinal: o ícone e o texto também comunicam o status.
+
+### Quando usar
+
+Feedback persistente dentro de uma tela ou formulário: erros de validação, avisos, confirmações.
+
+### Quando não usar
+
+Avisos que somem sozinhos ([Toast](/react-native/components/toast/)) e comunicados da aplicação inteira ([Banner](/react-native/components/banner/)).
+
+## Diferenças em relação à web
+
+- Não há status `pending`.
+- Se `children` não for `string`, você estiliza o `Text` por conta própria (por exemplo, `text-text-primary`).
+- `onPress` e `accessibilityLabel` no lugar de `onClick` e `aria-label` nas ações.

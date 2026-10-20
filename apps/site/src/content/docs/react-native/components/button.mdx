@@ -1,0 +1,96 @@
+---
+title: Button
+description: O componente de ação primário do design system, para React Native.
+---
+
+O componente de ação primário do design system: 5 estilos, 3 tamanhos e estados de carregamento e desabilitado.
+
+```tsx
+import { Button } from '@innovui/react-native'
+
+<Button onPress={handleSave}>Salvar alterações</Button>
+```
+
+## Estilos
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="tertiary">Tertiary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>
+```
+
+- **Primary:** ação principal, fundo sólido, alto contraste.
+- **Secondary:** ação secundária, fundo sutil.
+- **Tertiary:** borda, sem fundo.
+- **Ghost:** texto puro, sem container visual.
+- **Destructive:** vermelho, para exclusão ou remoção.
+
+## Tamanhos
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+As alturas são 36, 44 e 56 pontos.
+
+## Ícones
+
+```tsx
+<Button leadingIcon={<PlusIcon color={color} />}>Adicionar</Button>
+<Button trailingIcon={<ArrowRightIcon color={color} />}>Continuar</Button>
+```
+
+O ícone não herda a cor do texto: passe `color` a ele (veja [Diferenças em relação à web](#diferenças-em-relação-à-web)).
+
+## Estado de carregamento
+
+```tsx
+<Button loading={isSaving} onPress={handleSave}>
+  {isSaving ? 'Salvando…' : 'Salvar alterações'}
+</Button>
+```
+
+No estado `loading`, o botão fica desabilitado, ganha `accessibilityState.busy` e o ícone (se houver) é substituído por um [Spinner](/react-native/components/spinner/). O texto permanece visível: troque-o você mesmo, como no exemplo.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'destructive'` | `'primary'` | Estilo visual do botão. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do botão. |
+| `children` | `string` | n/d | O rótulo. Obrigatório e somente texto. |
+| `leadingIcon` | `ReactNode` | n/d | Ícone antes do texto. Some quando `loading` está ativo. |
+| `trailingIcon` | `ReactNode` | n/d | Ícone depois do texto. Some quando `loading` está ativo. |
+| `loading` | `boolean` | `false` | Troca os ícones por um spinner e desabilita o botão. |
+| `disabled` | `boolean` | n/d | Desabilita o botão. |
+| `onPress` | `(event) => void` | n/d | Chamado ao tocar. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas via `tailwind-merge`. |
+
+Aceita também as demais props do `Pressable`, exceto `style` (use `className`).
+
+## Acessibilidade
+
+- Usa `accessibilityRole="button"`.
+- `accessibilityState` recebe `disabled` e `busy` (este vira `true` em `loading`). Os valores que você passar em `accessibilityState` são mesclados.
+- O rótulo é o próprio texto; use `accessibilityLabel` ou `accessibilityHint` quando o texto sozinho não bastar.
+- Em `loading` o toque é ignorado, pois o botão fica desabilitado.
+- Não há foco por teclado nem hover: o feedback de toque usa o estado `active:`.
+
+### Quando usar
+
+Para disparar uma ação: salvar, enviar, confirmar, excluir.
+
+### Quando não usar
+
+Para navegar entre telas ou abrir um endereço (use [Link](/react-native/components/link/)) e para ações só com ícone (use [IconButton](/react-native/components/icon-button/)).
+
+## Diferenças em relação à web
+
+- `onPress` no lugar de `onClick`.
+- `children` aceita apenas `string`, pois o texto não herda estilo no React Native.
+- Ícones recebem `color` por prop; não existe `currentColor`.
+- Não existe `asChild`.

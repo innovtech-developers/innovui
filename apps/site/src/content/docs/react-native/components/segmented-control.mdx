@@ -1,0 +1,82 @@
+---
+title: SegmentedControl
+description: Escolha única entre 2 a 5 visualizações do mesmo conteúdo.
+---
+
+Grupo de botões lado a lado em que só um fica selecionado. Troca a **visualização** do mesmo conteúdo (lista ou grade, dia ou semana). Para navegar entre seções diferentes, use [Tabs](/react-native/components/tabs/). O `accessibilityLabel` é obrigatório.
+
+```tsx
+import { useState } from 'react'
+import { SegmentedControl, SegmentedItem } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [modo, setModo] = useState('lista')
+
+  return (
+    <SegmentedControl
+      accessibilityLabel="Modo de exibição"
+      value={modo}
+      onValueChange={setModo}
+    >
+      <SegmentedItem value="lista">Lista</SegmentedItem>
+      <SegmentedItem value="grade">Grade</SegmentedItem>
+      <SegmentedItem value="mapa">Mapa</SegmentedItem>
+    </SegmentedControl>
+  )
+}
+```
+
+## Não controlado e desabilitado
+
+```tsx
+<SegmentedControl accessibilityLabel="Período" defaultValue="semana">
+  <SegmentedItem value="dia">Dia</SegmentedItem>
+  <SegmentedItem value="semana">Semana</SegmentedItem>
+  <SegmentedItem value="mes" disabled>Mês</SegmentedItem>
+</SegmentedControl>
+```
+
+## Props
+
+### SegmentedControl
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `accessibilityLabel` | `string` | — | Obrigatório. Descreve o que o controle escolhe. |
+| `value` | `string` | — | Valor selecionado (controlado). |
+| `defaultValue` | `string` | — | Valor inicial no modo não controlado. |
+| `onValueChange` | `(value: string) => void` | — | Chamado ao escolher outro item. Tocar no item já selecionado não dispara. |
+| `children` | `ReactNode` | — | Os `SegmentedItem`. |
+| `className` | `string` | — | Classes Uniwind do contêiner, mescladas via `tailwind-merge`. |
+
+Aceita também as demais props de `View`, exceto `style`.
+
+### SegmentedItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | — | Valor do item (obrigatório). |
+| `children` | `ReactNode` | — | Conteúdo. Uma `string` recebe o estilo padrão. |
+| `disabled` | `boolean` | `false` | Desabilita o item. |
+| `className` | `string` | — | Classes Uniwind do item. |
+
+Aceita também as demais props do `Pressable`, exceto `style` e `onPress`. Usar `SegmentedItem` fora de um `SegmentedControl` lança um erro.
+
+## Acessibilidade
+
+- O contêiner usa `accessibilityRole="radiogroup"` com o `accessibilityLabel` informado.
+- Cada item usa `accessibilityRole="radio"`, com `accessibilityState.checked` e `disabled`.
+- Se o conteúdo do item não for texto (um ícone, por exemplo), passe `accessibilityLabel` no item.
+
+## Diferenças em relação à web
+
+- Não há navegação por setas do teclado: cada item é um alvo de toque.
+- Não existe hover: o toque usa o estado `active:`.
+
+### Quando usar
+
+Alternar a forma de ver o mesmo conteúdo, com 2 a 5 opções curtas.
+
+### Quando não usar
+
+Navegar entre seções ([Tabs](/react-native/components/tabs/)), mais de 5 opções ([Select](/react-native/components/select/)) e escolhas de formulário ([Radio](/react-native/components/radio/)).

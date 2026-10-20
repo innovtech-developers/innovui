@@ -1,0 +1,88 @@
+---
+title: List
+description: Lista vertical de itens com o mesmo formato.
+---
+
+Lista vertical de itens com o mesmo formato: contatos, arquivos, configurações. O pacote exporta `List` e `ListItem`.
+
+```tsx
+import { List, ListItem, Avatar, Badge } from '@innovui/react-native'
+
+<List divided>
+  <ListItem
+    leading={<Avatar name="Ana Souza" size="sm" />}
+    title="Ana Souza"
+    description="ana@exemplo.com"
+    trailing={<Badge status="success">Ativa</Badge>}
+  />
+  <ListItem
+    leading={<Avatar name="Bruno Lima" size="sm" />}
+    title="Bruno Lima"
+    description="bruno@exemplo.com"
+    trailing={<Badge status="pending">Convidado</Badge>}
+  />
+</List>
+```
+
+## Divisórias
+
+Com `divided`, um [Divider](/react-native/components/divider/) é intercalado entre os itens.
+
+```tsx
+<List divided>{items}</List>
+```
+
+## Conteúdo extra
+
+`children` do `ListItem` aparece abaixo da descrição:
+
+```tsx
+<ListItem title="Relatório.pdf" description="2,4 MB">
+  <Tag>Financeiro</Tag>
+</ListItem>
+```
+
+## Props
+
+### List
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `divided` | `boolean` | `false` | Linha entre os itens. |
+| `children` | `ReactNode` | n/d | Os `ListItem`. |
+| `className` | `string` | n/d | Classes Uniwind. |
+
+Aceita também as demais props de `View`.
+
+### ListItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `string` | n/d | Obrigatório. Título do item. |
+| `description` | `string` | n/d | Texto de apoio abaixo do título. |
+| `leading` | `ReactNode` | n/d | Elemento antes do texto (Avatar, ícone). |
+| `trailing` | `ReactNode` | n/d | Elemento no fim da linha (Badge, Menu, botão). |
+| `children` | `ReactNode` | n/d | Conteúdo extra abaixo da descrição. |
+| `className` | `string` | n/d | Classes Uniwind. |
+
+Aceita também as demais props de `View`.
+
+## Acessibilidade
+
+- O `List` usa `accessibilityRole="list"` e o `ListItem` usa `role="listitem"`.
+- Se o item inteiro for tocável, envolva-o num `Pressable` com `accessibilityRole` e `accessibilityLabel`.
+- Elementos em `trailing` interativos precisam do próprio `accessibilityLabel`.
+
+### Quando usar
+
+Conjuntos curtos de itens homogêneos.
+
+### Quando não usar
+
+Listas longas ou roláveis (use `FlatList` e o `ListItem` como linha) e dados tabulares (use [Table](/react-native/components/table/)).
+
+## Diferenças em relação à web
+
+- `List` não rola e não virtualiza: é uma `View`. Para muitos itens, renderize `ListItem` dentro de uma `FlatList`.
+- Sem `divide-y` no React Native, o `List` intercala um `Divider` entre os filhos.
+- `title` e `description` aceitam apenas `string`.

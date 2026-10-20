@@ -1,0 +1,64 @@
+---
+title: Breadcrumb
+description: Trilha de navegação que mostra onde a pessoa está na hierarquia do app.
+---
+
+Mostra a **hierarquia de telas** até a atual (Início › Seção › Página) e deixa voltar a qualquer nível. Para fluxos sequenciais, use o [Stepper](/react-native/components/stepper/).
+
+```tsx
+import { Breadcrumb, BreadcrumbItem } from '@innovui/react-native'
+
+<Breadcrumb>
+  <BreadcrumbItem onPress={() => router.push('/')}>Início</BreadcrumbItem>
+  <BreadcrumbItem onPress={() => router.push('/produtos')}>Produtos</BreadcrumbItem>
+  <BreadcrumbItem current>Camiseta</BreadcrumbItem>
+</Breadcrumb>
+```
+
+O separador (›) aparece depois de todos os itens, menos do último. Marque a tela atual com `current`.
+
+## Com o roteador do seu app
+
+Não existe `href` nem `asChild`: navegue pelo `onPress`, com a função do seu roteador (`router.push` no Expo Router, `navigation.navigate` no React Navigation).
+
+## Props
+
+### `Breadcrumb`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `accessibilityLabel` | `string` | `'Breadcrumb'` | Nome acessível da trilha. |
+| `className` | `string` | n/a | Mesclado com `flex-row flex-wrap items-center gap-1`. |
+
+Aceita as demais props de `View`. A trilha quebra de linha quando não cabe.
+
+### `BreadcrumbItem`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `current` | `boolean` | `false` | Marca a página atual: não é tocável e recebe `selected`. |
+| `onPress` | `(event) => void` | n/a | Navega para o nível. Ignorado quando `current`. |
+| `children` | `ReactNode` | n/a | Rótulo. Texto vira `Text` estilizado. |
+| `className` | `string` | n/a | Estilo do item inteiro (link e separador). |
+
+Aceita as demais props de `Pressable`, exceto `style`.
+
+## Diferenças em relação à web
+
+- `onPress` no lugar de `href` e `asChild`.
+- Não há `aria-current`: a página atual usa `accessibilityState={{ selected: true }}`.
+
+## Acessibilidade
+
+- A trilha é uma `View` com `accessibilityLabel` (padrão `Breadcrumb`), porque o RN não tem role `navigation`. Traduza o rótulo se o app não for em inglês.
+- Cada nível é um `Pressable` com `accessibilityRole="link"` e área de toque ampliada (`hitSlop` 8).
+- A página atual é um elemento `accessible` com `accessibilityRole="text"` e `selected: true`.
+- O separador é decorativo e não precisa de rótulo.
+
+### Quando usar
+
+Hierarquias com três ou mais níveis, em que a pessoa precisa voltar a um nível acima.
+
+### Quando não usar
+
+Fluxos em etapas ([Stepper](/react-native/components/stepper/)) e navegação principal do app (barra de abas ou [Tabs](/react-native/components/tabs/)).

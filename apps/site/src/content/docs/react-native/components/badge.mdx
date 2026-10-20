@@ -1,0 +1,55 @@
+---
+title: Badge
+description: Indicador compacto de status, com cor semântica embutida.
+---
+
+Indicador compacto de **status**, com cor semântica embutida e sem interação. Para categorizar ou rotular conteúdo, use a [Tag](/react-native/components/tag/).
+
+```tsx
+import { Badge } from '@innovui/react-native'
+
+<Badge status="success">Pago</Badge>
+<Badge status="error">Recusado</Badge>
+<Badge status="warning">Atenção</Badge>
+<Badge status="info">Novo</Badge>
+<Badge status="neutral">Rascunho</Badge>
+<Badge status="pending">Pendente</Badge>
+```
+
+## Com indicador
+
+```tsx
+<Badge status="success" dot>Ativo</Badge>
+```
+
+O indicador usa a cor do texto do status e é decorativo (escondido do leitor de tela).
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral' \| 'pending'` | `'neutral'` | Cor semântica do status. |
+| `dot` | `boolean` | `false` | Mostra o indicador circular antes do texto. |
+| `children` | `string` | n/d | O texto do badge. Obrigatório e somente texto. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`, exceto `children`.
+
+## Acessibilidade
+
+- A cor nunca é o único sinal: o texto deve dizer o status ("Pago", "Recusado").
+- O indicador (`dot`) usa `accessibilityElementsHidden` e `importantForAccessibility="no-hide-descendants"`.
+- O Badge não é interativo e não recebe foco.
+
+### Quando usar
+
+Status de pedido, severidade, estado de uma conta ou de um item numa lista.
+
+### Quando não usar
+
+Categorias ou filtros (use [Tag](/react-native/components/tag/)) e contadores de notificação.
+
+## Diferenças em relação à web
+
+- `children` aceita apenas `string`, pois o texto não herda cor nem tamanho.
+- O Badge tem `self-start`: ocupa só a largura do conteúdo dentro de um pai em coluna.

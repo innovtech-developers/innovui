@@ -1,0 +1,65 @@
+---
+title: Link
+description: Link de texto na cor da marca, sempre sublinhado.
+---
+
+Link de texto na cor da marca e sempre sublinhado, pois a cor sozinha não distingue o link do texto ao redor.
+
+```tsx
+import { Link } from '@innovui/react-native'
+
+<Link href="https://innovui.dev">Conheça o design system</Link>
+```
+
+## Abrindo uma URL
+
+Com `href`, o toque abre o endereço com `Linking.openURL`. Falhas (URL inválida ou nenhum app para abrir) são ignoradas, sem rejeição não tratada. Se houver `onPress`, ele roda antes.
+
+## Navegando com o roteador
+
+Para telas do app, use só `onPress`, sem `href`:
+
+```tsx
+<Link onPress={() => router.push('/perfil')}>Ver perfil</Link>
+```
+
+## Dentro de um texto
+
+O Link é um `Text`, então pode ficar no meio de um parágrafo:
+
+```tsx
+<Text className="text-text-primary">
+  Ao continuar, você aceita os <Link href="https://innovui.dev/termos">termos de uso</Link>.
+</Text>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `href` | `string` | n/d | URL aberta com `Linking.openURL` ao tocar. |
+| `onPress` | `(event) => void` | n/d | Chamado ao tocar, antes de abrir o `href`. |
+| `children` | `ReactNode` | n/d | O texto do link. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `Text`, exceto `style`.
+
+## Acessibilidade
+
+- Usa `accessibilityRole="link"`.
+- O texto deve fazer sentido fora do contexto ("Ver fatura", não "Clique aqui").
+- O sublinhado é permanente. O estado pressionado muda a cor (`active:`).
+- Não há foco por teclado nem hover.
+
+### Quando usar
+
+Navegar para outra tela ou abrir um endereço externo, dentro ou ao lado de texto.
+
+### Quando não usar
+
+Para disparar uma ação no app (use [Button](/react-native/components/button/)).
+
+## Diferenças em relação à web
+
+- Não é uma âncora: o `href` abre pelo sistema com `Linking.openURL`.
+- Por ser um `Text`, o `className` pode alterar tamanho e peso, mas a cor da marca já vem aplicada.

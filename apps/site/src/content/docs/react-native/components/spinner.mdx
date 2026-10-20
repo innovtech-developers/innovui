@@ -1,0 +1,57 @@
+---
+title: Spinner
+description: Indicador de carregamento indeterminado, para ações pontuais.
+---
+
+Indicador de carregamento **indeterminado** para ações pontuais. Para carregar uma tela ou seção, prefira o [Skeleton](/react-native/components/skeleton/).
+
+```tsx
+import { Spinner } from '@innovui/react-native'
+
+<Spinner />
+```
+
+## Tamanhos
+
+```tsx
+<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" />
+```
+
+Os diâmetros são 16, 20 e 24 pontos. A cor vem dos tokens `spinner/*`.
+
+## Rótulo acessível
+
+```tsx
+<Spinner accessibilityLabel="Enviando arquivo" />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do indicador. |
+| `accessibilityLabel` | `string` | `'Carregando'` | Nome acessível lido pelo leitor de tela. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`, exceto `children`.
+
+## Acessibilidade
+
+- Usa `accessible` e `accessibilityRole="progressbar"`, com `accessibilityLabel` padrão "Carregando".
+- Descreva o que está carregando quando houver mais de um indicador na tela.
+- A animação é um loop contínuo e não respeita "reduzir movimento".
+
+### Quando usar
+
+Dentro de botões, campos e pequenas áreas enquanto uma ação termina.
+
+### Quando não usar
+
+Para carregar telas ou listas inteiras (use [Skeleton](/react-native/components/skeleton/)) ou quando o progresso é conhecido.
+
+## Diferenças em relação à web
+
+- O giro usa `Animated` com o driver nativo, não CSS.
+- O rótulo vem por `accessibilityLabel`, não por `aria-label`.

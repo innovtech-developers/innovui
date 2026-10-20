@@ -5,7 +5,7 @@ const { entry } = Astro.locals.starlightRoute
 const title = entry.data.title
 // só páginas de componente levam pictograma — "_top" é o id estável que o Starlight usa
 // para o skip-link e o TOC âncora no H1 (não há export público para importar a constante).
-const match = entry.id.match(/^components\/([\w-]+)$/)
+const match = entry.id.match(/^(?:react-native\/)?components\/([\w-]+)$/)
 const componentName = match?.[1]
 ---
 

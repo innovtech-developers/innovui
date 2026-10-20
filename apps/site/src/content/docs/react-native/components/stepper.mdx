@@ -1,0 +1,69 @@
+---
+title: Stepper
+description: Indicador de progresso para fluxos em etapas, como checkout e onboarding.
+---
+
+Mostra o **progresso de um fluxo** de 2 a 7 etapas (checkout, onboarding). O estado de cada `Step` vem do índice `current` do `Stepper`: os anteriores ficam concluídos, o atual fica ativo e os seguintes ficam pendentes.
+
+```tsx
+import { Stepper, Step } from '@innovui/react-native'
+
+<Stepper current={1}>
+  <Step>Carrinho</Step>
+  <Step>Entrega</Step>
+  <Step>Pagamento</Step>
+</Stepper>
+```
+
+O número de cada passo vem da posição, e os concluídos mostram um check. O `Stepper` só exibe o progresso: você controla `current` e o conteúdo de cada etapa.
+
+## Avançando
+
+```tsx
+const [etapa, setEtapa] = useState(0)
+
+<Stepper current={etapa}>…</Stepper>
+<Button onPress={() => setEtapa((e) => e + 1)}>Continuar</Button>
+```
+
+## Props
+
+### `Stepper`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `current` | `number` | n/a | **Obrigatória.** Índice (a partir de 0) do passo atual. |
+| `className` | `string` | n/a | Mesclado com `flex-row flex-wrap items-center gap-8`. |
+
+Aceita as demais props de `View`. Os passos quebram de linha quando não cabem.
+
+### `Step`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `ReactNode` | n/a | Rótulo do passo. Texto vira `Text` estilizado. |
+| `completedLabel` | `string` | `'concluído'` | Complemento lido em passos concluídos. |
+| `accessibilityLabel` | `string` | n/a | Substitui o rótulo acessível calculado. |
+| `className` | `string` | n/a | Mesclado com as classes internas via `tailwind-merge`. |
+
+Aceita as demais props de `View`.
+
+## Diferenças em relação à web
+
+- Não há `aria-current`: o passo ativo usa `accessibilityState={{ selected: true }}`.
+- O texto "concluído" vai em `accessibilityLabel` (`"Entrega (concluído)"`), já que não existe texto só para leitor de tela.
+- O rótulo acessível de passos concluídos só é montado quando `children` é texto. Com outro nó, passe `accessibilityLabel`.
+
+## Acessibilidade
+
+- Cada passo é um único elemento `accessible`; o círculo com o número ou o check fica oculto para o leitor de tela.
+- O passo ativo é anunciado como `selected`.
+- Passos concluídos são lidos como `"{rótulo} (concluído)"`. Traduza com `completedLabel`.
+
+### Quando usar
+
+Fluxos sequenciais curtos, em que a pessoa precisa saber em que etapa está.
+
+### Quando não usar
+
+Hierarquia de telas ([Breadcrumb](/react-native/components/breadcrumb/)), mais de 7 etapas, ou alternar entre seções ([Tabs](/react-native/components/tabs/)).

@@ -1,0 +1,66 @@
+---
+title: Switch
+description: Interruptor para ligar e desligar uma configuração com efeito imediato.
+---
+
+Interruptor com rótulo. A mudança vale na hora, sem botão de confirmar. Funciona controlado (`checked` e `onCheckedChange`) ou não controlado (`defaultChecked`). A transição do polegar é animada.
+
+```tsx
+import { useState } from 'react'
+import { Switch } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [notificacoes, setNotificacoes] = useState(true)
+
+  return (
+    <Switch
+      label="Receber notificações"
+      checked={notificacoes}
+      onCheckedChange={setNotificacoes}
+    />
+  )
+}
+```
+
+## Estados
+
+```tsx
+<Switch label="Desligado" />
+<Switch label="Ligado" defaultChecked />
+<Switch label="Desabilitado" disabled />
+<Switch label="Desabilitado ligado" disabled defaultChecked />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `ReactNode` | — | Rótulo. Uma `string` recebe o estilo padrão. |
+| `checked` | `boolean` | — | Estado controlado. Sem ele, o componente guarda o próprio estado. |
+| `defaultChecked` | `boolean` | `false` | Estado inicial no modo não controlado. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Chamado com o novo valor a cada toque. |
+| `disabled` | `boolean` | `false` | Desabilita o toque. |
+| `className` | `string` | — | Classes Uniwind da linha toda, mescladas via `tailwind-merge`. |
+
+Aceita também as demais props do `Pressable` (`accessibilityLabel`, `accessibilityHint`, `testID`...), exceto `style`, `children` e `onPress`.
+
+## Acessibilidade
+
+- Usa `accessibilityRole="switch"` com `accessibilityState.checked` e `disabled`.
+- A área de toque tem no mínimo 44px de altura e inclui o rótulo.
+- Se o `label` não for texto, passe `accessibilityLabel`.
+- A animação do polegar não respeita "reduzir movimento".
+
+## Diferenças em relação à web
+
+- `onChange` vira `onCheckedChange(boolean)`.
+- Não existe `name` nem envio de formulário.
+- Não existe hover nem foco por teclado.
+
+### Quando usar
+
+Preferências e ajustes que valem imediatamente: notificações, modo escuro, sincronização.
+
+### Quando não usar
+
+Escolhas que só valem depois de enviar um formulário (use [Checkbox](/react-native/components/checkbox/)) e escolha entre mais de duas opções ([Radio](/react-native/components/radio/) ou [SegmentedControl](/react-native/components/segmented-control/)).

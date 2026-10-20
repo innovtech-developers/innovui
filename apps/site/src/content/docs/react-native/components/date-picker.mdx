@@ -1,0 +1,83 @@
+---
+title: DatePicker
+description: Campo de data que abre um calendário para escolher um dia.
+---
+
+Campo de data: um gatilho com visual de Input que mostra o dia escolhido (formato `dd/mm/aaaa`) e abre um [Calendar](/react-native/components/calendar/) em um painel modal centralizado. Ao escolher um dia, o painel fecha. Para um período, use o [DateRangePicker](/react-native/components/date-range-picker/).
+
+```tsx
+import { useState } from 'react'
+import { DatePicker } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [nascimento, setNascimento] = useState<Date>()
+
+  return (
+    <DatePicker
+      accessibilityLabel="Data de nascimento"
+      value={nascimento}
+      onValueChange={setNascimento}
+      maxDate={new Date()}
+    />
+  )
+}
+```
+
+## Com Field
+
+```tsx
+<Field label="Data de entrega" supportingText="Somente dias úteis." required>
+  <DatePicker minDate={new Date()} weekStartsOn={1} />
+</Field>
+```
+
+## Estados
+
+```tsx
+<DatePicker size="sm" accessibilityLabel="Pequeno" />
+<DatePicker error accessibilityLabel="Com erro" />
+<DatePicker disabled accessibilityLabel="Desabilitado" />
+<DatePicker readOnly defaultValue={new Date(2026, 3, 15)} accessibilityLabel="Somente leitura" />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `Date` | — | Dia selecionado (controlado). |
+| `defaultValue` | `Date` | — | Dia inicial no modo não controlado. |
+| `onValueChange` | `(date: Date) => void` | — | Chamado com o dia escolhido. |
+| `placeholder` | `string` | `'dd/mm/aaaa'` | Texto do gatilho sem valor. |
+| `minDate` | `Date` | — | Primeiro dia que pode ser escolhido. |
+| `maxDate` | `Date` | — | Último dia que pode ser escolhido. |
+| `locale` | `string` | `'pt-BR'` | Idioma do calendário e formato do texto do gatilho. |
+| `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana (0 = domingo). |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do gatilho. |
+| `error` | `boolean` | — | Borda em vermelho. |
+| `disabled` | `boolean` | — | Desabilita o gatilho. |
+| `readOnly` | `boolean` | — | Mostra a data sem deixar trocar. |
+| `className` | `string` | — | Classes Uniwind do gatilho. |
+| `accessibilityLabel` | `string` | — | Nome acessível do gatilho. |
+| `accessibilityHint` | `string` | — | Dica anunciada pelo gatilho. |
+| `testID` | `string` | — | Identificador de teste; o painel recebe `${testID}-sheet`. |
+
+## Acessibilidade
+
+- O gatilho usa `accessibilityRole="combobox"` com `accessibilityState.expanded` e `disabled`.
+- O calendário segue as regras do [Calendar](/react-native/components/calendar/): dias com data completa por extenso, título do mês anunciado e setas com rótulo.
+- Fechar: toque no fundo ou use o gesto de voltar do Android.
+- Dê um nome ao gatilho com `accessibilityLabel` (o [Field](/react-native/components/field/) faz isso).
+
+## Diferenças em relação à web
+
+- O calendário abre em um `Modal` nativo centralizado, com fundo escurecido, em vez de uma camada ancorada ao campo.
+- Não dá para digitar a data; só escolher no calendário.
+- Sem navegação por teclado.
+
+### Quando usar
+
+Escolher uma data em formulários: nascimento, vencimento, agendamento.
+
+### Quando não usar
+
+Períodos ([DateRangePicker](/react-native/components/date-range-picker/)) e calendários sempre visíveis na tela ([Calendar](/react-native/components/calendar/)).

@@ -1,0 +1,89 @@
+---
+title: Drawer
+description: Painel que desliza a partir da borda da tela, com cabeçalho, corpo e rodapé.
+---
+
+Painel **colado a uma borda da tela**, que desliza ao abrir e ao fechar sobre um backdrop. Serve para filtros, detalhes e formulários que não justificam uma tela própria. Usa o `Modal` nativo do React Native.
+
+```tsx
+import { Drawer, DrawerClose, Button } from '@innovui/react-native'
+
+<Drawer
+  title="Filtros"
+  trigger={<Button variant="secondary">Filtrar</Button>}
+  footer={
+    <>
+      <DrawerClose>
+        <Button variant="ghost">Cancelar</Button>
+      </DrawerClose>
+      <Button onPress={aplicar}>Aplicar</Button>
+    </>
+  }
+>
+  …
+</Drawer>
+```
+
+O `trigger` recebe `onPress` por clonagem. Para fechar a partir do rodapé, envolva o botão em `DrawerClose`.
+
+## Lados
+
+```tsx
+<Drawer side="bottom" title="Compartilhar" trigger={<Button>Abrir</Button>}>…</Drawer>
+```
+
+| `side` | Comportamento |
+|---|---|
+| `right` (padrão) | Largura de 85% da tela, até 400, com altura total. |
+| `left` | Igual, na borda esquerda. |
+| `top` | Largura total, altura de até 80% da tela. |
+| `bottom` | Largura total, altura de até 80% da tela. |
+
+A animação dura 250 ms.
+
+## Controlado
+
+```tsx
+const [open, setOpen] = useState(false)
+
+<Drawer open={open} onOpenChange={setOpen} title="Detalhes">…</Drawer>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `ReactNode` | n/a | **Obrigatória.** Título do painel. |
+| `children` | `ReactNode` | n/a | **Obrigatória.** O corpo do painel (rola se for alto). |
+| `footer` | `ReactNode` | n/a | Ações do rodapé. Sem ele, não há rodapé. |
+| `trigger` | `ReactNode` | n/a | Elemento que abre o painel; recebe `onPress`. Dispensável no modo controlado. |
+| `side` | `'right' \| 'left' \| 'top' \| 'bottom'` | `'right'` | Borda de onde o painel desliza. |
+| `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
+| `open` | `boolean` | n/a | Estado de abertura (modo controlado). |
+| `defaultOpen` | `boolean` | `false` | Abertura inicial (modo não controlado). |
+| `onOpenChange` | `(open: boolean) => void` | n/a | Chamado ao abrir ou fechar. |
+| `className` | `string` | n/a | Mesclado com as classes do painel via `tailwind-merge`. |
+| `testID` | `string` | n/a | O backdrop recebe `{testID}-backdrop`. |
+
+`DrawerClose` recebe só `children`. O botão × do cabeçalho é sempre exibido, e não há `size`.
+
+## Diferenças em relação à web
+
+- Sem `asChild`: o `trigger` e o filho de `DrawerClose` recebem `onPress`.
+- Sem foco preso, sem `Esc` e sem devolução de foco. O botão voltar do Android e o toque no backdrop fecham o painel.
+- Sem blur no backdrop.
+- Fica acima do [Toast](/react-native/components/toast/), porque é uma janela nativa.
+
+## Acessibilidade
+
+- O contêiner usa `accessibilityViewIsModal`, mantendo o leitor de tela dentro do painel no iOS.
+- O título tem `accessibilityRole="header"`; o botão × tem `accessibilityRole="button"` e `accessibilityLabel` (`closeLabel`).
+- O `Modal` permanece montado durante a animação de saída.
+
+### Quando usar
+
+Filtros, detalhes de um item e formulários curtos que complementam a tela atual.
+
+### Quando não usar
+
+Confirmações que exigem atenção imediata ([Modal](/react-native/components/modal/)) e conteúdo pequeno e contextual ([Popover](/react-native/components/popover/)).

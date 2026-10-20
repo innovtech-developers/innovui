@@ -25,7 +25,7 @@ Funciona em qualquer projeto React 19+, incluindo Server Components do Next.js (
 ## Monorepo
 
 ```
-apps/site       → landing page + documentação (Astro + Starlight)
+apps/site       → landing page + documentação (Astro + Starlight) (pnpm site)
 apps/expo       → app Expo para testar @innovui/react-native (pnpm expo)
 packages/react         → @innovui/react
 packages/react-native  → @innovui/react-native (Uniwind)

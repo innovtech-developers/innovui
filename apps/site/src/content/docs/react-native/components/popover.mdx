@@ -1,0 +1,72 @@
+---
+title: Popover
+description: Painel flutuante ancorado a um gatilho, aberto por toque.
+---
+
+Painel **flutuante, ancorado ao gatilho**, aberto por toque. Diferente do [Tooltip](/react-native/components/tooltip/), o conteúdo pode ter elementos interativos. Tocar fora ou usar o botão voltar do Android fecha.
+
+```tsx
+import { Popover, PopoverClose, Button } from '@innovui/react-native'
+import { Text } from 'react-native'
+
+<Popover label="Detalhes do plano" trigger={<Button variant="tertiary">Ver detalhes</Button>}>
+  <Text className="text-sm text-text-primary">Renova em 12/11. Cancele quando quiser.</Text>
+  <PopoverClose>
+    <Button variant="ghost">Entendi</Button>
+  </PopoverClose>
+</Popover>
+```
+
+O `trigger` recebe `onPress` por clonagem e alterna o popover. `trigger` e `label` são obrigatórios. `PopoverClose` fecha o popover ao pressionar o elemento que envolve.
+
+## Posição
+
+```tsx
+<Popover side="top" label="Filtros" trigger={…}>…</Popover>
+```
+
+O painel abre abaixo (`bottom`, padrão) ou acima (`top`) do gatilho, a 8 de distância, e inverte quando não cabe. Ele alinha à esquerda do gatilho e é limitado a `max-w-xs`.
+
+## Controlado
+
+```tsx
+const [open, setOpen] = useState(false)
+
+<Popover open={open} onOpenChange={setOpen} label="Filtros" trigger={…}>…</Popover>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `trigger` | `ReactNode` | n/a | **Obrigatória.** Elemento que alterna o popover; recebe `onPress`. |
+| `label` | `string` | n/a | **Obrigatória.** Nome acessível do painel, ex.: "Filtros". |
+| `children` | `ReactNode` | n/a | **Obrigatória.** Conteúdo do popover. |
+| `side` | `'top' \| 'bottom'` | `'bottom'` | Lado do gatilho; inverte se não couber. |
+| `open` | `boolean` | n/a | Estado de abertura (modo controlado). |
+| `defaultOpen` | `boolean` | `false` | Abertura inicial (modo não controlado). |
+| `onOpenChange` | `(open: boolean) => void` | n/a | Chamado ao abrir ou fechar. |
+| `className` | `string` | n/a | Mesclado com as classes do painel via `tailwind-merge`. |
+| `testID` | `string` | n/a | O fundo que captura o toque fora recebe `{testID}-backdrop`. |
+
+## Diferenças em relação à web
+
+- Sem `align` (o painel alinha à esquerda do gatilho) e sem os lados `left` e `right`.
+- Sem devolução de foco ao gatilho.
+- Usa o `Modal` nativo, então fica acima do [Toast](/react-native/components/toast/).
+- O overlay ancorado não considera o teclado: se ele abrir, o painel pode ficar coberto.
+- No Android, `shadow-*` não gera `elevation`, e a sombra pode não aparecer.
+
+## Acessibilidade
+
+- O painel é uma `View` com `accessibilityLabel` (`label`) e `accessibilityViewIsModal`.
+- Tocar no fundo ou o botão voltar do Android (`onRequestClose`) fecha o popover.
+- Dê um `label` que descreva o conteúdo, não a ação.
+
+### Quando usar
+
+Conteúdo extra que a pessoa abre sob demanda e que pode ter controles: filtros rápidos, detalhes, pequenos formulários.
+
+### Quando não usar
+
+Dicas curtas ([Tooltip](/react-native/components/tooltip/)), listas de ações ([Menu](/react-native/components/menu/)) e conteúdo que exige decisão ([Modal](/react-native/components/modal/)).

@@ -1,0 +1,87 @@
+---
+title: Table
+description: Tabela de dados com cabeçalho, linhas e células, que rola na horizontal.
+---
+
+Tabela para **dados estruturados**, montada com `View` e flexbox. Quando as colunas não cabem na tela, a tabela rola na horizontal, sem estourar o layout.
+
+```tsx
+import {
+  Table,
+  TableCaption,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@innovui/react-native'
+
+<Table>
+  <TableCaption>Pedidos recentes</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Pedido</TableHead>
+      <TableHead>Cliente</TableHead>
+      <TableHead>Total</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>#1024</TableCell>
+      <TableCell>Ana Souza</TableCell>
+      <TableCell>R$ 149,90</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>#1025</TableCell>
+      <TableCell>Bruno Lima</TableCell>
+      <TableCell>R$ 89,00</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+`TableHead` e `TableCell` aceitam texto ou número (viram `Text` estilizado) ou qualquer outro nó, como um [Badge](/react-native/components/badge/) ou um [Button](/react-native/components/button/).
+
+## Largura das colunas
+
+O RN não tem colunas automáticas. Cada célula é `flex-1` com largura mínima de `min-w-24`. Para fixar a largura de uma coluna, passe a mesma `className` em **todas** as células dela (cabeçalho e corpo):
+
+```tsx
+<TableHead className="w-40 flex-none">Cliente</TableHead>
+…
+<TableCell className="w-40 flex-none">Ana Souza</TableCell>
+```
+
+## Partes
+
+| Parte | Descrição |
+|---|---|
+| `Table` | Container. É um `ScrollView` horizontal com uma `View` de `role="grid"`. |
+| `TableCaption` | Nome e descrição da tabela. Texto vira `Text` estilizado. |
+| `TableHeader` | Agrupa a linha de cabeçalho (fundo `bg-secondary`). |
+| `TableBody` | Agrupa as linhas de dados. |
+| `TableRow` | Uma linha (`flex-row`, com divisor inferior). |
+| `TableHead` | Célula de cabeçalho (`accessibilityRole="header"`). |
+| `TableCell` | Célula de dados. |
+
+Todas aceitam `className` e as props de `View`. Em `TableCaption`, `TableHead` e `TableCell`, `children` é `ReactNode`.
+
+## Diferenças em relação à web
+
+- Sem CSS grid nem `<table>`: as células são `View` com flexbox, e a largura das colunas depende de `className` (veja acima).
+- Não há `aria-sort`: indique a ordenação no próprio conteúdo do `TableHead`, por exemplo com um ícone e texto.
+- Para muitas linhas, a tabela não virtualiza. Pagine com [Pagination](/react-native/components/pagination/) ou use `FlatList`.
+
+## Acessibilidade
+
+- A tabela usa `role="grid"`, e cada `TableHead` é `accessible` com `accessibilityRole="header"`.
+- Dê um nome à tabela com `TableCaption` ou `accessibilityLabel` em `Table`.
+- Os leitores de tela do RN não anunciam linhas e colunas como na web: mantenha o conteúdo de cada célula compreensível sozinho.
+
+### Quando usar
+
+Dados comparáveis em várias colunas, em que a pessoa precisa varrer linhas.
+
+### Quando não usar
+
+Listas simples de itens ([List](/react-native/components/list/)) ou conteúdo que cabe melhor em cartões ([Card](/react-native/components/card/)) em telas estreitas.

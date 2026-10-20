@@ -1,0 +1,79 @@
+---
+title: Field
+description: Combina rótulo, controle e texto de apoio em um campo de formulário.
+---
+
+O jeito certo de montar um campo de formulário: junta o rótulo, o controle ([Input](/react-native/components/input/), [Textarea](/react-native/components/textarea/), [Select](/react-native/components/select/), [Combobox](/react-native/components/combobox/), [DatePicker](/react-native/components/date-picker/)...) e o texto de apoio ou de erro.
+
+```tsx
+import { Field, Input } from '@innovui/react-native'
+
+<Field label="E-mail" supportingText="Usaremos para enviar o recibo.">
+  <Input placeholder="voce@empresa.com" keyboardType="email-address" />
+</Field>
+```
+
+## Obrigatório
+
+```tsx
+<Field label="Nome" required>
+  <Input placeholder="Seu nome" />
+</Field>
+```
+
+O asterisco vermelho é decorativo e fica escondido do leitor de tela.
+
+## Erro
+
+```tsx
+<Field label="E-mail" error supportingText="Informe um e-mail válido.">
+  <Input defaultValue="email@invalido" />
+</Field>
+```
+
+Com `error`, o rótulo, a borda do controle e o texto de apoio ficam vermelhos, um ícone de erro aparece ao lado da mensagem e ela é anunciada assim que surge.
+
+## O que o Field repassa ao controle
+
+O Field clona o controle e define `disabled`, `readOnly`, `size`, `error`, `accessibilityLabel` e `accessibilityHint`. Valores definidos no próprio Field têm prioridade; se o Field não define, vale o do controle.
+
+```tsx
+<Field label="Observações" size="sm" disabled>
+  <Textarea placeholder="Sem observações" />
+</Field>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `string` | — | Texto do rótulo (obrigatório). Também vira o `accessibilityLabel` do controle, se ele não tiver um. |
+| `required` | `boolean` | `false` | Mostra um asterisco vermelho após o rótulo. |
+| `error` | `boolean` | — | Propaga vermelho para rótulo, controle e texto de apoio. |
+| `disabled` | `boolean` | — | Propaga ao controle. |
+| `readOnly` | `boolean` | — | Propaga somente leitura ao controle. |
+| `size` | `'sm' \| 'md' \| 'lg'` | — | Tamanho do rótulo e do controle (no `sm` o rótulo tem 12px). |
+| `supportingText` | `ReactNode` | — | Instrução (estado normal) ou mensagem de erro (com `error`). |
+| `children` | `ReactElement` | — | O controle, um único elemento que aceite `disabled`, `readOnly`, `size`, `error`, `accessibilityLabel` e `accessibilityHint`. |
+| `className` | `string` | — | Classes Uniwind do contêiner, mescladas via `tailwind-merge`. |
+
+## Acessibilidade
+
+- Não há `htmlFor` no native: o rótulo vira o `accessibilityLabel` do controle (a menos que ele já tenha um).
+- Se `supportingText` for uma `string`, ela vira o `accessibilityHint` do controle.
+- Com `error`, a região do texto de apoio usa `accessibilityLiveRegion="polite"` (Android), então a mensagem é anunciada quando aparece.
+- O erro nunca depende só da cor: há ícone e texto.
+
+## Diferenças em relação à web
+
+- `label` é `string` (a web aceita `ReactNode`), porque o texto não herda estilo no React Native.
+- A associação rótulo/controle é por `accessibilityLabel` e `accessibilityHint`, não por `id`, `htmlFor` e `aria-describedby`.
+- Não funciona com [Checkbox](/react-native/components/checkbox/), [Radio](/react-native/components/radio/) e [Switch](/react-native/components/switch/): eles têm o próprio `label`.
+
+### Quando usar
+
+Qualquer campo de formulário que precise de rótulo, ajuda ou mensagem de erro.
+
+### Quando não usar
+
+Controles de seleção com rótulo próprio (Checkbox, Radio, Switch) e [Slider](/react-native/components/slider/).

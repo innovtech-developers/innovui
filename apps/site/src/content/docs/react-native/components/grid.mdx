@@ -1,0 +1,74 @@
+---
+title: Grid
+description: Grid de colunas iguais, com células que ocupam várias colunas.
+---
+
+Grid de colunas iguais. O pacote exporta `Grid` e `GridItem`.
+
+```tsx
+import { Grid, GridItem } from '@innovui/react-native'
+
+<Grid columns={2} gap={4}>
+  <GridItem><Card>{/* ... */}</Card></GridItem>
+  <GridItem><Card>{/* ... */}</Card></GridItem>
+  <GridItem span="full"><Card>{/* ... */}</Card></GridItem>
+</Grid>
+```
+
+## Colunas
+
+`columns` aceita `1`, `2`, `3`, `4`, `6`, `12` ou `'responsive'` (padrão).
+
+No modo `responsive`, o número de colunas segue a largura da janela: 4 colunas, 8 a partir de 768 e 12 a partir de 1440.
+
+```tsx
+<Grid>
+  <GridItem span={4}>{/* ... */}</GridItem>
+  <GridItem span={4}>{/* ... */}</GridItem>
+</Grid>
+```
+
+## Espaçamento
+
+`gap` usa a escala do design system (`0`, `1`, `2`, `3`, `4`, `6`, `8`; pontos = valor x 4). O padrão é `4`.
+
+## Props
+
+### Grid
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `columns` | `'responsive' \| 1 \| 2 \| 3 \| 4 \| 6 \| 12` | `'responsive'` | Número de colunas. |
+| `gap` | `0 \| 1 \| 2 \| 3 \| 4 \| 6 \| 8` | `4` | Espaçamento entre células. |
+| `children` | `ReactNode` | n/d | Os `GridItem`. |
+| `className` | `string` | n/d | Classes Uniwind. |
+
+Aceita também as demais props de `View`.
+
+### GridItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `span` | `1 \| 2 \| 3 \| 4 \| 6 \| 8 \| 12 \| 'full'` | `1` | Colunas que a célula ocupa. `'full'` ocupa a linha toda. Limitado ao total atual de colunas. |
+| `className` | `string` | n/d | Classes Uniwind. |
+
+Aceita também as demais props de `View`. O `style` do `GridItem` é mesclado após a largura calculada.
+
+## Acessibilidade
+
+O Grid é só layout e não define role. A ordem de leitura é a ordem dos `GridItem`.
+
+### Quando usar
+
+Painéis de cards e layouts em colunas que se adaptam à largura da janela.
+
+### Quando não usar
+
+Layouts de uma só direção (use [Stack](/react-native/components/stack/)) e dados tabulares (use [Table](/react-native/components/table/)).
+
+## Diferenças em relação à web
+
+- Não existe CSS grid no React Native: o Grid usa flexbox com `flex-wrap`, e a largura de cada `GridItem` é calculada a partir da largura medida do Grid (`onLayout`).
+- Antes da primeira medição, as células usam porcentagem sem descontar o `gap`; depois do layout, o valor é exato.
+- No modo `responsive`, as colunas dependem da largura da janela (`useWindowDimensions`), não do Grid.
+- Não há `rows` nem posicionamento por linha.

@@ -1,0 +1,61 @@
+---
+title: Avatar
+description: Imagem circular de uma pessoa ou entidade, com iniciais como fallback.
+---
+
+Imagem circular de uma pessoa ou entidade. Se a imagem faltar ou falhar ao carregar, mostra as iniciais do `name`.
+
+```tsx
+import { Avatar } from '@innovui/react-native'
+
+<Avatar name="Ana Souza" src="https://exemplo.com/ana.jpg" />
+```
+
+## Iniciais
+
+```tsx
+<Avatar name="Ana Souza" />   {/* AS */}
+<Avatar name="Madonna" />     {/* M */}
+```
+
+As iniciais são a primeira letra da primeira e da última palavra do nome, em maiúsculas.
+
+## Tamanhos
+
+```tsx
+<Avatar name="Ana Souza" size="sm" />
+<Avatar name="Ana Souza" size="md" />
+<Avatar name="Ana Souza" size="lg" />
+```
+
+Os diâmetros são 32, 40 e 56 pontos.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `name` | `string` | n/d | Obrigatório. Gera as iniciais do fallback e o nome acessível. |
+| `src` | `string` | n/d | URL da imagem. Se faltar ou falhar, usa as iniciais. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do avatar. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`, exceto `children`.
+
+## Acessibilidade
+
+- O Avatar é um único elemento (`accessible`) com `accessibilityRole="image"` e `accessibilityLabel` igual a `name`.
+- As iniciais não são lidas separadamente.
+- Você pode sobrescrever o rótulo com `accessibilityLabel`.
+
+### Quando usar
+
+Identificar quem fez algo ou a quem um item pertence: listas, comentários, perfis.
+
+### Quando não usar
+
+Para imagens de conteúdo (use `Image`) e ícones decorativos.
+
+## Diferenças em relação à web
+
+- A imagem usa o `Image` do React Native (`resizeMode="cover"`); não há `alt`, o nome acessível vem de `name`.
+- Se a URL mudar depois de uma falha, o Avatar tenta carregar a nova.

@@ -1,0 +1,91 @@
+---
+title: Slider
+description: Escolhe um número, ou um intervalo, arrastando a alça.
+---
+
+Escolhe um valor numérico (ou um intervalo, com dois valores) arrastando a alça ou tocando na barra. Foi reimplementado em React Native puro, sem dependência nativa. `value` e `defaultValue` são sempre listas de números.
+
+```tsx
+import { useState } from 'react'
+import { Slider } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [volume, setVolume] = useState([40])
+
+  return (
+    <Slider
+      accessibilityLabel="Volume"
+      value={volume}
+      onValueChange={setVolume}
+    />
+  )
+}
+```
+
+## Intervalo
+
+Passe dois valores para ter duas alças. Uma alça não ultrapassa a vizinha.
+
+```tsx
+const [preco, setPreco] = useState([20, 80])
+
+<Slider
+  accessibilityLabel="Faixa de preço"
+  thumbLabels={['Preço mínimo', 'Preço máximo']}
+  value={preco}
+  onValueChange={setPreco}
+  min={0}
+  max={200}
+  step={10}
+/>
+```
+
+## Confirmar ao soltar
+
+`onValueChange` dispara durante o arraste. Use `onValueCommit` para ações caras, como salvar ou buscar.
+
+```tsx
+<Slider
+  accessibilityLabel="Brilho"
+  defaultValue={[50]}
+  onValueCommit={(valor) => salvar(valor[0])}
+/>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `number[]` | — | Valor controlado: `[40]` para um valor, `[20, 80]` para um intervalo. |
+| `defaultValue` | `number[]` | `[min]` | Valor inicial no modo não controlado. |
+| `min` | `number` | `0` | Valor mínimo. |
+| `max` | `number` | `100` | Valor máximo. |
+| `step` | `number` | `1` | Passo entre valores. |
+| `disabled` | `boolean` | `false` | Desabilita o arraste e as ações de acessibilidade. |
+| `onValueChange` | `(value: number[]) => void` | — | Chamado a cada mudança, durante o arraste. |
+| `onValueCommit` | `(value: number[]) => void` | — | Chamado ao soltar a alça, ou após uma ação de acessibilidade. |
+| `thumbLabels` | `string[]` | — | Nome acessível de cada alça, na ordem. Sem ele, usa `accessibilityLabel` (com o número, se houver várias alças). |
+| `className` | `string` | — | Classes Uniwind do contêiner, mescladas via `tailwind-merge`. |
+
+Aceita também as demais props de `View` (`accessibilityLabel`, `testID`...), exceto `style` e `children`.
+
+## Acessibilidade
+
+- Cada alça é um elemento `accessibilityRole="adjustable"`, com `accessibilityValue` (`min`, `max`, `now`) e as ações `increment` e `decrement`. O leitor de tela ajusta o valor deslizando para cima ou para baixo, em vez das setas do teclado.
+- Dê um nome com `accessibilityLabel`; em intervalos, use `thumbLabels` para nomear cada alça.
+- `disabled` é anunciado por `accessibilityState.disabled`.
+- A área de toque tem 44px de altura.
+
+## Diferenças em relação à web
+
+- Não usa Radix: `value` e `defaultValue` são `number[]` e existe `onValueCommit`.
+- Só existe a orientação horizontal.
+- Não existe foco por teclado: o ajuste fino por acessibilidade usa as ações `increment` e `decrement`.
+
+### Quando usar
+
+Valores contínuos ou numéricos em que a precisão exata não importa: volume, brilho, faixa de preço.
+
+### Quando não usar
+
+Quando o número exato importa (use [Input](/react-native/components/input/)) ou para poucas opções fixas ([SegmentedControl](/react-native/components/segmented-control/)).
