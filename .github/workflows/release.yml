@@ -47,9 +47,18 @@ jobs:
       # Quando esse PR é mergeado (sem changesets pendentes), publica no npm só os pacotes cuja
       # versão ainda não existe lá (o Changesets compara com o registro) e só compila `packages/*`.
       - uses: changesets/action@v1
+        id: changesets
         with:
           version: pnpm run version
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      # Sem changesets pendentes é a rodada de publicação: cria a tag e o GitHub Release de cada
+      # pacote que acabou de ser publicado (ver o script, que explica por que não é a action).
+      - name: GitHub Release
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: .github/scripts/github-release.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
