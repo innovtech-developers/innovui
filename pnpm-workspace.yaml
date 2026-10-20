@@ -5,5 +5,6 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   lefthook: true
+  unrs-resolver: false
 minimumReleaseAgeExclude:
   - '@astrojs/starlight@0.42.5'

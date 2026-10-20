@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@innovui/react-native": ["../../packages/react-native/src/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "css.d.ts", "uniwind-types.d.ts"]
+}

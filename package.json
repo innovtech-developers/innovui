@@ -8,6 +8,9 @@
   },
   "scripts": {
     "dev": "pnpm -r --parallel dev",
+    "expo": "pnpm --filter innovui-expo start",
+    "expo:ios": "pnpm --filter innovui-expo ios",
+    "expo:android": "pnpm --filter innovui-expo android",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "test:coverage": "pnpm -r test:coverage",

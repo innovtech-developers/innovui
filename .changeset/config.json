@@ -5,5 +5,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["site"]
+  "ignore": ["site", "innovui-expo"]
 }
