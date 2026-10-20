@@ -1,0 +1,93 @@
+---
+title: Modal
+description: Diálogo que bloqueia o conteúdo de trás, com backdrop, cabeçalho, corpo e rodapé.
+---
+
+Diálogo que **bloqueia a interação** com o conteúdo de trás, sobre um backdrop que o escurece. Tem cabeçalho (título e botão de fechar), corpo com rolagem e um rodapé opcional com as ações. Usa o `Modal` nativo do React Native.
+
+```tsx
+import { Modal, ModalClose, Button } from '@innovui/react-native'
+
+<Modal
+  title="Excluir projeto"
+  trigger={<Button>Abrir modal</Button>}
+  footer={
+    <>
+      <ModalClose>
+        <Button variant="ghost">Cancelar</Button>
+      </ModalClose>
+      <Button variant="destructive" onPress={handleDelete}>Excluir</Button>
+    </>
+  }
+>
+  Tem certeza de que quer excluir este projeto?
+</Modal>
+```
+
+O `trigger` recebe `onPress` por clonagem, então precisa ser um elemento que aceite essa prop (como o `Button`). Para fechar a partir do rodapé, envolva o botão em `ModalClose`, que injeta o `onPress` de fechar e preserva o seu. Ações: primária à direita, secundária à esquerda dela.
+
+Quando `children` é texto, ele vira um `Text` estilizado. Para outros conteúdos, você estiliza o texto por conta própria.
+
+## Controlado e tamanhos
+
+```tsx
+const [open, setOpen] = useState(false)
+
+<>
+  <Button onPress={() => setOpen(true)}>Convidar</Button>
+  <Modal open={open} onOpenChange={setOpen} size="md" title="Convidar pessoas">
+    …
+  </Modal>
+</>
+```
+
+| `size` | Largura máxima |
+|---|---|
+| `sm` (padrão) | 480 |
+| `md` | 640 |
+| `lg` | 800 |
+
+Em telas estreitas o modal ocupa a largura disponível, com 16 de margem, e o corpo rola se o conteúdo for alto.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `ReactNode` | n/a | **Obrigatória.** Título do diálogo. |
+| `children` | `ReactNode` | n/a | **Obrigatória.** O corpo do diálogo. |
+| `footer` | `ReactNode` | n/a | Ações do rodapé. Sem ele, não há rodapé nem divisor. |
+| `trigger` | `ReactNode` | n/a | Elemento que abre o modal; recebe `onPress`. Dispensável no modo controlado. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Largura máxima. |
+| `showClose` | `boolean` | `true` | Mostra o botão × no cabeçalho. |
+| `showHeaderDivider` | `boolean` | `true` | Linha entre o cabeçalho e o corpo. |
+| `showFooterDivider` | `boolean` | `true` | Linha entre o corpo e o rodapé (só aparece com `footer`). |
+| `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
+| `open` | `boolean` | n/a | Estado de abertura (modo controlado). |
+| `defaultOpen` | `boolean` | `false` | Abertura inicial (modo não controlado). |
+| `onOpenChange` | `(open: boolean) => void` | n/a | Chamado ao abrir ou fechar. |
+| `className` | `string` | n/a | Mesclado com as classes do painel via `tailwind-merge`. |
+| `testID` | `string` | n/a | O backdrop recebe `{testID}-backdrop`. |
+
+`ModalClose` recebe só `children` (o elemento que fecha o modal ao ser pressionado).
+
+## Diferenças em relação à web
+
+- Sem `asChild`: o `trigger` e o filho de `ModalClose` recebem `onPress` por clonagem.
+- Sem foco preso, sem `Esc` e sem devolução de foco. O botão voltar do Android e o toque no backdrop fecham o modal.
+- Sem blur no backdrop.
+- Aparece acima de tudo, inclusive do [Toast](/react-native/components/toast/), porque é uma janela nativa.
+
+## Acessibilidade
+
+- O contêiner usa `accessibilityViewIsModal`, que mantém o leitor de tela dentro do diálogo no iOS.
+- O título tem `accessibilityRole="header"`. Não há `role="dialog"` nem `aria-describedby` no RN.
+- O botão × é um `Pressable` com `accessibilityRole="button"` e `accessibilityLabel` (`closeLabel`). Mantenha-o: é a saída óbvia para quem usa leitor de tela.
+- O backdrop fecha ao toque. O modal também fecha com `onRequestClose` (botão voltar do Android).
+
+### Quando usar
+
+Confirmações destrutivas, formulários curtos que não devem perder o contexto da tela e decisões que precisam de atenção imediata.
+
+### Quando não usar
+
+Mensagens que não bloqueiam o fluxo ([Alert](/react-native/components/alert/) ou [Toast](/react-native/components/toast/)), dicas ([Tooltip](/react-native/components/tooltip/)) e painéis laterais ([Drawer](/react-native/components/drawer/)).

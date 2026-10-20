@@ -1,0 +1,93 @@
+---
+title: DateRangePicker
+description: Campo de período que abre um calendário para escolher início e fim.
+---
+
+Campo de período: um gatilho com visual de Input que mostra o início e o fim (`dd/mm/aaaa – dd/mm/aaaa`) e abre um [Calendar](/react-native/components/calendar/) em modo `range` num painel modal. O painel fecha quando o período fica completo. Para um único dia, use o [DatePicker](/react-native/components/date-picker/).
+
+```tsx
+import { useState } from 'react'
+import { DateRangePicker, type DateRange } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [periodo, setPeriodo] = useState<DateRange>()
+
+  return (
+    <DateRangePicker
+      accessibilityLabel="Período do relatório"
+      value={periodo}
+      onValueChange={setPeriodo}
+    />
+  )
+}
+```
+
+`onValueChange` é chamado a cada toque: primeiro com só `from`, depois com `from` e `to`. Enquanto falta o fim, o gatilho mostra `…` no lugar dele.
+
+## Atalhos
+
+Com `presets`, uma linha de atalhos aparece acima do calendário. `true` usa os atalhos padrão de `getDatePresets()`: Hoje, Últimos 7 dias, Últimos 30 dias, Este mês e Mês passado. Escolher um atalho aplica o período e fecha o painel. Atalhos fora de `minDate` e `maxDate` ficam desabilitados.
+
+```tsx
+<DateRangePicker presets accessibilityLabel="Período" />
+```
+
+Para usar os seus, passe uma lista de `DatePreset`:
+
+```tsx
+import { DateRangePicker, getDatePresets, type DatePreset } from '@innovui/react-native'
+
+const hoje = new Date()
+const atalhos: DatePreset[] = [
+  ...getDatePresets(hoje).slice(1, 3),
+  {
+    label: 'Ano atual',
+    range: { from: new Date(hoje.getFullYear(), 0, 1), to: new Date(hoje.getFullYear(), 11, 31) },
+  },
+]
+
+<DateRangePicker presets={atalhos} accessibilityLabel="Período" />
+```
+
+## Props
+
+Além das props abaixo, aceita `minDate`, `maxDate`, `locale`, `weekStartsOn`, `size`, `error`, `disabled`, `readOnly`, `className`, `accessibilityLabel`, `accessibilityHint` e `testID`, iguais às do [DatePicker](/react-native/components/date-picker/).
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `DateRange` | — | Período escolhido (controlado). Sem `to`, só o início foi escolhido. |
+| `defaultValue` | `DateRange` | — | Período inicial no modo não controlado. |
+| `onValueChange` | `(range: DateRange) => void` | — | Chamado a cada toque, primeiro com o início e depois com o período completo. |
+| `placeholder` | `string` | `'dd/mm/aaaa – dd/mm/aaaa'` | Texto do gatilho sem valor. |
+| `presets` | `boolean \| DatePreset[]` | — | Atalhos de período acima do calendário. |
+| `minDate` | `Date` | — | Primeiro dia que pode ser escolhido. |
+| `maxDate` | `Date` | — | Último dia que pode ser escolhido. |
+| `locale` | `string` | `'pt-BR'` | Idioma do calendário e formato das datas. |
+| `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana (0 = domingo). |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do gatilho. |
+| `error` | `boolean` | — | Borda em vermelho. |
+| `disabled` | `boolean` | — | Desabilita o gatilho. |
+| `readOnly` | `boolean` | — | Mostra o período sem deixar trocar. |
+
+`DateRange` é `{ from?: Date; to?: Date }` e `DatePreset` é `{ label: string; range: { from: Date; to: Date } }`.
+
+## Acessibilidade
+
+- O gatilho usa `accessibilityRole="combobox"` com `accessibilityState.expanded` e `disabled`.
+- O calendário segue as regras do [Calendar](/react-native/components/calendar/).
+- Os atalhos são botões; o que corresponde ao período atual fica com `accessibilityState.selected`, e os fora dos limites ficam desabilitados.
+- Dê um nome ao gatilho com `accessibilityLabel` (o [Field](/react-native/components/field/) faz isso).
+
+## Diferenças em relação à web
+
+- O calendário abre em um `Modal` nativo centralizado, e os atalhos ficam numa linha que quebra acima dele, sem coluna lateral.
+- Mostra um mês por vez.
+- Não dá para digitar as datas; sem navegação por teclado.
+
+### Quando usar
+
+Filtrar por período: relatórios, extratos, reservas.
+
+### Quando não usar
+
+Uma data só ([DatePicker](/react-native/components/date-picker/)).

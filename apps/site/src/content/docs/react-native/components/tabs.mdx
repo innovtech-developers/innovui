@@ -1,0 +1,103 @@
+---
+title: Tabs
+description: Abas para navegar entre seções diferentes de conteúdo.
+---
+
+Navegação horizontal para alternar entre **seções diferentes** de conteúdo, com indicador sublinhado na aba ativa. Para alternar entre views do mesmo conteúdo, use o [SegmentedControl](/react-native/components/segmented-control/).
+
+```tsx
+import { Text } from 'react-native'
+import { Tabs, TabList, Tab, TabPanel } from '@innovui/react-native'
+
+<Tabs defaultValue="geral">
+  <TabList accessibilityLabel="Configurações">
+    <Tab value="geral">Geral</Tab>
+    <Tab value="conta">Conta</Tab>
+    <Tab value="faturas" disabled>Faturas</Tab>
+  </TabList>
+  <TabPanel value="geral">
+    <Text>Preferências gerais.</Text>
+  </TabPanel>
+  <TabPanel value="conta">
+    <Text>Dados da conta.</Text>
+  </TabPanel>
+</Tabs>
+```
+
+É composto por quatro partes: `Tabs` (estado), `TabList` (a barra), `Tab` (cada aba) e `TabPanel` (o conteúdo de cada aba). O `value` do `Tab` liga a aba ao seu `TabPanel`. O `TabPanel` só é montado enquanto a aba dele está ativa.
+
+## Com ícone
+
+```tsx
+<Tab value="inicio" icon={<HomeIcon />}>Início</Tab>
+```
+
+O ícone fica à esquerda do rótulo, e deve ser um SVG de 24px.
+
+## Controlado
+
+```tsx
+const [tab, setTab] = useState('geral')
+
+<Tabs value={tab} onValueChange={setTab}>…</Tabs>
+```
+
+## Props
+
+### `Tabs`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | n/a | Aba ativa (modo controlado). |
+| `defaultValue` | `string` | n/a | Aba ativa inicial (modo não controlado). |
+| `onValueChange` | `(value: string) => void` | n/a | Chamado ao trocar de aba. |
+| `className` | `string` | n/a | Classes do container. |
+
+Aceita também as props de `View`. Não há `orientation`: as abas são sempre horizontais.
+
+### `TabList`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `className` | `string` | n/a | Mesclado com `grow-0`. |
+
+Aceita as props de `ScrollView`, exceto `horizontal` e `style`. Rola na horizontal quando as abas não cabem na tela.
+
+### `Tab`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | n/a | **Obrigatória.** Liga a aba ao `TabPanel` de mesmo `value`. |
+| `icon` | `ReactNode` | n/a | Ícone à esquerda do rótulo. |
+| `disabled` | `boolean` | n/a | Desabilita a aba. |
+| `onPress` | `(event) => void` | n/a | Chamado depois de a aba ser selecionada. |
+| `children` | `ReactNode` | n/a | Rótulo. Texto vira `Text` estilizado. |
+| `className` | `string` | n/a | Mesclado com as classes internas via `tailwind-merge`. |
+
+Aceita as demais props de `Pressable`, exceto `style`.
+
+### `TabPanel`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | n/a | **Obrigatória.** Aba à qual o painel pertence. |
+| `className` | `string` | n/a | Classes do painel. |
+
+## Diferenças em relação à web
+
+- Sem `orientation` e sem navegação por setas, `Home`/`End`: a troca é por toque.
+- A lista rola na horizontal em vez de quebrar quando há muitas abas.
+
+## Acessibilidade
+
+- `TabList` usa `accessibilityRole="tablist"` e cada `Tab` usa `accessibilityRole="tab"`, com `accessibilityState={{ selected, disabled }}`. O seu `accessibilityState` é mesclado.
+- O `TabPanel` é uma `View` simples, sem role: ele só existe quando está ativo.
+- Dê um nome à lista com `accessibilityLabel` no `TabList` quando houver mais de um conjunto de abas na tela.
+
+### Quando usar
+
+Navegação entre seções diferentes, quando o conteúdo muda por completo e a quantidade de abas varia.
+
+### Quando não usar
+
+Alternar entre views do mesmo conteúdo ([SegmentedControl](/react-native/components/segmented-control/)) ou navegar entre telas (use a navegação do seu app).

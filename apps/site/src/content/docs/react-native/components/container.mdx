@@ -1,0 +1,52 @@
+---
+title: Container
+description: Centraliza o conteúdo com largura máxima e margem lateral.
+---
+
+Centraliza o conteúdo com largura máxima e margem lateral: 16 pontos no celular e 24 pontos a partir de 768 de largura de janela.
+
+```tsx
+import { Container } from '@innovui/react-native'
+
+<Container>
+  <Text className="text-text-primary">Conteúdo da página</Text>
+</Container>
+```
+
+## Tamanhos
+
+```tsx
+<Container size="sm" />  {/* até 640 */}
+<Container size="md" />  {/* até 960 */}
+<Container size="lg" />  {/* até 1200 */}
+<Container size="xl" />  {/* até 1440 */}
+```
+
+Em telas de celular, a largura máxima raramente é atingida; ela importa em tablets e janelas largas.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'lg'` | Largura máxima: 640, 960, 1200 ou 1440 pontos. |
+| `children` | `ReactNode` | n/d | O conteúdo. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`.
+
+## Acessibilidade
+
+O Container é só layout e não define role.
+
+### Quando usar
+
+Limitar a largura de telas em tablets e janelas grandes, mantendo margem lateral.
+
+### Quando não usar
+
+Para espaçar elementos entre si (use [Stack](/react-native/components/stack/)).
+
+## Diferenças em relação à web
+
+- O breakpoint de 768 vem de `useWindowDimensions` (largura da janela), não de uma media query; o Container se atualiza ao girar o aparelho.
+- Não existe variante `tablet:` no Uniwind, por isso a margem não pode ser sobrescrita por breakpoint via `className`.

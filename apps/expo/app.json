@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "InnovUI",
+    "slug": "innovui-playground",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "br.com.innovui.playground"
+    },
+    "android": {
+      "package": "br.com.innovui.playground"
+    }
+  }
+}

@@ -2,8 +2,8 @@
 # "title" vira a aba do navegador como "{title} | InnovUI" (o nome do site, configurado em
 # astro.config.mjs) — repetir "InnovUI" aqui faria a aba mostrar "InnovUI | InnovUI". O
 # cabeçalho gigante do hero continua dizendo "InnovUI" via hero.title, como manda o brief.
-title: Componentes React do Comhub Design System
-description: Componentes React do design system da Comhub — tipados, acessíveis e com tema claro e escuro.
+title: Componentes React e React Native do Comhub Design System
+description: "Componentes React e React Native do design system da Comhub: tipados, acessíveis e com tema claro e escuro."
 template: splash
 tableOfContents: false
 pagefind: false
@@ -11,8 +11,8 @@ pagefind: false
 hero:
   title: InnovUI
   tagline: >-
-    Componentes React, tipados e acessíveis, montados a partir do design system real da Comhub —
-    não um mockup inspirado nele.
+    Componentes React e React Native, tipados e acessíveis, montados a partir do design system real
+    da Comhub, não um mockup inspirado nele.
 ---
 
 <section class="lp-fieldnotes" aria-label="Características">
@@ -62,10 +62,11 @@ hero:
       />
     </svg>
     <div>
-      <h2 class="lp-fieldnotes__title">Funciona com Server Components</h2>
+      <h2 class="lp-fieldnotes__title">Web e mobile, o mesmo sistema</h2>
       <p class="lp-fieldnotes__text">
-        <code>"use client"</code> correto em cada componente interativo — sem surpresas no App
-        Router do Next.js.
+        <code>@innovui/react</code> para Next.js e Vite, com <code>"use client"</code> correto nos
+        Server Components, e <code>@innovui/react-native</code> para Expo e React Native puro.
+        Mesmos componentes, mesmos tokens.
       </p>
     </div>
   </div>
@@ -97,8 +98,8 @@ hero:
     <div>
       <h2 class="lp-fieldnotes__title">Acessível por padrão</h2>
       <p class="lp-fieldnotes__text">
-        Navegação por teclado, foco visível e ARIA corretos, testados com <code>jest-axe</code> em
-        cada componente.
+        Na web, navegação por teclado, foco visível e ARIA, testados com <code>jest-axe</code>. No
+        React Native, roles e estados de acessibilidade nativos em cada componente.
       </p>
     </div>
   </div>
@@ -124,8 +125,8 @@ hero:
     <div>
       <h2 class="lp-fieldnotes__title">Fiel ao design system</h2>
       <p class="lp-fieldnotes__text">
-        Tokens de cor, tipografia, espaçamento, raio e sombra, em modo claro e escuro. Os
-        componentes só usam esses tokens, então o tema muda num lugar só.
+        Tokens de cor, tipografia, espaçamento, raio e sombra, em modo claro e escuro, nos dois
+        pacotes. Os componentes só usam esses tokens, então o tema muda num lugar só.
       </p>
     </div>
   </div>

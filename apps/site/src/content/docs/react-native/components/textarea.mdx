@@ -1,0 +1,73 @@
+---
+title: Textarea
+description: Campo de texto de várias linhas.
+---
+
+Campo de texto de várias linhas, feito sobre o `TextInput` com `multiline` ativo. Tem altura mínima de 120px e o texto começa no topo. Para formulários reais, envolva-o com o [Field](/react-native/components/field/).
+
+```tsx
+import { useState } from 'react'
+import { Textarea } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [mensagem, setMensagem] = useState('')
+
+  return (
+    <Textarea
+      placeholder="Escreva sua mensagem"
+      value={mensagem}
+      onChangeText={setMensagem}
+      accessibilityLabel="Mensagem"
+    />
+  )
+}
+```
+
+## Tamanhos
+
+```tsx
+<Textarea size="lg" placeholder="Large" accessibilityLabel="Large" />
+<Textarea size="md" placeholder="Medium" accessibilityLabel="Medium" />
+<Textarea size="sm" placeholder="Small" accessibilityLabel="Small" />
+```
+
+## Estados
+
+```tsx
+<Textarea placeholder="Default" accessibilityLabel="Default" />
+<Textarea defaultValue="Texto com problema" error accessibilityLabel="Mensagem" />
+<Textarea placeholder="Disabled" disabled accessibilityLabel="Desabilitado" />
+<Textarea defaultValue="Não editável" readOnly accessibilityLabel="Somente leitura" />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `size` | `'lg' \| 'md' \| 'sm'` | `'md'` | Tamanho do campo (muda o espaçamento interno e o corpo do texto). |
+| `error` | `boolean` | `false` | Borda e foco em vermelho. |
+| `disabled` | `boolean` | `false` | Desabilita a edição e aplica o visual de desabilitado. Marca `accessibilityState.disabled`. |
+| `readOnly` | `boolean` | `false` | Mostra o valor sem permitir edição. |
+| `className` | `string` | — | Classes Uniwind mescladas com as internas via `tailwind-merge`. |
+
+Aceita também as props do `TextInput` (`value`, `onChangeText`, `placeholder`, `numberOfLines`, `maxLength`, etc.), exceto `style`, `editable` e `multiline`.
+
+## Acessibilidade
+
+- Dê sempre um nome acessível com `accessibilityLabel` ou use o [Field](/react-native/components/field/).
+- `disabled` é anunciado por `accessibilityState.disabled`; outros valores de `accessibilityState` são preservados.
+- Contraste mínimo 4.5:1 entre texto e fundo.
+
+## Diferenças em relação à web
+
+- `onChange` vira `onChangeText`, e `aria-*` vira `accessibilityLabel`, `accessibilityHint` e `accessibilityState`.
+- Não há `rows` nem redimensionamento: a altura mínima é fixa e o campo cresce com o conteúdo.
+- Não existe hover nem foco por teclado.
+
+### Quando usar
+
+Comentários, descrições e mensagens de mais de uma linha.
+
+### Quando não usar
+
+Entradas curtas (use [Input](/react-native/components/input/)).

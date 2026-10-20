@@ -1,0 +1,56 @@
+---
+title: Skeleton
+description: Placeholder animado de conteúdo em carregamento.
+---
+
+Placeholder animado que ocupa o lugar do conteúdo enquanto ele carrega. Para ações pontuais, use o [Spinner](/react-native/components/spinner/).
+
+```tsx
+import { Skeleton, Stack } from '@innovui/react-native'
+
+<Stack gap={2} accessibilityState={{ busy: true }}>
+  <Skeleton variant="title" />
+  <Skeleton variant="text" className="w-full" />
+  <Skeleton variant="text" className="w-full" />
+</Stack>
+```
+
+## Variantes
+
+```tsx
+<Skeleton variant="text" />      {/* 200 x 12 */}
+<Skeleton variant="title" />     {/* 160 x 20 */}
+<Skeleton variant="avatar" />    {/* 40 x 40, redondo */}
+<Skeleton variant="card" />      {/* 300 x 120 */}
+<Skeleton variant="rectangle" /> {/* 200 x 24 */}
+```
+
+Sobrescreva as dimensões com `className` (por exemplo, `w-full`) para casar com o conteúdo real.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `variant` | `'text' \| 'title' \| 'avatar' \| 'card' \| 'rectangle'` | `'text'` | Formato e dimensões padrão. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas (útil para tamanho). |
+
+Aceita também as demais props de `View`, exceto `children`.
+
+## Acessibilidade
+
+- O Skeleton é decorativo e fica escondido do leitor de tela (`accessibilityElementsHidden` e `importantForAccessibility="no-hide-descendants"`).
+- Anuncie o carregamento no contêiner, com `accessibilityState={{ busy: true }}`, e remova-o quando o conteúdo chegar.
+- A pulsação não respeita "reduzir movimento".
+
+### Quando usar
+
+Carregar telas, listas e cartões cujo formato você já conhece.
+
+### Quando não usar
+
+Ações pontuais (use [Spinner](/react-native/components/spinner/)) ou quando o formato do conteúdo é desconhecido.
+
+## Diferenças em relação à web
+
+- A web respeita `motion-reduce`; no React Native a animação (`Animated`, driver nativo) sempre roda.
+- O estado de carregamento vai no contêiner por `accessibilityState`, não por `aria-busy`.

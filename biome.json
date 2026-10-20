@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/dist", "!**/coverage", "!**/.astro"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/coverage",
+      "!**/.astro",
+      "!**/tokens/generated.ts",
+      "!packages/react-native/theme.css"
+    ]
   },
   "formatter": {
     "enabled": true,

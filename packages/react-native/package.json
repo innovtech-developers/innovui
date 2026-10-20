@@ -1,0 +1,64 @@
+{
+  "name": "@innovui/react-native",
+  "version": "0.0.0",
+  "description": "Componentes React Native do design system InnovUI.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/innovtech-developers/innovui.git",
+    "directory": "packages/react-native"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "theme.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./theme.css": "./theme.css"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-native": ">=0.81.0",
+    "react-native-svg": ">=15.0.0",
+    "tailwindcss": ">=4",
+    "uniwind": ">=1.13.0"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "generate:tokens": "node scripts/generate-tokens.ts",
+    "test": "node scripts/generate-tokens.ts --check && jest",
+    "test:coverage": "node scripts/generate-tokens.ts --check && jest --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@react-native/babel-preset": "0.86.3",
+    "@react-native/jest-preset": "0.86.3",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "jest": "^30.5.2",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-svg": "15.15.4",
+    "react-test-renderer": "19.2.3",
+    "tailwindcss": "^4.3.3",
+    "tsdown": "^0.23.0",
+    "typescript": "^7.0.2",
+    "uniwind": "^1.13.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.7.0"
+  }
+}

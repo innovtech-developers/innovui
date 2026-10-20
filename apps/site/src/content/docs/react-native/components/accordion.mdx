@@ -1,0 +1,94 @@
+---
+title: Accordion
+description: Lista de seções que expandem e recolhem para mostrar ou esconder conteúdo.
+---
+
+Lista de seções que **expandem e recolhem**, para reduzir a rolagem quando há bastante conteúdo secundário (FAQ, configurações). Cada seção é um `AccordionItem` com um cabeçalho tocável.
+
+```tsx
+import { Accordion, AccordionItem } from '@innovui/react-native'
+
+<Accordion type="single" collapsible defaultValue="envio">
+  <AccordionItem value="envio" title="Como funciona o envio?">
+    Enviamos em até dois dias úteis.
+  </AccordionItem>
+  <AccordionItem value="troca" title="Posso trocar um produto?">
+    Sim, em até 30 dias após a entrega.
+  </AccordionItem>
+  <AccordionItem value="pagamento" title="Quais formas de pagamento?" disabled>
+    Cartão, Pix e boleto.
+  </AccordionItem>
+</Accordion>
+```
+
+O `type` é obrigatório. O `value` de cada `AccordionItem` identifica a seção em `value`, `defaultValue` e `onValueChange`.
+
+## Várias abertas
+
+```tsx
+<Accordion type="multiple" defaultValue={['envio', 'troca']}>
+  <AccordionItem value="envio" title="Envio">…</AccordionItem>
+  <AccordionItem value="troca" title="Troca">…</AccordionItem>
+</Accordion>
+```
+
+Com `type="multiple"`, `value` e `defaultValue` são `string[]`, e as seções podem ser fechadas livremente.
+
+## Controlado
+
+```tsx
+const [aberta, setAberta] = useState('envio')
+
+<Accordion type="single" collapsible value={aberta} onValueChange={setAberta}>
+  …
+</Accordion>
+```
+
+No modo `single`, `onValueChange` recebe o valor aberto, ou `''` quando tudo foi recolhido.
+
+## Props
+
+### `Accordion`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `type` | `'single' \| 'multiple'` | n/a | **Obrigatória.** `single` abre uma seção por vez; `multiple` permite várias. |
+| `collapsible` | `boolean` | `false` | Só com `type="single"`. Permite fechar a seção aberta. Em `multiple` é sempre possível fechar. |
+| `value` | `string` (`single`) ou `string[]` (`multiple`) | n/a | Seção(ões) aberta(s), no modo controlado. |
+| `defaultValue` | `string` (`single`) ou `string[]` (`multiple`) | n/a | Seção(ões) aberta(s) inicialmente, no modo não controlado. |
+| `onValueChange` | `(value: string) => void` (`single`) ou `(value: string[]) => void` (`multiple`) | n/a | Chamado ao abrir ou fechar uma seção. |
+| `className` | `string` | n/a | Mesclado com as classes internas via `tailwind-merge`. |
+
+Aceita também as props de `View`, exceto `children` tipado como `ReactNode`.
+
+### `AccordionItem`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | n/a | **Obrigatória.** Identifica a seção. |
+| `title` | `ReactNode` | n/a | **Obrigatória.** Cabeçalho. Texto vira `Text` estilizado; outros nós são renderizados como vieram. |
+| `disabled` | `boolean` | `false` | Desabilita o cabeçalho. |
+| `triggerProps` | `Omit<PressableProps, 'children' \| 'style' \| 'onPress' \| 'disabled'>` | n/a | Repassado ao botão do cabeçalho (`testID`, `accessibilityLabel`...). |
+| `children` | `ReactNode` | n/a | Conteúdo da seção. Texto vira `Text` estilizado. |
+| `className` | `string` | n/a | Mesclado com as classes do item. |
+
+O conteúdo só é montado enquanto a seção está aberta.
+
+## Diferenças em relação à web
+
+- A animação usa só `LayoutAnimation` (o layout se ajusta, sem fade nem altura medida) e não respeita "reduzir movimento".
+- No Android antigo o `LayoutAnimation` é habilitado pelo próprio componente.
+
+## Acessibilidade
+
+- O cabeçalho é um `Pressable` com `accessibilityRole="button"` e `accessibilityState={{ expanded, disabled }}`, então o leitor de tela anuncia se a seção está aberta.
+- Para nomear o botão de outra forma, passe `accessibilityLabel` em `triggerProps`.
+- Não há navegação por teclado (setas, `Home`/`End`): o toque é a interação.
+
+### Quando usar
+
+Conteúdo secundário que a maioria das pessoas não precisa ler inteiro: FAQ, detalhes de um pedido, grupos de configurações.
+
+### Quando não usar
+
+Conteúdo essencial que deve estar sempre visível, ou para alternar entre seções de mesma importância ([Tabs](/react-native/components/tabs/)).

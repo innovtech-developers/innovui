@@ -1,0 +1,95 @@
+---
+title: Input
+description: Campo de entrada de texto, o primitivo de formulário.
+---
+
+O campo de entrada de texto primitivo, feito sobre o `TextInput` do React Native. Para uso em formulários reais, prefira o [Field](/react-native/components/field/), que envolve o Input com rótulo e texto de apoio. Para texto em várias linhas, use o [Textarea](/react-native/components/textarea/).
+
+```tsx
+import { useState } from 'react'
+import { Input } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [email, setEmail] = useState('')
+
+  return (
+    <Input
+      placeholder="voce@empresa.com"
+      value={email}
+      onChangeText={setEmail}
+      keyboardType="email-address"
+      autoCapitalize="none"
+      accessibilityLabel="E-mail"
+    />
+  )
+}
+```
+
+## Tamanhos
+
+```tsx
+<Input size="lg" placeholder="Large" accessibilityLabel="Large" />
+<Input size="md" placeholder="Medium" accessibilityLabel="Medium" />
+<Input size="sm" placeholder="Small" accessibilityLabel="Small" />
+```
+
+## Estados
+
+```tsx
+<Input placeholder="Default" accessibilityLabel="Default" />
+<Input defaultValue="email@invalido" error accessibilityLabel="E-mail" />
+<Input placeholder="Disabled" disabled accessibilityLabel="Desabilitado" />
+<Input defaultValue="Não editável" readOnly accessibilityLabel="Somente leitura" />
+```
+
+O estado `error` colore a borda e o foco de vermelho. Use junto com o [Field](/react-native/components/field/) para também colorir o rótulo e mostrar a mensagem.
+
+## Com ícones
+
+Os ícones ficam em um slot de 24px, não recebem toque (`pointerEvents="none"`) e o componente recua o texto para abrir espaço. A cor do ícone é definida por você.
+
+```tsx
+import { Input } from '@innovui/react-native'
+import { SearchIcon } from './icons'
+
+<Input
+  leadingIcon={<SearchIcon />}
+  placeholder="Buscar"
+  accessibilityLabel="Buscar"
+/>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `size` | `'lg' \| 'md' \| 'sm'` | `'md'` | Tamanho do campo (alturas de 56, 48 e 40). |
+| `error` | `boolean` | `false` | Borda e foco em vermelho. |
+| `disabled` | `boolean` | `false` | Desabilita a edição e aplica o visual de desabilitado. Marca `accessibilityState.disabled`. |
+| `readOnly` | `boolean` | `false` | Mostra o valor sem permitir edição, com fundo de desabilitado e sem borda. |
+| `leadingIcon` | `ReactNode` | — | Ícone antes do texto. |
+| `trailingIcon` | `ReactNode` | — | Ícone depois do texto. |
+| `className` | `string` | — | Classes Uniwind mescladas com as internas via `tailwind-merge`. |
+
+Além dessas, o componente aceita as props do `TextInput` (`value`, `onChangeText`, `placeholder`, `keyboardType`, `secureTextEntry`, `autoCapitalize`, etc.), exceto `style` e `editable`: use `disabled` e `readOnly`.
+
+## Acessibilidade
+
+- Dê sempre um nome acessível com `accessibilityLabel` (ou use o [Field](/react-native/components/field/), que repassa o rótulo ao controle). O `placeholder` não substitui o rótulo.
+- `disabled` é anunciado por `accessibilityState.disabled`. Outros valores de `accessibilityState` que você passar são preservados.
+- O ícone não recebe foco nem toque.
+- Contraste mínimo 4.5:1 entre texto e fundo, em todos os estados.
+
+## Diferenças em relação à web
+
+- `onChange` vira `onChangeText`, e `aria-*` vira `accessibilityLabel`, `accessibilityHint` e `accessibilityState`.
+- Não há `type`: use `keyboardType`, `secureTextEntry` e `autoComplete` do `TextInput`.
+- Não existe hover nem foco por teclado. O foco (toque no campo) usa a cor do anel de foco na borda.
+
+### Quando usar
+
+Entrada de uma linha de texto: nome, e-mail, busca, senha, número.
+
+### Quando não usar
+
+Textos longos (use [Textarea](/react-native/components/textarea/)), escolha entre opções ([Select](/react-native/components/select/) ou [Combobox](/react-native/components/combobox/)) e datas ([DatePicker](/react-native/components/date-picker/)).

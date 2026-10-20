@@ -1,0 +1,84 @@
+---
+title: Calendar
+description: Calendário de um mês para escolher um dia ou um período.
+---
+
+Calendário de um mês, feito em React Native puro (sem dependência nativa). Escolhe um dia (`mode="single"`, o padrão) ou um período (`mode="range"`). Tem 280px de largura. Para um campo de formulário que abre o calendário, use o [DatePicker](/react-native/components/date-picker/) ou o [DateRangePicker](/react-native/components/date-range-picker/).
+
+```tsx
+import { useState } from 'react'
+import { Calendar } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [dia, setDia] = useState<Date>()
+
+  return <Calendar value={dia} onValueChange={setDia} />
+}
+```
+
+## Período
+
+No modo `range`, o primeiro toque define o início e o segundo define o fim. Tocar num dia anterior ao início recomeça o período, e com o período completo um novo toque também recomeça. `onValueChange` é chamado a cada toque: primeiro só com `from`, depois com `from` e `to`.
+
+```tsx
+import { Calendar, type DateRange } from '@innovui/react-native'
+
+const [periodo, setPeriodo] = useState<DateRange>()
+
+<Calendar mode="range" value={periodo} onValueChange={setPeriodo} />
+```
+
+## Limites, idioma e semana
+
+```tsx
+<Calendar
+  minDate={new Date(2026, 0, 1)}
+  maxDate={new Date(2026, 11, 31)}
+  locale="en-US"
+  weekStartsOn={1}
+  previousMonthLabel="Previous month"
+  nextMonthLabel="Next month"
+/>
+```
+
+Dias fora de `minDate` e `maxDate` ficam desabilitados, e as setas de mês também deixam de avançar além do limite.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `mode` | `'single' \| 'range'` | `'single'` | Um dia ou um período. |
+| `value` | `Date` (single) ou `DateRange` (range) | — | Seleção controlada. Em `range`, sem `to`, só o início foi escolhido. |
+| `defaultValue` | `Date` (single) ou `DateRange` (range) | — | Seleção inicial no modo não controlado. |
+| `onValueChange` | `(date: Date) => void` (single) ou `(range: DateRange) => void` (range) | — | Chamado a cada toque em um dia. |
+| `minDate` | `Date` | — | Primeiro dia que pode ser escolhido. |
+| `maxDate` | `Date` | — | Último dia que pode ser escolhido. |
+| `locale` | `string` | `'pt-BR'` | Idioma dos nomes de mês e dia (BCP 47). |
+| `weekStartsOn` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `0` | Primeiro dia da semana (0 = domingo, 1 = segunda). |
+| `previousMonthLabel` | `string` | `'Mês anterior'` | Nome acessível da seta anterior. |
+| `nextMonthLabel` | `string` | `'Próximo mês'` | Nome acessível da seta seguinte. |
+| `className` | `string` | — | Classes Uniwind do contêiner, mescladas via `tailwind-merge`. |
+| `testID` | `string` | — | Identificador de teste. |
+
+`DateRange` é `{ from?: Date; to?: Date }`.
+
+## Acessibilidade
+
+- Cada dia é um botão (`accessibilityRole="button"`) com `accessibilityLabel` da data completa ("quarta-feira, 15 de abril de 2026") e `accessibilityState.selected` e `disabled`.
+- O título do mês usa `accessibilityRole="header"` e `accessibilityLiveRegion="polite"`, então a troca de mês é anunciada.
+- As setas de mês são botões com `accessibilityLabel` (personalize em `previousMonthLabel` e `nextMonthLabel`) e `disabled` nos limites.
+- O dia de hoje aparece em destaque, mas a seleção não depende só da cor.
+
+## Diferenças em relação à web
+
+- Não há navegação por teclado nem `autoFocus`.
+- Mostra um mês por vez, sem seletor de mês e ano; a troca é pelas setas.
+- Os nomes de mês e dia usam `Intl.DateTimeFormat`, conforme `locale`.
+
+### Quando usar
+
+Escolher uma data com todas as opções visíveis, direto na tela.
+
+### Quando não usar
+
+Campos de formulário (use [DatePicker](/react-native/components/date-picker/) ou [DateRangePicker](/react-native/components/date-range-picker/)) e datas muito distantes, em que digitar é mais rápido ([Input](/react-native/components/input/)).

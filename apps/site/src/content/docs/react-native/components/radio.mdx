@@ -1,0 +1,67 @@
+---
+title: Radio
+description: Opção de escolha única dentro de um grupo.
+---
+
+Botão de opção com rótulo. No native não existe `name` nem grupo automático: para formar um grupo, você controla o `checked` de cada opção a partir de um único estado.
+
+```tsx
+import { useState } from 'react'
+import { View } from 'react-native'
+import { Radio } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [plano, setPlano] = useState('mensal')
+
+  return (
+    <View accessibilityRole="radiogroup" accessibilityLabel="Plano">
+      <Radio label="Mensal" checked={plano === 'mensal'} onCheckedChange={() => setPlano('mensal')} />
+      <Radio label="Anual" checked={plano === 'anual'} onCheckedChange={() => setPlano('anual')} />
+    </View>
+  )
+}
+```
+
+## Estados
+
+```tsx
+<Radio label="Desmarcado" />
+<Radio label="Marcado" defaultChecked />
+<Radio label="Com erro" error />
+<Radio label="Desabilitado" disabled />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `ReactNode` | — | Rótulo. Uma `string` recebe o estilo padrão. |
+| `checked` | `boolean` | — | Estado controlado. Sem ele, o componente guarda o próprio estado. |
+| `defaultChecked` | `boolean` | `false` | Estado inicial no modo não controlado. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Chamado com `true` ao selecionar. Tocar numa opção já marcada não faz nada. |
+| `error` | `boolean` | — | Borda vermelha. |
+| `disabled` | `boolean` | `false` | Desabilita o toque. |
+| `className` | `string` | — | Classes Uniwind da linha toda, mescladas via `tailwind-merge`. |
+
+Aceita também as demais props do `Pressable` (`accessibilityLabel`, `accessibilityHint`, `testID`...), exceto `style`, `children` e `onPress`.
+
+## Acessibilidade
+
+- Usa `accessibilityRole="radio"` com `accessibilityState.checked` e `disabled`.
+- Envolva as opções em uma `View` com `accessibilityRole="radiogroup"` e `accessibilityLabel` para anunciar o grupo.
+- A área de toque tem no mínimo 44px de altura e inclui o rótulo.
+- Sem navegação por setas do teclado: cada opção é um alvo de toque independente.
+
+## Diferenças em relação à web
+
+- Não há `RadioGroup`, `name` nem `value`: o estado do grupo é seu, e cada Radio recebe `checked`.
+- `onChange` vira `onCheckedChange`, que só dispara ao selecionar.
+- Não existe hover nem foco por teclado.
+
+### Quando usar
+
+Uma escolha entre 2 a 5 opções que o usuário precisa ver de uma vez.
+
+### Quando não usar
+
+Muitas opções ([Select](/react-native/components/select/) ou [Combobox](/react-native/components/combobox/)), seleção múltipla ([Checkbox](/react-native/components/checkbox/)) e alternância de visualização ([SegmentedControl](/react-native/components/segmented-control/)).

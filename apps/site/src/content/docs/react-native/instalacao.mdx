@@ -1,0 +1,81 @@
+---
+title: Instalação e configuração
+description: Como instalar e configurar o @innovui/react-native num app Expo ou React Native puro.
+---
+
+import InstallCommand from '../../../components/InstallCommand.astro'
+
+O `@innovui/react-native` estiliza os componentes com o [Uniwind](https://docs.uniwind.dev), que traz o Tailwind v4 para o React Native. Por isso, além do pacote, o seu app precisa do Uniwind, do Tailwind e do `react-native-svg` (usado nos ícones).
+
+## 1. Instalar
+
+<InstallCommand pkg="@innovui/react-native uniwind tailwindcss react-native-svg" />
+
+**Requisitos:** React 19, React Native 0.81 ou mais recente, Tailwind CSS v4 e Metro. Funciona em Expo (SDK 54 ou mais recente) e em React Native puro.
+
+## 2. Configurar o Metro
+
+Envolva a config do Metro com `withUniwindConfig`. Ele precisa ser o wrapper **mais externo**.
+
+```js title="metro.config.js (Expo)"
+const { getDefaultConfig } = require('expo/metro-config')
+const { withUniwindConfig } = require('uniwind/metro')
+
+const config = getDefaultConfig(__dirname)
+
+module.exports = withUniwindConfig(config, {
+  cssEntryFile: './global.css',
+  dtsFile: './uniwind-types.d.ts',
+})
+```
+
+Em React Native puro, comece de `getDefaultConfig` do `@react-native/metro-config` no lugar do `expo/metro-config`. O caminho de `cssEntryFile` precisa ser relativo. Reinicie o Metro depois de alterar o arquivo.
+
+## 3. Criar o `global.css`
+
+```css title="global.css"
+@import 'tailwindcss';
+@import 'uniwind';
+@import '@innovui/react-native/theme.css';
+
+@source '../node_modules/@innovui/react-native/dist';
+```
+
+- `@innovui/react-native/theme.css` define todos os tokens do design system, nos modos claro e escuro.
+- O `@source` é necessário porque o Tailwind só gera as classes que encontra nos arquivos escaneados, e as classes dos componentes estão dentro do pacote. O caminho é relativo ao `global.css`. Em monorepo com pnpm, aponte para o caminho real do pacote.
+
+## 4. Importar o CSS
+
+Importe o `global.css` uma vez, no componente raiz do app (por exemplo `App.tsx` ou `app/_layout.tsx`). **Não** importe no `index.js`: isso faz o app recarregar por completo em vez de aplicar o hot reload.
+
+```tsx title="App.tsx"
+import './global.css'
+```
+
+Rode o Metro uma vez: ele gera o `uniwind-types.d.ts`, que habilita a prop `className` nos tipos do TypeScript.
+
+## 5. Usar os componentes
+
+```tsx
+import { Button, ToastProvider } from '@innovui/react-native'
+import { View } from 'react-native'
+import './global.css'
+
+export default function App() {
+  return (
+    <ToastProvider>
+      <View className="flex-1 items-center justify-center bg-bg-primary">
+        <Button onPress={() => {}}>Salvar alterações</Button>
+      </View>
+    </ToastProvider>
+  )
+}
+```
+
+O `ToastProvider` só é necessário se você usar `useToast()`. Veja [Tema e modo escuro](/react-native/tema/) para trocar entre claro e escuro e [Diferenças em relação à web](/react-native/diferencas/) para o que muda na API.
+
+## Problemas comuns
+
+- **As classes não têm efeito:** confira o caminho do `@source`, o `cssEntryFile` no `metro.config.js` e reinicie o Metro.
+- **`className` aparece como erro no TypeScript:** rode o Metro uma vez para gerar o `uniwind-types.d.ts` e inclua esse arquivo no `tsconfig.json`.
+- **Expo Go não abre o app:** o seu Expo Go precisa suportar a versão do SDK do projeto. Se não suportar, use um development build (`expo run:ios` ou `expo run:android`).

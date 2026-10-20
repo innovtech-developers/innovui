@@ -1,0 +1,68 @@
+---
+title: Banner
+description: Mensagem persistente em largura total, no topo da interface.
+---
+
+Mensagem persistente em **largura total**, posicionada no topo da interface: manutenção, anúncios, estado da conta. Para mensagens dentro de um bloco de conteúdo, use o [Alert](/react-native/components/alert/).
+
+```tsx
+import { Banner } from '@innovui/react-native'
+
+<Banner status="info">Manutenção programada para domingo, às 2h.</Banner>
+```
+
+## Status
+
+```tsx
+<Banner status="info">Novidade disponível.</Banner>
+<Banner status="success">Conta verificada.</Banner>
+<Banner status="warning">Sua assinatura vence em 3 dias.</Banner>
+<Banner status="error">Falha na sincronização.</Banner>
+<Banner status="neutral">Modo somente leitura.</Banner>
+```
+
+## Ação e fechar
+
+```tsx
+<Banner
+  status="warning"
+  action={<Button variant="ghost" size="sm" onPress={renew}>Renovar</Button>}
+  onDismiss={() => setVisible(false)}
+>
+  Sua assinatura vence em 3 dias.
+</Banner>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral'` | `'info'` | Cor e ícone semânticos. |
+| `children` | `ReactNode` | n/d | A mensagem. Uma `string` vira `Text`; outros nós são renderizados como estão. |
+| `showIcon` | `boolean` | `true` | Mostra o ícone do status. |
+| `action` | `ReactNode` | n/d | Ação ao lado da mensagem. |
+| `onDismiss` | `() => void` | n/d | Mostra o botão de fechar (×) e o chama ao tocar. |
+| `dismissLabel` | `string` | `'Fechar'` | Nome acessível do botão de fechar. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`.
+
+## Acessibilidade
+
+- `error` e `warning` usam `accessibilityRole="alert"`; os demais não definem role.
+- O botão de fechar é um [IconButton](/react-native/components/icon-button/) com `accessibilityLabel` igual a `dismissLabel`.
+- Ícone e texto comunicam o status junto com a cor.
+
+### Quando usar
+
+Comunicados que valem para a tela ou o app todo e devem permanecer até serem dispensados.
+
+### Quando não usar
+
+Feedback de uma ação específica ([Alert](/react-native/components/alert/)) ou aviso temporário ([Toast](/react-native/components/toast/)).
+
+## Diferenças em relação à web
+
+- O Banner não fica fixo sozinho: posicione-o no layout da tela (por exemplo, acima do conteúdo).
+- Se `children` não for `string`, estilize o `Text` por conta própria.
+- Não há status `pending`.

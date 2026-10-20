@@ -1,0 +1,58 @@
+---
+title: Card
+description: Contêiner elevado para agrupar conteúdo relacionado.
+---
+
+Contêiner elevado, com borda, raio e sombra, para agrupar conteúdo relacionado.
+
+```tsx
+import { Card, Stack, Button } from '@innovui/react-native'
+import { Text } from 'react-native'
+
+<Card>
+  <Stack gap={3}>
+    <Text className="text-base font-semibold text-text-primary">Plano Pro</Text>
+    <Text className="text-sm text-text-secondary">Todos os recursos, sem limite de uso.</Text>
+    <Button onPress={subscribe}>Assinar</Button>
+  </Stack>
+</Card>
+```
+
+## Espaçamento interno
+
+```tsx
+<Card padding="none">{/* mídia de ponta a ponta */}</Card>
+<Card padding="md">{/* 16 pontos */}</Card>
+<Card padding="lg">{/* 24 pontos */}</Card>
+```
+
+Com `padding="none"`, o conteúdo encosta nas bordas (o raio não recorta os filhos sozinho: adicione `overflow-hidden` via `className` para mídia).
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `padding` | `'none' \| 'md' \| 'lg'` | `'md'` | Espaçamento interno: 0, 16 ou 24 pontos. |
+| `children` | `ReactNode` | n/d | O conteúdo. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`.
+
+## Acessibilidade
+
+- O Card é só um agrupador visual e não define role.
+- Se o card inteiro for tocável, envolva-o num `Pressable` com `accessibilityRole` e `accessibilityLabel`.
+- Garanta contraste do texto interno: use `text-text-primary` e `text-text-secondary`.
+
+### Quando usar
+
+Agrupar informações relacionadas: resumo de pedido, plano, perfil.
+
+### Quando não usar
+
+Para separar seções simples (use [Divider](/react-native/components/divider/)) ou apenas para espaçar elementos (use [Stack](/react-native/components/stack/)).
+
+## Diferenças em relação à web
+
+- O texto não herda cor: use `text-text-primary` nos `Text` filhos.
+- `shadow-md` não gera `elevation` no Android, então a sombra pode não aparecer lá; a borda continua visível.

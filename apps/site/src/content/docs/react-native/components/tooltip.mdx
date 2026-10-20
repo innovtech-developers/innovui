@@ -1,0 +1,70 @@
+---
+title: Tooltip
+description: Dica contextual aberta por toque longo no elemento.
+---
+
+Dica curta que explica um elemento. No toque não existe hover, então o Tooltip abre ao **pressionar e segurar** o gatilho (`onLongPress`) e fecha sozinho depois de alguns segundos ou ao tocar fora.
+
+```tsx
+import { Tooltip, IconButton } from '@innovui/react-native'
+
+<Tooltip content="Copiar link">
+  <IconButton accessibilityLabel="Copiar" variant="ghost">
+    <CopyIcon color={cor} />
+  </IconButton>
+</Tooltip>
+```
+
+O filho é o gatilho: um único elemento React que aceite `onLongPress` (como `Button` e `IconButton`), que recebe o handler por clonagem. Se ele já tiver um `onLongPress`, o seu é chamado também.
+
+## Posição, título e duração
+
+```tsx
+<Tooltip side="bottom" title="Atalho" content="Duplica o item selecionado" duration={5000}>
+  <Button variant="secondary">Duplicar</Button>
+</Tooltip>
+```
+
+| `side` | Comportamento |
+|---|---|
+| `top` (padrão) | Acima do gatilho; vai para baixo se não couber. |
+| `bottom` | Abaixo do gatilho; vai para cima se não couber. |
+
+`duration` define em ms quando o tooltip fecha sozinho (padrão 3000). Com `0`, ele fica aberto até tocar fora.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `ReactElement` | n/a | **Obrigatória.** Gatilho; recebe `onLongPress`. |
+| `content` | `ReactNode` | n/a | **Obrigatória.** O texto principal. |
+| `title` | `ReactNode` | n/a | Título em destaque acima do texto. |
+| `side` | `'top' \| 'bottom'` | `'top'` | Lado do gatilho; inverte se não couber. |
+| `duration` | `number` | `3000` | Tempo até fechar sozinho, em ms. `0` mantém aberto. |
+| `open` | `boolean` | n/a | Estado de abertura (modo controlado). |
+| `defaultOpen` | `boolean` | `false` | Abertura inicial (modo não controlado). |
+| `onOpenChange` | `(open: boolean) => void` | n/a | Chamado ao abrir ou fechar. |
+| `className` | `string` | n/a | Mesclado com as classes do balão via `tailwind-merge`. |
+| `testID` | `string` | n/a | O fundo que captura o toque fora recebe `{testID}-backdrop`. |
+
+## Diferenças em relação à web
+
+- Abre com **toque longo** no gatilho, não com hover ou foco.
+- Sem `delayDuration`, sem seta (`showArrow`) e sem os lados `left` e `right`.
+- Fecha por `duration` (padrão 3 s) ou ao tocar fora.
+- O gatilho precisa ser um elemento que aceite `onLongPress`; um `Text` solto não funciona.
+
+## Acessibilidade
+
+- O toque longo não é óbvio para leitores de tela. Por isso, quando `content` é texto, ele vira o `accessibilityHint` do gatilho e é lido junto dele.
+- O balão é uma `View` com `accessibilityRole="text"`.
+- Não esconda informação essencial num Tooltip: quem não faz toque longo não a vê. Use rótulos visíveis ou o [Popover](/react-native/components/popover/).
+- Para botões só de ícone, mantenha também o `accessibilityLabel` no gatilho.
+
+### Quando usar
+
+Rótulo ou explicação curta de um controle, como um botão só de ícone.
+
+### Quando não usar
+
+Informação essencial, conteúdo interativo ([Popover](/react-native/components/popover/)) e mensagens de status ([Toast](/react-native/components/toast/)).

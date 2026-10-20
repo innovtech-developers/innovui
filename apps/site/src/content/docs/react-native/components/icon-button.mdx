@@ -1,0 +1,83 @@
+---
+title: IconButton
+description: Botão quadrado só com ícone, com nome acessível obrigatório.
+---
+
+Botão quadrado que contém só um ícone. Compartilha estilos e tamanhos com o [Button](/react-native/components/button/). Como não tem texto visível, o `accessibilityLabel` é obrigatório.
+
+```tsx
+import { IconButton } from '@innovui/react-native'
+import { useCSSVariable } from 'uniwind'
+
+function CloseAction({ onClose }: { onClose: () => void }) {
+  const color = useCSSVariable('--color-button-primary-text') as string
+
+  return (
+    <IconButton accessibilityLabel="Fechar" onPress={onClose}>
+      <CloseIcon color={color} />
+    </IconButton>
+  )
+}
+```
+
+`CloseIcon` representa o seu ícone SVG (por exemplo, com `react-native-svg`) que aceita `color`.
+
+## Estilos e tamanhos
+
+```tsx
+<IconButton accessibilityLabel="Adicionar" variant="primary">{icon}</IconButton>
+<IconButton accessibilityLabel="Editar" variant="secondary">{icon}</IconButton>
+<IconButton accessibilityLabel="Filtrar" variant="tertiary">{icon}</IconButton>
+<IconButton accessibilityLabel="Mais" variant="ghost">{icon}</IconButton>
+<IconButton accessibilityLabel="Excluir" variant="destructive">{icon}</IconButton>
+
+<IconButton accessibilityLabel="Pequeno" size="sm">{icon}</IconButton>
+<IconButton accessibilityLabel="Médio" size="md">{icon}</IconButton>
+<IconButton accessibilityLabel="Grande" size="lg">{icon}</IconButton>
+```
+
+Os lados são 36, 44 e 56 pontos. O tamanho sugerido para o ícone é 16, 20 e 24, mas quem define é você.
+
+## Estado de carregamento
+
+```tsx
+<IconButton accessibilityLabel="Salvar" loading={isSaving} onPress={handleSave}>
+  {icon}
+</IconButton>
+```
+
+Em `loading`, o ícone dá lugar a um [Spinner](/react-native/components/spinner/) e o botão fica desabilitado.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `accessibilityLabel` | `string` | n/d | Obrigatório. Nome acessível do botão. |
+| `children` | `ReactNode` | n/d | O ícone. A cor e o tamanho não são herdados. |
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'destructive'` | `'primary'` | Estilo visual. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do botão. |
+| `loading` | `boolean` | `false` | Troca o ícone por um spinner e desabilita o botão. |
+| `disabled` | `boolean` | n/d | Desabilita o botão. |
+| `onPress` | `(event) => void` | n/d | Chamado ao tocar. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props do `Pressable`, exceto `style`.
+
+## Acessibilidade
+
+- Usa `accessibilityRole="button"` e `accessibilityState` com `disabled` e `busy`.
+- O `accessibilityLabel` é exigido pelo tipo. Descreva a ação ("Fechar", "Excluir item"), não o desenho do ícone.
+- O alvo de toque mínimo é 36 pontos no `sm`; prefira `md` ou maior em áreas de toque densas.
+
+### Quando usar
+
+Ações conhecidas e compactas: fechar, editar, abrir menu.
+
+### Quando não usar
+
+Quando o texto ajuda a entender a ação (use [Button](/react-native/components/button/)).
+
+## Diferenças em relação à web
+
+- `onPress` no lugar de `onClick` e `accessibilityLabel` no lugar de `aria-label`.
+- O ícone não herda cor (`currentColor`): passe `color` a ele, lendo o token com `useCSSVariable`, do Uniwind.

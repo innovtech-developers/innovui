@@ -1,0 +1,132 @@
+---
+title: Upload
+description: Área para escolher arquivos e lista dos arquivos escolhidos, com progresso e remoção.
+---
+
+Área tocável para escolher arquivos, mais a lista dos escolhidos com tamanho, status e botão de remover. No React Native não existe `<input type="file">` nem dropzone, e o seletor depende do app (`expo-document-picker`, `expo-image-picker`...). Por isso o componente é **controlado e agnóstico**: `onPick` abre o seletor que você preferir, e `files` e `onRemoveFile` descrevem a lista. Validar tipo e tamanho e enviar ao servidor ficam com você.
+
+```tsx
+import { useState } from 'react'
+import { Upload, type UploadFile } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [files, setFiles] = useState<UploadFile[]>([])
+
+  return (
+    <Upload
+      title="Toque para escolher arquivos"
+      description="PDF ou imagem, até 10 MB"
+      onPick={() => {
+        // abra o seletor aqui e atualize `files`
+      }}
+      files={files}
+      onRemoveFile={(id) => setFiles((prev) => prev.filter((f) => f.id !== id))}
+    />
+  )
+}
+```
+
+## Com expo-document-picker
+
+```tsx
+import { useState } from 'react'
+import * as DocumentPicker from 'expo-document-picker'
+import { Upload, type UploadFile } from '@innovui/react-native'
+
+export function Anexos() {
+  const [files, setFiles] = useState<UploadFile[]>([])
+
+  async function pick() {
+    const result = await DocumentPicker.getDocumentAsync({ multiple: true })
+    if (result.canceled) return
+    setFiles((prev) => [
+      ...prev,
+      ...result.assets.map((a) => ({
+        id: a.uri,
+        name: a.name,
+        size: a.size,
+        status: 'uploading' as const,
+      })),
+    ])
+  }
+
+  return (
+    <Upload
+      onPick={pick}
+      files={files}
+      onRemoveFile={(id) => setFiles((prev) => prev.filter((f) => f.id !== id))}
+    />
+  )
+}
+```
+
+Depois de escolher, envie cada arquivo ao servidor e atualize o item (`progress`, `status`) conforme o envio avança.
+
+## Status dos arquivos
+
+```tsx
+const files: UploadFile[] = [
+  { id: '1', name: 'contrato.pdf', size: 1_572_864, status: 'uploading', progress: 60 },
+  { id: '2', name: 'foto.png', size: 230_000, status: 'done' },
+  { id: '3', name: 'planilha.xlsx', status: 'error', errorMessage: 'Arquivo maior que 10 MB' },
+]
+
+<Upload onPick={pick} files={files} onRemoveFile={remover} />
+```
+
+- `uploading`: mostra a barra de progresso (`progress` de 0 a 100; sem ele, a barra fica em 0).
+- `done`: mostra um ícone de check.
+- `error`: borda vermelha e `errorMessage` no lugar do tamanho.
+- Sem `status`, o item aparece só com nome e tamanho.
+
+## Props
+
+### Upload
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `onPick` | `() => void` | — | Obrigatório. Chamado ao tocar na área; abra aqui o seu seletor. |
+| `files` | `UploadFile[]` | — | Arquivos escolhidos, listados abaixo da área. |
+| `onRemoveFile` | `(id: string) => void` | — | Chamado ao tocar no botão de remover. Sem ele, o botão não aparece. |
+| `title` | `ReactNode` | `'Toque para escolher arquivos'` | Texto principal da área. |
+| `description` | `ReactNode` | — | Texto de apoio (formatos e tamanho aceitos, por exemplo). |
+| `error` | `boolean` | — | Borda da área em vermelho. |
+| `disabled` | `boolean` | — | Desabilita a área. |
+| `removeLabel` | `string` | `'Remover'` | Prefixo do rótulo acessível do botão de remover ("Remover contrato.pdf"). |
+| `className` | `string` | — | Classes Uniwind da área tocável, mescladas via `tailwind-merge`. |
+| `accessibilityLabel` | `string` | — | Nome acessível da área. Sem ele, usa `title` e `description` quando forem strings. |
+| `testID` | `string` | — | Identificador de teste da área. |
+
+### UploadFile
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `id` | `string` | Identificador estável do arquivo; volta em `onRemoveFile`. |
+| `name` | `string` | Nome mostrado. |
+| `size` | `number` | Tamanho em bytes, mostrado como "230 KB" ou "1,5 MB". Sem ele, nada é mostrado. |
+| `status` | `'uploading' \| 'done' \| 'error'` | Estado do envio. |
+| `progress` | `number` | Progresso de 0 a 100, só para `uploading`. |
+| `errorMessage` | `string` | Texto do erro, mostrado no lugar do tamanho com `status="error"`. |
+
+## Acessibilidade
+
+- A área usa `accessibilityRole="button"` com `accessibilityState.disabled`.
+- Se `title` ou `description` não forem strings, passe `accessibilityLabel`.
+- O botão de remover usa `accessibilityRole="button"` e o rótulo `"{removeLabel} {nome}"`, com `hitSlop` para facilitar o toque.
+- A barra de progresso usa `accessibilityRole="progressbar"` com `accessibilityValue` (`min`, `max`, `now`) e o nome do arquivo.
+- O check de concluído é anunciado como "Concluído".
+- O erro não depende só da cor: a mensagem aparece em texto.
+
+## Diferenças em relação à web
+
+- Não existe dropzone nem arrastar e soltar: o toque chama `onPick`.
+- Não há `accept`, `multiple` nem `maxSize`: isso é configurado no seletor que você usar, e a validação é sua.
+- O componente não guarda estado: `files` e `onRemoveFile` são o único jeito de a lista mudar.
+
+### Quando usar
+
+Anexar documentos ou imagens em formulários, com feedback de envio.
+
+### Quando não usar
+
+Escolher uma opção ou data ([Select](/react-native/components/select/), [DatePicker](/react-native/components/date-picker/)) e mostrar só uma foto de perfil.

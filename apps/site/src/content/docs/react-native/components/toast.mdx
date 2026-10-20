@@ -1,0 +1,105 @@
+---
+title: Toast
+description: Notificação temporária e flutuante, disparada por código.
+---
+
+Notificação **temporária** e flutuante, que confirma o resultado de uma ação e some sozinha (5 s por padrão). Para mensagens que precisam ficar na tela, use o [Alert](/react-native/components/alert/) (em bloco) ou o [Banner](/react-native/components/banner/) (no topo).
+
+Diferente dos outros componentes, o Toast é **disparado por código**: envolva o app uma vez com `ToastProvider` e chame `useToast()` de qualquer componente abaixo dele.
+
+```tsx
+import { ToastProvider, useToast, Button } from '@innovui/react-native'
+
+// 1. Uma vez, na raiz do app
+export default function Root() {
+  return (
+    <ToastProvider>
+      <App />
+    </ToastProvider>
+  )
+}
+
+// 2. Em qualquer componente
+function SaveButton() {
+  const { toast } = useToast()
+
+  return (
+    <Button
+      onPress={() =>
+        toast({ status: 'success', title: 'Salvo', description: 'Alterações salvas.' })
+      }
+    >
+      Salvar
+    </Button>
+  )
+}
+```
+
+`useToast()` fora de um `ToastProvider` lança um erro.
+
+## Com ação
+
+```tsx
+toast({
+  status: 'neutral',
+  description: 'Item removido da lista.',
+  action: { label: 'Desfazer', onClick: restore },
+})
+```
+
+Tocar na ação chama o `onClick` e fecha o toast. O campo continua se chamando `onClick`, como no web, apesar de o toque ser `onPress`.
+
+## `useToast()`
+
+| Retorno | Descrição |
+|---|---|
+| `toast(options)` | Exibe um toast e devolve o seu `id` (`number`). |
+| `dismiss(id)` | Fecha um toast por código, com animação de saída. |
+
+### Opções de `toast()`
+
+| Opção | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `description` | `string` | n/a | **Obrigatória.** A mensagem. |
+| `title` | `string` | n/a | Resumo (opcional). |
+| `status` | `'success' \| 'error' \| 'warning' \| 'info' \| 'neutral'` | `'info'` | Cor semântica e ícone. |
+| `action` | `{ label: string; onClick: () => void }` | n/a | Ação contextual, que também fecha o toast. |
+| `duration` | `number` | `5000` | Tempo até fechar sozinho, em ms. `0` não fecha sozinho. |
+| `showIcon` | `boolean` | `true` | Mostra o ícone do status. |
+| `dismissible` | `boolean` | `true` | Mostra o botão ×. Sem ele, o toast ainda fecha pelo `duration`. |
+
+### Props do `ToastProvider`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `ReactNode` | n/a | **Obrigatória.** O app. |
+| `label` | `string` | `'Notificações'` | Nome acessível da região de notificações. |
+| `dismissLabel` | `string` | `'Fechar'` | Nome acessível do botão de fechar de cada toast. |
+| `testID` | `string` | n/a | Identificador da região, para testes. |
+
+## Comportamento
+
+- Os toasts aparecem no topo da tela, centralizados (largura de até 360), e se empilham.
+- Entram e saem com uma animação curta (200 ms e 150 ms).
+- Não há pausa do timer nem gesto de swipe: o toast fecha pelo `duration`, pelo × ou pela ação.
+
+## Diferenças em relação à web
+
+- Use `ToastProvider` e `useToast()` no mesmo formato, mas `title` e `description` são só `string` (no web aceitam `ReactNode`).
+- A pilha fica acima do conteúdo do app, mas **abaixo de Modal, Drawer e Popover**, que são janelas nativas. Um toast disparado com um desses abertos fica atrás dele.
+- Sem atalho de teclado, sem pausa ao tocar e sem swipe para dispensar.
+- O `paddingTop` do topo é estimado (56 no iOS, altura da barra de status mais 8 no Android), não a área segura real.
+
+## Acessibilidade
+
+- `error` e `warning` têm `accessibilityRole="alert"` e `accessibilityLiveRegion="assertive"` (interrompem o leitor de tela); os demais usam `accessibilityLiveRegion="polite"`.
+- A região de notificações tem `accessibilityLabel` (`label`); o botão de fechar tem `accessibilityRole="button"` e `accessibilityLabel` (`dismissLabel`).
+- Toasts somem sozinhos: **não** coloque informação que a pessoa precise ler com calma, nem a única forma de completar uma tarefa. Para isso, use o [Alert](/react-native/components/alert/).
+
+### Quando usar
+
+Confirmação de ação (salvo, copiado, enviado), erros transitórios, desfazer.
+
+### Quando não usar
+
+Mensagens que precisam permanecer na tela ([Alert](/react-native/components/alert/) ou [Banner](/react-native/components/banner/)), decisões ([Modal](/react-native/components/modal/)) e erros de campo ([Field](/react-native/components/field/)).

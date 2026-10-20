@@ -1,0 +1,79 @@
+---
+title: Menu
+description: Lista de ações aberta por um botão, ancorada nele.
+---
+
+Lista de **ações** aberta por um botão e ancorada nele. Tocar num item o executa e fecha o menu. Tocar fora ou usar o botão voltar do Android também fecha.
+
+```tsx
+import { Menu, MenuItem, MenuLabel, MenuSeparator, Button } from '@innovui/react-native'
+
+<Menu trigger={<Button variant="secondary">Opções</Button>}>
+  <MenuLabel>Conta</MenuLabel>
+  <MenuItem onSelect={() => router.push('/perfil')}>Perfil</MenuItem>
+  <MenuItem onSelect={duplicar}>Duplicar</MenuItem>
+  <MenuItem disabled>Arquivar</MenuItem>
+  <MenuSeparator />
+  <MenuItem destructive onSelect={excluir}>Excluir</MenuItem>
+</Menu>
+```
+
+O `trigger` recebe `onPress` por clonagem e alterna o menu. Use `MenuLabel` para títulos de grupo e `MenuSeparator` para dividir grupos.
+
+## Com ícone
+
+```tsx
+<MenuItem icon={<TrashIcon />} destructive onSelect={excluir}>Excluir</MenuItem>
+```
+
+O ícone fica à esquerda do rótulo, em 16px.
+
+## Props
+
+### `Menu`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `trigger` | `ReactNode` | n/a | **Obrigatória.** Elemento que alterna o menu; recebe `onPress`. |
+| `children` | `ReactNode` | n/a | **Obrigatória.** `MenuItem`, `MenuLabel` e `MenuSeparator`. |
+| `side` | `'top' \| 'bottom'` | `'bottom'` | Lado do gatilho; inverte se não couber. |
+| `open` | `boolean` | n/a | Estado de abertura (modo controlado). |
+| `defaultOpen` | `boolean` | `false` | Abertura inicial (modo não controlado). |
+| `onOpenChange` | `(open: boolean) => void` | n/a | Chamado ao abrir ou fechar. |
+| `className` | `string` | n/a | Mesclado com as classes do painel via `tailwind-merge`. |
+| `testID` | `string` | n/a | O fundo que captura o toque fora recebe `{testID}-backdrop`. |
+
+### `MenuItem`
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `string` | n/a | **Obrigatória.** Rótulo. Só texto. |
+| `onSelect` | `() => void` | n/a | Chamado ao escolher o item, antes de o menu fechar. |
+| `onPress` | `(event) => void` | n/a | Também é chamado ao tocar, antes de `onSelect`. |
+| `icon` | `ReactNode` | n/a | Ícone à esquerda do rótulo. |
+| `destructive` | `boolean` | `false` | Ação que desfaz dados (excluir, remover): texto em vermelho. |
+| `disabled` | `boolean` | n/a | Desabilita o item (texto esmaecido, sem ação e sem fechar). |
+| `className` | `string` | n/a | Mesclado com as classes internas via `tailwind-merge`. |
+
+`MenuItem` aceita as demais props de `Pressable`, exceto `style`. `MenuLabel` (`children: string`) e `MenuSeparator` aceitam `className`.
+
+## Diferenças em relação à web
+
+- Sem navegação por teclado (setas, digitação), sem `align` (alinha à esquerda do gatilho) e sem os lados `left` e `right`.
+- Os itens aceitam só `string` como `children`.
+- O overlay ancorado não considera o teclado.
+- Usa o `Modal` nativo, então fica acima do [Toast](/react-native/components/toast/).
+
+## Acessibilidade
+
+- O painel é uma `View` com `accessibilityRole="menu"`, e cada item é um `Pressable` com `accessibilityRole="menuitem"` e `disabled` em `accessibilityState` (o seu `accessibilityState` é mesclado).
+- O gatilho continua sendo o seu elemento: dê a ele um rótulo claro (`accessibilityLabel` quando for só um ícone).
+- Itens destrutivos se diferenciam pela cor e pelo rótulo, então escreva o verbo ("Excluir") e não dependa só da cor.
+
+### Quando usar
+
+Conjunto de ações relacionadas a um objeto ou à tela, que não cabem como botões visíveis.
+
+### Quando não usar
+
+Escolha de um valor num formulário ([Select](/react-native/components/select/)), conteúdo livre ou interativo ([Popover](/react-native/components/popover/)) e navegação principal.

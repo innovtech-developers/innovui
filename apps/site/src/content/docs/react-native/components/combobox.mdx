@@ -1,0 +1,91 @@
+---
+title: Combobox
+description: Campo de escolha única com busca dentro da lista.
+---
+
+Campo de escolha com busca para listas longas. No native o gatilho é um botão, como o [Select](/react-native/components/select/), e a busca fica em um campo de texto no topo da lista, que abre já focado. A busca ignora maiúsculas e acentos: "sao" acha "São Paulo".
+
+```tsx
+import { useState } from 'react'
+import { Combobox } from '@innovui/react-native'
+
+const cidades = [
+  { value: 'sp', label: 'São Paulo' },
+  { value: 'rj', label: 'Rio de Janeiro' },
+  { value: 'bh', label: 'Belo Horizonte' },
+  { value: 'cwb', label: 'Curitiba', disabled: true },
+]
+
+export function Exemplo() {
+  const [cidade, setCidade] = useState('')
+
+  return (
+    <Combobox
+      accessibilityLabel="Cidade"
+      options={cidades}
+      value={cidade}
+      onValueChange={setCidade}
+      placeholder="Selecione a cidade"
+      searchPlaceholder="Buscar cidade"
+      emptyMessage="Nenhuma cidade encontrada"
+    />
+  )
+}
+```
+
+## Com Field
+
+```tsx
+<Field label="Cidade" supportingText="Digite para filtrar.">
+  <Combobox options={cidades} />
+</Field>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `options` | `ComboboxOption[]` | — | Lista de opções (obrigatório). |
+| `value` | `string` | — | Valor selecionado (controlado). |
+| `defaultValue` | `string` | `''` | Valor inicial no modo não controlado. |
+| `onValueChange` | `(value: string) => void` | — | Chamado com o `value` da opção escolhida (a lista fecha em seguida). |
+| `placeholder` | `string` | `'Selecione...'` | Texto do gatilho sem valor. |
+| `searchPlaceholder` | `string` | `'Buscar...'` | Placeholder do campo de busca. |
+| `emptyMessage` | `string` | `'Nenhum resultado'` | Texto quando a busca não acha nada. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do gatilho. |
+| `error` | `boolean` | — | Borda em vermelho. |
+| `disabled` | `boolean` | — | Desabilita o gatilho. |
+| `readOnly` | `boolean` | — | Mostra o valor sem abrir a lista. |
+| `className` | `string` | — | Classes Uniwind do gatilho. |
+| `accessibilityLabel` | `string` | — | Nome acessível do gatilho. |
+| `accessibilityHint` | `string` | — | Dica anunciada pelo gatilho. |
+| `testID` | `string` | — | Identificador de teste; a lista recebe `${testID}-list`. |
+
+`ComboboxOption`:
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `value` | `string` | Valor guardado e devolvido em `onValueChange`. |
+| `label` | `string` | Texto mostrado na lista e no gatilho, e onde a busca procura. |
+| `disabled` | `boolean` | Desabilita a opção. |
+
+## Acessibilidade
+
+- O gatilho usa `accessibilityRole="combobox"` com `accessibilityState.expanded` e `disabled`.
+- O campo de busca recebe `accessibilityLabel` igual ao `searchPlaceholder`.
+- Cada opção usa `role="option"`, com `accessibilityLabel` do rótulo e `accessibilityState.selected` e `disabled`.
+- Dê um nome ao gatilho com `accessibilityLabel` (o [Field](/react-native/components/field/) faz isso).
+
+## Diferenças em relação à web
+
+- Não dá para digitar no gatilho: a busca fica em um campo no topo da lista, porque a lista abre numa camada acima dele.
+- Não é possível limpar o valor apagando o texto: `onValueChange` só recebe valores de opções.
+- Sem navegação por teclado. A camada ancorada não considera o teclado.
+
+### Quando usar
+
+Listas longas em que buscar é mais rápido que rolar: cidades, clientes, produtos.
+
+### Quando não usar
+
+Listas curtas ([Select](/react-native/components/select/)) e escolhas com poucas opções visíveis ([Radio](/react-native/components/radio/)).

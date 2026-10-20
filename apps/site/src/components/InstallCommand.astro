@@ -1,19 +1,25 @@
 ---
 import { TabItem, Tabs } from '@astrojs/starlight/components'
 import InstallSnippet from './InstallSnippet.astro'
+
+interface Props {
+  /** Pacotes a instalar, separados por espaço. */
+  pkg?: string
+}
+const { pkg = '@innovui/react' } = Astro.props
 ---
 
 <div class="install-ticket">
   <span class="install-ticket__header">Ficha de instalação</span>
   <Tabs syncKey="package-manager">
     <TabItem label="pnpm">
-      <InstallSnippet cmd="pnpm add @innovui/react" />
+      <InstallSnippet cmd={`pnpm add ${pkg}`} />
     </TabItem>
     <TabItem label="npm">
-      <InstallSnippet cmd="npm install @innovui/react" />
+      <InstallSnippet cmd={`npm install ${pkg}`} />
     </TabItem>
     <TabItem label="bun">
-      <InstallSnippet cmd="bun add @innovui/react" />
+      <InstallSnippet cmd={`bun add ${pkg}`} />
     </TabItem>
   </Tabs>
 </div>

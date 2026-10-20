@@ -1,0 +1,101 @@
+---
+title: Select
+description: Campo de escolha única a partir de uma lista de opções.
+---
+
+Campo de escolha única. Tocar no gatilho abre uma lista ancorada, com a largura do gatilho e rolável. As opções são filhos `SelectOption`. Para listas longas com busca, use o [Combobox](/react-native/components/combobox/).
+
+```tsx
+import { useState } from 'react'
+import { Select, SelectOption } from '@innovui/react-native'
+
+export function Exemplo() {
+  const [estado, setEstado] = useState<string>()
+
+  return (
+    <Select
+      accessibilityLabel="Estado"
+      placeholder="Selecione o estado"
+      value={estado}
+      onValueChange={setEstado}
+    >
+      <SelectOption value="sp">São Paulo</SelectOption>
+      <SelectOption value="rj">Rio de Janeiro</SelectOption>
+      <SelectOption value="mg" disabled>Minas Gerais</SelectOption>
+    </Select>
+  )
+}
+```
+
+## Com Field
+
+```tsx
+import { Field, Select, SelectOption } from '@innovui/react-native'
+
+<Field label="País" error supportingText="Escolha um país.">
+  <Select placeholder="Selecione">
+    <SelectOption value="br">Brasil</SelectOption>
+    <SelectOption value="pt">Portugal</SelectOption>
+  </Select>
+</Field>
+```
+
+## Estados
+
+```tsx
+<Select size="sm" accessibilityLabel="Pequeno"><SelectOption value="a">A</SelectOption></Select>
+<Select error accessibilityLabel="Com erro"><SelectOption value="a">A</SelectOption></Select>
+<Select disabled accessibilityLabel="Desabilitado"><SelectOption value="a">A</SelectOption></Select>
+<Select readOnly defaultValue="a" accessibilityLabel="Somente leitura"><SelectOption value="a">A</SelectOption></Select>
+```
+
+Com `readOnly`, o valor aparece mas a lista nunca abre.
+
+## Props
+
+### Select
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Uma ou mais `SelectOption`. |
+| `placeholder` | `string` | `'Selecione...'` | Texto do gatilho sem valor. |
+| `value` | `string` | — | Valor selecionado (controlado). |
+| `defaultValue` | `string` | — | Valor inicial no modo não controlado. |
+| `onValueChange` | `(value: string) => void` | — | Chamado ao escolher uma opção (a lista fecha em seguida). |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do gatilho. |
+| `error` | `boolean` | — | Borda em vermelho. |
+| `disabled` | `boolean` | — | Desabilita o gatilho. |
+| `readOnly` | `boolean` | `false` | Mostra o valor sem abrir a lista. |
+| `className` | `string` | — | Classes Uniwind do gatilho. |
+| `accessibilityLabel` | `string` | — | Nome acessível do gatilho. |
+| `accessibilityHint` | `string` | — | Dica anunciada pelo gatilho. |
+| `testID` | `string` | — | Identificador de teste; a lista recebe `${testID}-list`. |
+
+### SelectOption
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | — | Valor da opção (obrigatório). |
+| `children` | `ReactNode` | — | Rótulo mostrado na lista e no gatilho. |
+| `disabled` | `boolean` | — | Desabilita a opção. |
+
+## Acessibilidade
+
+- O gatilho usa `accessibilityRole="combobox"` com `accessibilityState.expanded` e `disabled`.
+- Cada opção usa `role="option"` com `accessibilityState.selected` e `disabled`; a opção escolhida mostra também um ícone de check.
+- Dê um nome ao gatilho com `accessibilityLabel` (o [Field](/react-native/components/field/) faz isso).
+- Fechar: toque fora da lista ou use o gesto de voltar do Android.
+
+## Diferenças em relação à web
+
+- Usa o `Modal` nativo para a lista, ancorada ao gatilho (largura do gatilho, altura máxima de 240px, rolável). A camada não considera o teclado.
+- Não há `name`, `required` nem `id`, e não existe navegação por teclado.
+- Sem hover: o toque na opção usa `active:`.
+
+### Quando usar
+
+Escolher uma opção entre 5 ou mais, em formulários.
+
+### Quando não usar
+
+Poucas opções visíveis ([Radio](/react-native/components/radio/) ou [SegmentedControl](/react-native/components/segmented-control/)) e listas longas que precisam de busca ([Combobox](/react-native/components/combobox/)).

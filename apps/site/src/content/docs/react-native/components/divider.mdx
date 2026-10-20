@@ -1,0 +1,53 @@
+---
+title: Divider
+description: Linha fina que separa blocos de conteúdo.
+---
+
+Linha fina de 1 ponto que separa blocos de conteúdo, na cor `border/default`.
+
+```tsx
+import { Divider } from '@innovui/react-native'
+
+<Divider />
+```
+
+## Orientação
+
+```tsx
+<Divider orientation="horizontal" />
+
+<Stack direction="row" gap={3} align="center">
+  <Text className="text-text-primary">Início</Text>
+  <Divider orientation="vertical" className="h-4 self-auto" />
+  <Text className="text-text-primary">Ajuda</Text>
+</Stack>
+```
+
+O `vertical` usa `self-stretch`: precisa de um pai em linha (ou de uma altura definida) para ocupar a altura. Para fixar a altura, sobrescreva com `className`, como acima.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direção da linha. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`, exceto `children`.
+
+## Acessibilidade
+
+- É decorativo: o React Native não tem role `separator`, então o Divider usa `importantForAccessibility="no"` e some da árvore de acessibilidade (Android).
+- Não use o Divider para transmitir significado; organize o conteúdo com títulos.
+
+### Quando usar
+
+Separar grupos de itens ou seções dentro de um mesmo bloco.
+
+### Quando não usar
+
+Para espaçar elementos (use `gap` no [Stack](/react-native/components/stack/)). Em [List](/react-native/components/list/), prefira `divided`.
+
+## Diferenças em relação à web
+
+- Sem role `separator`; o Divider é ignorado por tecnologias assistivas.
+- Feito com `View` e fundo, não com `<hr>`.

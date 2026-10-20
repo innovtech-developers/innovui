@@ -1,0 +1,60 @@
+---
+title: Tag
+description: Rótulo de categoria ou filtro, opcionalmente removível.
+---
+
+Rótulo de **categoria ou filtro**, opcionalmente removível. Para indicar status, use o [Badge](/react-native/components/badge/).
+
+```tsx
+import { Tag } from '@innovui/react-native'
+
+<Tag>Design</Tag>
+```
+
+## Variantes
+
+```tsx
+<Tag variant="filled">Filled</Tag>
+<Tag variant="outline">Outline</Tag>
+```
+
+## Removível
+
+```tsx
+<Tag onDismiss={() => removeFilter('design')} dismissLabel="Remover filtro Design">
+  Design
+</Tag>
+```
+
+O botão de remover (×) só aparece quando há `onDismiss`.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `variant` | `'filled' \| 'outline'` | `'filled'` | Fundo preenchido ou apenas borda. |
+| `children` | `string` | n/d | O texto da tag. Obrigatório e somente texto. |
+| `onDismiss` | `() => void` | n/d | Mostra o botão de remover (×) e o chama ao tocar. |
+| `dismissLabel` | `string` | `'Remover'` | Nome acessível do botão de remover. |
+| `className` | `string` | n/d | Classes Uniwind, mescladas com as internas. |
+
+Aceita também as demais props de `View`, exceto `children`.
+
+## Acessibilidade
+
+- O botão de remover usa `accessibilityRole="button"` e `accessibilityLabel` igual a `dismissLabel`. Inclua o nome da tag no rótulo quando houver várias ("Remover filtro Design").
+- O botão tem `hitSlop` de 8 pontos para facilitar o toque.
+- Sem `onDismiss`, a Tag não é interativa.
+
+### Quando usar
+
+Categorias, filtros aplicados e rótulos de conteúdo.
+
+### Quando não usar
+
+Estados como pago ou pendente (use [Badge](/react-native/components/badge/)).
+
+## Diferenças em relação à web
+
+- `children` aceita apenas `string`.
+- A Tag não é selecionável nem clicável; só o botão de remover recebe toque.

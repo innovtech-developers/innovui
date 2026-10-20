@@ -10,7 +10,7 @@ export default defineConfig({
     sitemap(),
     starlight({
       title: 'InnovUI',
-      description: 'Biblioteca de componentes React do design system InnovUI.',
+      description: 'Biblioteca de componentes React e React Native do design system InnovUI.',
       locales: {
         root: { label: 'Português', lang: 'pt-BR' },
       },
@@ -55,14 +55,33 @@ export default defineConfig({
           label: 'Primeiros passos',
           items: [
             { label: 'Instalação', slug: 'instalacao' },
-            { label: 'Tema e customização', slug: 'tema' },
             { label: 'Acessibilidade', slug: 'acessibilidade' },
             { label: 'Contribuindo', slug: 'contribuindo' },
           ],
         },
         {
-          label: 'Componentes',
-          items: [{ autogenerate: { directory: 'components' } }],
+          label: 'React (web)',
+          items: [
+            { label: 'Tema e customização', slug: 'tema' },
+            {
+              label: 'Componentes',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'components' } }],
+            },
+          ],
+        },
+        {
+          label: 'React Native',
+          items: [
+            { label: 'Instalação e configuração', slug: 'react-native/instalacao' },
+            { label: 'Tema e modo escuro', slug: 'react-native/tema' },
+            { label: 'Diferenças em relação à web', slug: 'react-native/diferencas' },
+            {
+              label: 'Componentes',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'react-native/components' } }],
+            },
+          ],
         },
       ],
     }),

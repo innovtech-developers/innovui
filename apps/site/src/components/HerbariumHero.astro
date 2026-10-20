@@ -1,5 +1,6 @@
 ---
 /// <reference types="@astrojs/starlight" />
+import { TabItem, Tabs } from '@astrojs/starlight/components'
 import InstallCommand from './InstallCommand.astro'
 import { SpecimenPlate } from './SpecimenPlate'
 
@@ -14,7 +15,15 @@ const tagline = entry.data.hero?.tagline
       <h1 class="lp-hero__title">{title}</h1>
       {tagline && <p class="lp-hero__tagline">{tagline}</p>}
 
-      <InstallCommand />
+      <!-- mesma chave de sincronização da página de instalação: a escolha vale nas duas -->
+      <Tabs syncKey="platform">
+        <TabItem label="Web (React)">
+          <InstallCommand />
+        </TabItem>
+        <TabItem label="Mobile (React Native)">
+          <InstallCommand pkg="@innovui/react-native uniwind tailwindcss react-native-svg" />
+        </TabItem>
+      </Tabs>
 
       <!-- Links estilizados como o Button real (radius/full, mesmas cores), não o componente
            em si: Button não tem variante "link" (asChild/href) — navegação pede <a> de verdade. -->
