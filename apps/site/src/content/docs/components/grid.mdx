@@ -1,0 +1,60 @@
+---
+title: Grid
+description: Grade de colunas iguais, no grid responsivo do design system.
+---
+
+import { GridDemo, GridResponsiveDemo } from '../../../components/demos/LayoutDemos'
+
+Distribui itens numa grade de colunas iguais. Sem configurar nada, segue o grid do design system: **4 colunas** no mobile, **8** a partir de 768px (tablet) e **12** a partir de 1440px (desktop).
+
+<GridDemo client:load />
+
+```tsx
+import { Grid, GridItem } from '@innovui/react'
+
+<Grid columns={12}>
+  <GridItem span={12}>Cabeçalho</GridItem>
+  <GridItem span={6}>Metade</GridItem>
+  <GridItem span={6}>Metade</GridItem>
+</Grid>
+```
+
+## Grid responsivo
+
+Sem `columns`, o número de colunas muda sozinho com a largura da tela. Aqui, cada item ocupa 4 colunas: 1 por linha no mobile, 2 no tablet e 3 no desktop.
+
+<GridResponsiveDemo client:load />
+
+```tsx
+<Grid>
+  <GridItem span={4}>…</GridItem>
+  <GridItem span={4}>…</GridItem>
+  <GridItem span={4}>…</GridItem>
+</Grid>
+```
+
+## Props
+
+### Grid
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `columns` | `'responsive' \| 1 \| 2 \| 3 \| 4 \| 6 \| 12` | `'responsive'` | Número fixo de colunas, ou o grid do DS (4/8/12 conforme a tela). |
+| `gap` | `0 \| 1 \| 2 \| 3 \| 4 \| 6 \| 8` | `4` | Espaço entre células: 0, 4, 8, 12, 16, 24, 32px. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+### GridItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `span` | `1 \| 2 \| 3 \| 4 \| 6 \| 8 \| 12 \| 'full'` | — | Quantas colunas ocupa. `'full'` ocupa a linha toda. |
+
+Ambos aceitam as props nativas de `<div>`.
+
+## Acessibilidade
+
+Só layout, sem papel ARIA. A ordem do DOM é a ordem de leitura e de Tab.
+
+### Quando usar
+
+Cards, painéis e formulários em várias colunas. Para uma única linha ou coluna com espaçamento, [Stack](/components/stack/) é mais simples.
