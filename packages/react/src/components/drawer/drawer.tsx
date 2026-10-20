@@ -77,13 +77,13 @@ export function Drawer({
   const { panelRef, overlayRef } = useSwipeToClose(edge, swipeToClose, closeRef)
   const hasHandle = showHandle && swipeToClose && (edge === 'top' || edge === 'bottom')
   const handle = hasHandle && (
-    // Figma "Drawer/navigation": traço de 4px em `border/strong`, numa faixa de 24px. As variantes
-    // sm (108px) e xl (40px) viraram mobile e desktop (o `xl` do DS é o `desktop`, 1440px).
+    // Figma "Drawer/navigation": traço de 4px em `border/strong`, numa faixa de 24px. Das duas
+    // variantes (xl com 40px, sm com 108px) o padrão é a de 40px, a discreta.
     <div
       aria-hidden="true"
       className="iu:flex iu:h-6 iu:shrink-0 iu:items-center iu:justify-center"
     >
-      <span className="iu:h-1 iu:w-[108px] iu:rounded-lg iu:bg-[var(--color-border-strong)] iu:desktop:w-10" />
+      <span className="iu:h-1 iu:w-10 iu:rounded-lg iu:bg-[var(--color-border-strong)]" />
     </div>
   )
   return (

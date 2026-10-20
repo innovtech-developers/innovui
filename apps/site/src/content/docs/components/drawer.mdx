@@ -42,7 +42,7 @@ import { Drawer, DrawerClose, Button } from '@innovui/react'
 
 No celular, arrastar o painel para a borda de onde ele veio fecha (para a direita no `right`, para baixo no `bottom`, e assim por diante). O painel acompanha o dedo, e o fundo escurecido clareia junto; passando de 40% do tamanho, ou soltando com um gesto rápido, ele fecha, e senão volta ao lugar. O gesto vale para o painel inteiro, mas não rouba a rolagem do conteúdo: se o corpo ainda rola no sentido de fechar, o dedo rola o conteúdo, e se ele chega ao começo no mesmo gesto, o painel assume dali (e devolve a rolagem se o dedo recuar). Também não pega o toque em campos de texto e sliders. Para tirar outro elemento do gesto, use `data-no-drag`.
 
-Nos painéis `top` e `bottom` aparece uma barrinha de arraste na borda, que avisa que o painel fecha arrastando (108px no mobile e 40px a partir do breakpoint `desktop`). Esconda com `showHandle={false}`; ela some sozinha com `swipeToClose={false}`, para não prometer um gesto que não existe.
+Nos painéis `top` e `bottom` aparece uma barrinha de arraste na borda, que avisa que o painel fecha arrastando (40px de largura, a variante discreta do Figma). Esconda com `showHandle={false}`; ela some sozinha com `swipeToClose={false}`, para não prometer um gesto que não existe.
 
 Só vale para toque: no mouse, continuam o `Esc`, o × e o clique no backdrop. Para um painel com formulário em edição, em que fechar sem querer perde dados, desligue com `swipeToClose={false}`.
 

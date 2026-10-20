@@ -148,8 +148,7 @@ describe('Drawer', () => {
         expect(handle).toBeInTheDocument()
         expect(handle?.firstElementChild).toHaveClass(
           'iu:h-1',
-          'iu:w-[108px]',
-          'iu:desktop:w-10',
+          'iu:w-10',
           'iu:bg-[var(--color-border-strong)]',
         )
       },
