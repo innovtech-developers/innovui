@@ -34,7 +34,7 @@ export type IconButtonProps = Omit<PressableProps, 'children' | 'style' | 'acces
     /** Obrigatório: sem texto visível, é o nome acessível do botão. */
     accessibilityLabel: string
     /**
-     * O ícone. No native a cor não é herdada: passe `color` ao ícone (ex.: via `useToken`).
+     * O ícone. No native a cor não é herdada: passe `color` ao ícone (ex.: lida com `useCSSVariable`, do uniwind).
      * O tamanho do ícone também fica por conta de quem passa (24/20/16 por `size`).
      */
     children: ReactNode
