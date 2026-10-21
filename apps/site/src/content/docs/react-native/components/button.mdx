@@ -44,7 +44,7 @@ As alturas são 36, 44 e 56 pontos.
 <Button trailingIcon={<ArrowRightIcon color={color} />}>Continuar</Button>
 ```
 
-O ícone não herda a cor do texto: passe `color` a ele (veja [Diferenças em relação à web](#diferenças-em-relação-à-web)).
+O ícone não herda a cor do texto: passe `color` a ele (veja [Particularidades](#particularidades)).
 
 ## Estado de carregamento
 
@@ -88,9 +88,7 @@ Para disparar uma ação: salvar, enviar, confirmar, excluir.
 
 Para navegar entre telas ou abrir um endereço (use [Link](/react-native/components/link/)) e para ações só com ícone (use [IconButton](/react-native/components/icon-button/)).
 
-## Diferenças em relação à web
+## Particularidades
 
-- `onPress` no lugar de `onClick`.
 - `children` aceita apenas `string`, pois o texto não herda estilo no React Native.
-- Ícones recebem `color` por prop; não existe `currentColor`.
-- Não existe `asChild`.
+- Ícones recebem `color` por prop: não herdam a cor do texto.

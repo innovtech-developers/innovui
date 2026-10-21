@@ -47,7 +47,7 @@ toast({
 })
 ```
 
-Tocar na ação chama o `onClick` e fecha o toast. O campo continua se chamando `onClick`, como no web, apesar de o toque ser `onPress`.
+Tocar na ação chama o `onClick` e fecha o toast. O campo da ação se chama `onClick`, apesar de o toque ser `onPress`.
 
 ## `useToast()`
 
@@ -87,9 +87,9 @@ Tocar na ação chama o `onClick` e fecha o toast. O campo continua se chamando 
 
 Arrastar um toast para o lado (para qualquer um dos dois) dispensa: além de 50px, ou com um gesto rápido. O toast acompanha o dedo e some em seguida; senão volta ao lugar. Enquanto o dedo segura, o tempo de auto-fechar pausa. Quando um toast sai, os de baixo deslizam para o lugar em vez de pular (e pulam direto com "Reduzir movimento" ligado no sistema).
 
-## Diferenças em relação à web
+## Particularidades
 
-- Use `ToastProvider` e `useToast()` no mesmo formato, mas `title` e `description` são só `string` (no web aceitam `ReactNode`).
+- `title` e `description` são só `string`.
 - A pilha fica acima do conteúdo do app, mas **abaixo de Modal, Drawer e Popover**, que são janelas nativas. Um toast disparado com um desses abertos fica atrás dele.
 - Sem atalho de teclado.
 - O `paddingTop` do topo é estimado (56 no iOS, altura da barra de status mais 8 no Android), não a área segura real.

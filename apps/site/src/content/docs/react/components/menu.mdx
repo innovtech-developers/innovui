@@ -1,0 +1,63 @@
+---
+title: Menu
+description: Lista de ações aberta por um botão, com navegação por teclado.
+---
+
+import { MenuDemo } from '../../../../components/demos/PanelDemos'
+
+Lista de ações que aparece ao clicar num botão, como as opções de uma linha de tabela ou de um perfil. Setas navegam, `Enter` escolhe e digitar uma letra salta para o item que começa com ela.
+
+<MenuDemo client:load />
+
+```tsx
+import { Menu, MenuItem, MenuLabel, MenuSeparator, Button } from '@innovui/react'
+
+<Menu trigger={<Button variant="secondary">Ações</Button>}>
+  <MenuLabel>Pedido #1042</MenuLabel>
+  <MenuItem onSelect={handleEdit}>Editar</MenuItem>
+  <MenuItem disabled>Arquivar</MenuItem>
+  <MenuSeparator />
+  <MenuItem destructive onSelect={handleDelete}>Excluir</MenuItem>
+</Menu>
+```
+
+Use `onSelect` nos itens, e não `onClick`: ele dispara por clique e por teclado.
+
+## Props
+
+### Menu
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `trigger` | `ReactNode` | — | **Obrigatória.** Elemento que abre o menu; precisa aceitar `ref` e foco. |
+| `children` | `ReactNode` | — | `MenuItem`, `MenuLabel` e `MenuSeparator`. |
+| `side` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` | Lado do trigger em que abre. |
+| `align` | `'start' \| 'center' \| 'end'` | `'start'` | Alinhamento no eixo perpendicular ao `side`. |
+| `open` / `defaultOpen` / `onOpenChange` | — | — | Controle do estado de abertura. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+### MenuItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `onSelect` | `(event: Event) => void` | — | Chamado ao escolher o item; o menu fecha em seguida. |
+| `icon` | `ReactNode` | — | Ícone de 16px antes do rótulo. |
+| `destructive` | `boolean` | `false` | Texto em vermelho, para excluir ou remover. |
+| `disabled` | `boolean` | `false` | Não pode ser escolhido nem focado pelas setas. |
+
+`MenuLabel` dá título a um grupo de itens e `MenuSeparator` desenha uma linha entre grupos.
+
+## Acessibilidade
+
+- O trigger tem `aria-haspopup="menu"` e `aria-expanded`; a lista é um `role="menu"` com itens `menuitem`.
+- `Esc` fecha e devolve o foco ao trigger. O foco circula nos itens com as setas.
+- Ícones são decorativos: o rótulo do item é o texto.
+- Cores não carregam o significado sozinhas: um item destrutivo deve dizer "Excluir" no texto.
+
+### Quando usar
+
+Ações de um item ou do usuário (editar, duplicar, sair), principalmente quando não há espaço para botões separados.
+
+### Quando não usar
+
+Escolher um valor de formulário ([Select](/react/components/select/)), navegar entre seções ([Tabs](/react/components/tabs/)) e conteúdo que não seja uma lista de ações ([Popover](/react/components/popover/)).

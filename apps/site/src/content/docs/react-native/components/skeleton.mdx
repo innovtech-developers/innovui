@@ -50,7 +50,7 @@ Carregar telas, listas e cartões cujo formato você já conhece.
 
 Ações pontuais (use [Spinner](/react-native/components/spinner/)) ou quando o formato do conteúdo é desconhecido.
 
-## Diferenças em relação à web
+## Particularidades
 
-- A web respeita `motion-reduce`; no React Native a animação (`Animated`, driver nativo) sempre roda.
-- O estado de carregamento vai no contêiner por `accessibilityState`, não por `aria-busy`.
+- A animação (`Animated`, driver nativo) sempre roda: não respeita "Reduzir movimento".
+- O estado de carregamento vai no contêiner por `accessibilityState`.

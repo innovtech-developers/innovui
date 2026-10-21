@@ -1,0 +1,62 @@
+---
+title: Calendar
+description: Calendário de um mês para escolher um dia ou um período, com navegação completa por teclado.
+---
+
+import { CalendarDemo, CalendarRangeDemo } from '../../../../components/demos/AdvancedFormDemos'
+
+Calendário de um mês para escolher um dia ou um período. É a base do [DatePicker](/react/components/date-picker/) e do [DateRangePicker](/react/components/date-range-picker/), e também serve sozinho, fora de um campo: agendas, filtros e painéis. Os nomes de mês e dia vêm do navegador (`Intl`), em português por padrão.
+
+<CalendarDemo client:load />
+
+```tsx
+import { Calendar } from '@innovui/react'
+
+<Calendar value={data} onValueChange={setData} />
+```
+
+## Período
+
+Com `mode="range"`, o `value` passa a ser um `DateRange` (`{ from?: Date; to?: Date }`) e o calendário escolhe início e fim: o primeiro clique define o início, o segundo o fim. Um clique antes do início, ou com o período já completo, recomeça.
+
+<CalendarRangeDemo client:load />
+
+```tsx
+<Calendar mode="range" value={periodo} onValueChange={setPeriodo} />
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `mode` | `'single' \| 'range'` | `'single'` | Um dia ou um período. Muda o tipo de `value`. |
+| `value` / `defaultValue` | `Date` (`single`) ou `DateRange` (`range`) | — | Seleção (controlada ou inicial). |
+| `onValueChange` | `(date: Date) => void` ou `(range: DateRange) => void` | — | Chamado a cada clique. |
+| `minDate` / `maxDate` | `Date` | — | Primeiro e último dia permitidos; desabilitam o resto e as setas de mês que levariam para fora. |
+| `locale` | `string` | `'pt-BR'` | Idioma dos nomes de mês e dia (BCP 47). |
+| `weekStartsOn` | `0–6` | `0` | Primeiro dia da semana (0 = domingo). |
+| `autoFocus` | `boolean` | `false` | Foca o dia ao montar; use quando o calendário abre dentro de um painel. |
+| `previousMonthLabel` / `nextMonthLabel` | `string` | `'Mês anterior'` / `'Próximo mês'` | Nomes acessíveis dos botões de mês. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+O valor representa **dias**, não instantes: o calendário ignora hora e fuso.
+
+## Teclado
+
+| Tecla | Ação |
+|---|---|
+| `←` `→` | Dia anterior e seguinte (passa para o mês vizinho se preciso). |
+| `↑` `↓` | Mesma posição na semana anterior e na seguinte. |
+| `Home` / `End` | Primeiro e último dia da semana. |
+| `Page Up` / `Page Down` | Mês anterior e seguinte; com `Shift`, o ano. |
+| `Enter` / `Espaço` | Escolhe o dia (no período, define o início ou o fim). |
+
+## Acessibilidade
+
+- O calendário é um `role="grid"` nomeado pelo mês, e cada dia é um botão com o nome completo ("segunda-feira, 19 de outubro de 2026"). O dia escolhido leva `aria-selected` e hoje leva `aria-current="date"`. No período, todos os dias da faixa, do início ao fim, levam `aria-selected`.
+- Só um dia entra na ordem de `Tab` (o foco passa por ele em uma tecla); as setas fazem o resto.
+- O título do mês é uma região `aria-live`: leitores de tela anunciam a troca de mês.
+
+### Quando não usar
+
+Para um campo de formulário, prefira o [DatePicker](/react/components/date-picker/) ou o [DateRangePicker](/react/components/date-range-picker/), que já cuidam do painel, do foco e do valor no formulário.

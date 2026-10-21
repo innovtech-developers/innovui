@@ -72,11 +72,11 @@ Em telas estreitas o modal ocupa a largura disponível, com 16 de margem, e o co
 
 ## Animação
 
-Como na web: o fundo entra com fade e o diálogo entra com fade e zoom a partir de 95% (200 ms), e sai do mesmo jeito (150 ms). Com "Reduzir movimento" ligado no sistema, abre e fecha direto. Popover, Menu, Tooltip, Select, Combobox e DatePicker também entram com fade e zoom de 96%, a partir do gatilho (150 ms).
+O fundo entra com fade e o diálogo entra com fade e zoom a partir de 95% (200 ms), e sai do mesmo jeito (150 ms). Com "Reduzir movimento" ligado no sistema, abre e fecha direto. Popover, Menu, Tooltip, Select, Combobox e DatePicker também entram com fade e zoom de 96%, a partir do gatilho (150 ms).
 
-## Diferenças em relação à web
+## Particularidades
 
-- Sem `asChild`: o `trigger` e o filho de `ModalClose` recebem `onPress` por clonagem.
+- O `trigger` e o filho de `ModalClose` recebem `onPress` por clonagem, então precisam aceitar essa prop.
 - Sem foco preso, sem `Esc` e sem devolução de foco. O botão voltar do Android e o toque no backdrop fecham o modal.
 - Sem blur no backdrop.
 - Aparece acima de tudo, inclusive do [Toast](/react-native/components/toast/), porque é uma janela nativa.
@@ -84,7 +84,7 @@ Como na web: o fundo entra com fade e o diálogo entra com fade e zoom a partir 
 ## Acessibilidade
 
 - O contêiner usa `accessibilityViewIsModal`, que mantém o leitor de tela dentro do diálogo no iOS.
-- O título tem `accessibilityRole="header"`. Não há `role="dialog"` nem `aria-describedby` no RN.
+- O título tem `accessibilityRole="header"`. O diálogo não tem um role próprio.
 - O botão × é um `Pressable` com `accessibilityRole="button"` e `accessibilityLabel` (`closeLabel`). Mantenha-o: é a saída óbvia para quem usa leitor de tela.
 - O backdrop fecha ao toque. O modal também fecha com `onRequestClose` (botão voltar do Android).
 

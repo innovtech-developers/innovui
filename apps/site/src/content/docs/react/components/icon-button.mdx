@@ -1,0 +1,82 @@
+---
+title: IconButton
+description: Botão quadrado só com ícone, com os mesmos estilos e estados do Button.
+---
+
+import { IconButtonVariantsDemo, IconButtonSizesDemo, IconButtonLoadingDemo } from '../../../../components/demos/IconButtonDemo'
+
+Versão compacta do [Button](/react/components/button): só um ícone, sem texto. Mesmos 5 estilos, 6 estados e tokens, em container quadrado.
+
+```tsx
+import { IconButton } from '@innovui/react'
+import { X } from 'lucide-react'
+
+<IconButton aria-label="Fechar">
+  <X />
+</IconButton>
+```
+
+O ícone entra como `children`, então qualquer componente de ícone funciona. Não passe `size` ao ícone: o tamanho (16/20/24px) vem do `size` do botão.
+
+## Estilos
+
+<IconButtonVariantsDemo client:load />
+
+```tsx
+<IconButton aria-label="Fechar" variant="primary"><X /></IconButton>
+<IconButton aria-label="Fechar" variant="secondary"><X /></IconButton>
+<IconButton aria-label="Fechar" variant="tertiary"><X /></IconButton>
+<IconButton aria-label="Fechar" variant="ghost"><X /></IconButton>
+<IconButton aria-label="Fechar" variant="destructive"><X /></IconButton>
+```
+
+## Tamanhos
+
+<IconButtonSizesDemo client:load />
+
+| Tamanho | Container | Ícone |
+|---|---|---|
+| `sm` | 36 × 36 px | 16px |
+| `md` | 44 × 44 px | 20px |
+| `lg` | 56 × 56 px | 24px |
+
+## Estado de carregamento
+
+<IconButtonLoadingDemo client:load />
+
+```tsx
+<IconButton aria-label="Salvar" loading={isSaving} onClick={handleSave}>
+  <Save />
+</IconButton>
+```
+
+No estado `loading`, o botão fica desabilitado, ganha `aria-busy="true"` e o ícone é substituído por um spinner.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `aria-label` | `string` | — | **Obrigatório.** Nome acessível do botão. |
+| `children` | `ReactNode` | — | O ícone. |
+| `variant` | `'primary' \| 'secondary' \| 'tertiary' \| 'ghost' \| 'destructive'` | `'primary'` | Estilo visual. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tamanho do container e do ícone. |
+| `loading` | `boolean` | `false` | Desabilita, marca `aria-busy` e troca o ícone por um spinner. |
+| `disabled` | `boolean` | `false` | Desabilita o botão. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`. |
+
+Aceita também as props nativas de `<button>`. `type` é `"button"` por padrão.
+
+## Acessibilidade
+
+- Sem texto visível, o `aria-label` é o nome do botão. O TypeScript recusa o uso sem ele.
+- Mantenha o ícone decorativo (`aria-hidden`); o rótulo é o do botão.
+- Foco visível com anel de 2px, como no Button.
+- No estado `loading`, o `aria-busy="true"` anuncia o carregamento.
+
+### Quando usar
+
+Toolbars, ações de tabela (editar, excluir), controles de mídia, botões de fechar, ações compactas em mobile.
+
+### Quando não usar
+
+Ações cujo significado não é óbvio só pelo ícone: use um [Button](/react/components/button) com texto.

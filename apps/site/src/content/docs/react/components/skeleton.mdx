@@ -1,0 +1,70 @@
+---
+title: Skeleton
+description: Placeholder com pulse que mantém o layout enquanto o conteúdo carrega.
+---
+
+import { SkeletonVariantsDemo, SkeletonLoadingDemo } from '../../../../components/demos/FeedbackDemos'
+
+Placeholder estático com **pulse** que ocupa o lugar do conteúdo real enquanto ele carrega, mantendo as proporções para evitar salto de layout. Para ações pontuais (enviar, carregar), use o [Spinner](/react/components/button/#estado-de-carregamento).
+
+<SkeletonVariantsDemo client:load />
+
+```tsx
+import { Skeleton } from '@innovui/react'
+
+<Skeleton variant="text" />
+<Skeleton variant="title" />
+<Skeleton variant="avatar" />
+<Skeleton variant="rectangle" />
+<Skeleton variant="card" />
+```
+
+| Variante | Tamanho padrão | Raio |
+|---|---|---|
+| `text` | 200 × 12 px | 4px |
+| `title` | 160 × 20 px | 4px |
+| `avatar` | 40 × 40 px | circular |
+| `rectangle` | 200 × 24 px | 8px |
+| `card` | 300 × 120 px | 8px |
+
+## Ajustando ao conteúdo
+
+Os tamanhos acima são os padrão. Sobrescreva com `className` para casar com o conteúdo real:
+
+<SkeletonLoadingDemo client:load />
+
+```tsx
+<div aria-busy={loading}>
+  {loading ? (
+    <>
+      <Skeleton variant="avatar" />
+      <Skeleton variant="title" className="iu:w-3/5" />
+      <Skeleton className="iu:w-full" />
+    </>
+  ) : (
+    <Profile user={user} />
+  )}
+</div>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `variant` | `'text' \| 'title' \| 'avatar' \| 'card' \| 'rectangle'` | `'text'` | Forma e tamanho padrão. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`; use para trocar largura/altura. |
+
+Aceita também as props nativas de `<div>`.
+
+## Acessibilidade
+
+- O Skeleton é **decorativo** (`aria-hidden="true"`): o leitor de tela não o encontra. Marque o contêiner com `aria-busy="true"` enquanto carrega e tire quando o conteúdo chegar.
+- A animação pulse é desligada com `prefers-reduced-motion: reduce`.
+
+### Quando usar
+
+Carregamento de página ou seção, substituindo o conteúdo real (listas, cards, perfis).
+
+### Quando não usar
+
+Ações pontuais, como botões e envio de formulário (use o [Spinner](/react/components/button/#estado-de-carregamento)), e carregamentos curtos (< 300 ms), onde o placeholder só piscaria.

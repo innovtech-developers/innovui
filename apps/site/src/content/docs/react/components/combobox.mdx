@@ -1,0 +1,72 @@
+---
+title: Combobox
+description: Campo com lista de opções que se filtra enquanto se digita.
+---
+
+import { ComboboxDemo, ComboboxStatesDemo } from '../../../../components/demos/AdvancedFormDemos'
+
+Campo de texto com uma lista de opções que se filtra enquanto a pessoa digita. Ela escolhe **só valores da lista**, como no [Select](/react/components/select/), mas encontra um entre muitos digitando. A busca ignora maiúsculas e acentos: "sao" acha "São Paulo".
+
+<ComboboxDemo client:load />
+
+```tsx
+import { Combobox, Field } from '@innovui/react'
+
+const estados = [
+  { value: 'SP', label: 'São Paulo' },
+  { value: 'RJ', label: 'Rio de Janeiro' },
+  { value: 'MG', label: 'Minas Gerais', disabled: true },
+]
+
+<Field label="Estado">
+  <Combobox options={estados} onValueChange={setEstado} />
+</Field>
+```
+
+Dentro de um [Field](/react/components/field/), o `Combobox` recebe rótulo, erro e texto de apoio automaticamente. Sem Field, passe `aria-label`.
+
+## Estados e tamanhos
+
+<ComboboxStatesDemo client:load />
+
+Tamanhos `sm`, `md` e `lg` (40, 48 e 56px), iguais aos do [Input](/react/components/input/).
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `options` | `{ value: string; label: string; disabled?: boolean }[]` | — | **Obrigatória.** As opções. A busca procura no `label`. |
+| `value` / `defaultValue` | `string` | — | Valor escolhido (controlado ou inicial). |
+| `onValueChange` | `(value: string) => void` | — | Chamado com o `value` escolhido, ou `''` se a pessoa apagar o texto. |
+| `emptyMessage` | `string` | `'Nenhum resultado'` | Texto quando a busca não acha nada. |
+| `name` | `string` | — | Envia o `value` escolhido num campo oculto de formulário. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Altura do campo. |
+| `error` | `boolean` | `false` | Borda vermelha e `aria-invalid`. |
+| `disabled` / `readOnly` | `boolean` | `false` | Não abre a lista. |
+| `placeholder` | `string` | — | Texto com o campo vazio. |
+
+Aceita também as props nativas de `<input>` (como `aria-label`, `onBlur`, `onKeyDown`).
+
+## Teclado
+
+| Tecla | Ação |
+|---|---|
+| `↓` / `↑` | Abre a lista e move a opção ativa, pulando as desabilitadas. |
+| `Enter` | Escolhe a opção ativa. |
+| `Esc` | Fecha a lista e descarta o texto digitado. |
+| Digitar | Filtra e abre a lista. |
+
+## Acessibilidade
+
+- O campo é um `role="combobox"` com `aria-expanded`, `aria-controls` e `aria-activedescendant`; a lista é um `listbox` e as opções, `option` com `aria-selected`.
+- O foco **nunca sai do campo**: a opção ativa é só anunciada, o que mantém o teclado e o leitor de tela no mesmo lugar.
+- Ao sair do campo sem escolher, o texto volta ao valor escolhido, para que o campo nunca mostre algo que não é um valor válido.
+- A lista funciona dentro de [Modal](/react/components/modal/) e [Drawer](/react/components/drawer/): `Esc` fecha primeiro a lista, depois o diálogo.
+
+### Quando usar
+
+Listas longas (estados, cidades, países, produtos), onde rolar um Select seria lento.
+
+### Quando não usar
+
+Poucas opções, até uns 7 ([Select](/react/components/select/) ou [Radio](/react/components/radio/)); texto livre com sugestões, em que a pessoa pode digitar algo que não está na lista.

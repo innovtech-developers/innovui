@@ -19,7 +19,7 @@ O separador (›) aparece depois de todos os itens, menos do último. Marque a t
 
 ## Com o roteador do seu app
 
-Não existe `href` nem `asChild`: navegue pelo `onPress`, com a função do seu roteador (`router.push` no Expo Router, `navigation.navigate` no React Navigation).
+Navegue pelo `onPress`, com a função do seu roteador (`router.push` no Expo Router, `navigation.navigate` no React Navigation).
 
 ## Props
 
@@ -43,10 +43,10 @@ Aceita as demais props de `View`. A trilha quebra de linha quando não cabe.
 
 Aceita as demais props de `Pressable`, exceto `style`.
 
-## Diferenças em relação à web
+## Particularidades
 
-- `onPress` no lugar de `href` e `asChild`.
-- Não há `aria-current`: a página atual usa `accessibilityState={{ selected: true }}`.
+- Navegue por `onPress`, com a função do seu roteador.
+- A página atual usa `accessibilityState={{ selected: true }}`.
 
 ## Acessibilidade
 

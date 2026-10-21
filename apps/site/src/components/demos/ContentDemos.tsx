@@ -68,7 +68,7 @@ export function LinkDemo() {
   return (
     <Stage>
       <p style={{ margin: 0 }}>
-        Leia a <Link href="/instalacao/">instalação</Link> ou veja o{' '}
+        Leia a <Link href="/react/instalacao/">instalação</Link> ou veja o{' '}
         <Link
           href="https://github.com/innovtech-developers/innovui"
           target="_blank"

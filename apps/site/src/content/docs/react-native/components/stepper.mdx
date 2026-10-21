@@ -48,9 +48,9 @@ Aceita as demais props de `View`. Os passos quebram de linha quando não cabem.
 
 Aceita as demais props de `View`.
 
-## Diferenças em relação à web
+## Particularidades
 
-- Não há `aria-current`: o passo ativo usa `accessibilityState={{ selected: true }}`.
+- O passo ativo usa `accessibilityState={{ selected: true }}`.
 - O texto "concluído" vai em `accessibilityLabel` (`"Entrega (concluído)"`), já que não existe texto só para leitor de tela.
 - O rótulo acessível de passos concluídos só é montado quando `children` é texto. Com outro nó, passe `accessibilityLabel`.
 

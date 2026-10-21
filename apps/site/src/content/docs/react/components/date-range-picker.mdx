@@ -1,0 +1,86 @@
+---
+title: DateRangePicker
+description: Campo de período (início e fim) que abre um calendário, com atalhos como "Últimos 7 dias".
+---
+
+import {
+  DateRangePickerDemo,
+  DateRangePresetsDemo,
+} from '../../../../components/demos/AdvancedFormDemos'
+
+Campo de período: um botão que mostra o início e o fim (`12/10/2026 – 18/10/2026`) e abre um [Calendar](/react/components/calendar/) para escolher os dois dias. O primeiro clique define o início, o segundo define o fim, e o painel fecha. Os dias entre os dois ficam destacados numa faixa contínua. Para um dia só, use o [DatePicker](/react/components/date-picker/).
+
+<DateRangePickerDemo client:load />
+
+```tsx
+import { DateRangePicker, Field, type DateRange } from '@innovui/react'
+
+const [periodo, setPeriodo] = useState<DateRange>({})
+
+<Field label="Período da hospedagem">
+  <DateRangePicker value={periodo} onValueChange={setPeriodo} />
+</Field>
+```
+
+O valor é `{ from?: Date; to?: Date }` (o tipo `DateRange`). Sem `to`, só o início foi escolhido, e o campo mostra `12/10/2026 – …`. Como cada clique chama `onValueChange`, ele é chamado duas vezes por período: primeiro só com `from`, depois com `from` e `to`. Cada `Date` representa um **dia**, não um instante.
+
+Regras dos cliques:
+- Um clique **depois do início** define o fim. Clicar no mesmo dia faz um período de um dia só.
+- Um clique **antes do início** recomeça o período a partir dele.
+- Com o período completo, um novo clique recomeça.
+
+## Atalhos de período
+
+Com `presets`, o painel ganha uma coluna de atalhos ao lado do calendário (acima dele em telas estreitas). Escolher um atalho define o período inteiro e fecha o painel. O atalho que bate com o período atual fica marcado.
+
+<DateRangePresetsDemo client:load />
+
+```tsx
+import { DateRangePicker, getDatePresets } from '@innovui/react'
+
+<DateRangePicker presets value={periodo} onValueChange={setPeriodo} />
+```
+
+`presets` aceita `true` para os atalhos padrão (**Hoje**, **Últimos 7 dias**, **Últimos 30 dias**, **Este mês** e **Mês passado**) ou a sua lista. Os últimos 7 e 30 dias incluem hoje. Para escolher, traduzir ou acrescentar atalhos, parta de `getDatePresets()`:
+
+```tsx
+const atalhos = [
+  ...getDatePresets().slice(1, 3), // só 7 e 30 dias
+  {
+    label: 'Trimestre',
+    range: { from: new Date(2026, 6, 1), to: new Date(2026, 8, 30) },
+  },
+]
+
+<DateRangePicker presets={atalhos} />
+```
+
+Atalhos que ficam fora de `minDate` e `maxDate` aparecem desabilitados.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` / `defaultValue` | `DateRange` | — | Período (controlado ou inicial). |
+| `onValueChange` | `(range: DateRange) => void` | — | Chamado a cada clique. |
+| `presets` | `boolean \| { label: string; range: { from: Date; to: Date } }[]` | — | Atalhos de período. `true` usa os padrão. |
+| `minDate` / `maxDate` | `Date` | — | Primeiro e último dia permitidos. |
+| `locale` | `string` | `'pt-BR'` | Idioma e formato da data (BCP 47). |
+| `weekStartsOn` | `0–6` | `0` | Primeiro dia da semana (0 = domingo). |
+| `placeholder` | `string` | `'dd/mm/aaaa – dd/mm/aaaa'` | Texto sem período escolhido. |
+| `fromName` / `toName` | `string` | — | Nomes dos campos de formulário do início e do fim; cada um envia `aaaa-mm-dd`. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Altura do campo (40, 48 e 56px). |
+| `error` | `boolean` | `false` | Borda vermelha e `aria-invalid`. |
+| `disabled` / `readOnly` | `boolean` | `false` | Não abre o calendário; `readOnly` ainda mostra o período. |
+
+Dentro de um [Field](/react/components/field/), rótulo, erro e texto de apoio são ligados sozinhos. Sem Field, passe `aria-label`.
+
+## Acessibilidade
+
+- O painel é um diálogo com o [Calendar](/react/components/calendar/), que tem navegação completa por teclado (veja a tabela de teclas na página dele). No período, todos os dias da faixa levam `aria-selected`.
+- Os atalhos são botões com `aria-pressed` no que bate com o período atual, e entram na ordem de `Tab` antes do calendário.
+- O foco entra no início do período ao abrir e volta ao botão com `Esc`.
+
+### Quando não usar
+
+Um dia só ([DatePicker](/react/components/date-picker/)) e períodos que a pessoa precisa digitar ou que ficam a anos de distância.
