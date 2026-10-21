@@ -1,5 +1,5 @@
 import { act, render, screen } from '@testing-library/react-native'
-import { StyleSheet, Text, type ViewStyle } from 'react-native'
+import { AccessibilityInfo, StyleSheet, Text, type ViewStyle } from 'react-native'
 import { AnchoredOverlay } from './anchored-overlay'
 import { Backdrop } from './backdrop'
 import { CheckIcon, StatusIcon } from './status'
@@ -57,6 +57,14 @@ describe('_shared', () => {
       rerender(overlay(false))
       expect(screen.getByText('conteúdo')).toBeTruthy()
       act(() => jest.advanceTimersByTime(400))
+      expect(screen.queryByText('conteúdo')).toBeNull()
+    })
+
+    it('com "Reduzir movimento" ligado no sistema, fecha direto', async () => {
+      jest.spyOn(AccessibilityInfo, 'isReduceMotionEnabled').mockResolvedValue(true)
+      const { rerender } = render(overlay(true))
+      await act(async () => {}) // o sistema responde que quer menos movimento
+      rerender(overlay(false))
       expect(screen.queryByText('conteúdo')).toBeNull()
     })
 

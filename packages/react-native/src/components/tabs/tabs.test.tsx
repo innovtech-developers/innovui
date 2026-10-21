@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native'
-import { StyleSheet, Text } from 'react-native'
+import { AccessibilityInfo, StyleSheet, Text } from 'react-native'
 import { Tab, TabList, TabPanel, Tabs, type TabsProps } from './tabs'
 
 function Example(props: TabsProps) {
@@ -117,6 +117,16 @@ describe('Tabs', () => {
       measure('Conta', 60, 90)
       expect(indicator()).toMatchObject({ left: 0, top: 34, width: 60, height: 2 })
       expect(underline('Geral').props.className).not.toContain('bg-interactive-primary')
+    })
+
+    it('com "Reduzir movimento" ligado no sistema, pula direto para a nova aba', async () => {
+      jest.spyOn(AccessibilityInfo, 'isReduceMotionEnabled').mockResolvedValue(true)
+      render(<Example />)
+      await act(async () => {})
+      measure('Geral', 0, 60)
+      measure('Conta', 60, 90)
+      fireEvent.press(tab('Conta'))
+      expect(indicator()).toMatchObject({ left: 60, width: 90 })
     })
 
     it('ao trocar de aba, desliza e se redimensiona até a nova', () => {
