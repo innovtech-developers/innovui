@@ -39,7 +39,13 @@ O `trigger` recebe `onPress` por clonagem. Para fechar a partir do rodapé, envo
 | `top` | Largura total, altura de até 80% da tela. |
 | `bottom` | Largura total, altura de até 80% da tela. |
 
-A animação dura 250 ms.
+A animação dura 250 ms (e o painel abre e fecha direto com "Reduzir movimento" ligado no sistema).
+
+## Arrastar para fechar
+
+Arrastar o painel para a borda de onde ele veio fecha. O painel acompanha o dedo, e o fundo escurecido clareia junto; passando de 40% do tamanho, ou soltando com um gesto rápido, ele fecha, e senão volta ao lugar. O gesto vale para o painel inteiro, mas não toma a rolagem do corpo: no `top` e no `bottom` só arrasta quando o corpo está no começo (no `bottom`) ou no fim (no `top`), e se o conteúdo chega à borda no meio do gesto, o painel assume dali. O `Slider` dentro do painel mantém o próprio toque.
+
+Nos painéis `top` e `bottom` aparece uma barrinha de arraste na borda (40px de largura, a variante discreta do Figma). Esconda com `showHandle={false}`; ela some sozinha com `swipeToClose={false}`, para não prometer um gesto que não existe.
 
 ## Controlado
 
@@ -58,12 +64,14 @@ const [open, setOpen] = useState(false)
 | `footer` | `ReactNode` | n/a | Ações do rodapé. Sem ele, não há rodapé. |
 | `trigger` | `ReactNode` | n/a | Elemento que abre o painel; recebe `onPress`. Dispensável no modo controlado. |
 | `side` | `'right' \| 'left' \| 'top' \| 'bottom'` | `'right'` | Borda de onde o painel desliza. |
+| `swipeToClose` | `boolean` | `true` | Fecha arrastando o painel para a borda. |
+| `showHandle` | `boolean` | `true` | Barrinha de arraste em `top` e `bottom` (só com `swipeToClose`). |
 | `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
 | `open` | `boolean` | n/a | Estado de abertura (modo controlado). |
 | `defaultOpen` | `boolean` | `false` | Abertura inicial (modo não controlado). |
 | `onOpenChange` | `(open: boolean) => void` | n/a | Chamado ao abrir ou fechar. |
 | `className` | `string` | n/a | Mesclado com as classes do painel via `tailwind-merge`. |
-| `testID` | `string` | n/a | O backdrop recebe `{testID}-backdrop`. |
+| `testID` | `string` | n/a | O backdrop recebe `{testID}-backdrop` e o painel que desliza, `{testID}-sheet`. |
 
 `DrawerClose` recebe só `children`. O botão × do cabeçalho é sempre exibido, e não há `size`.
 

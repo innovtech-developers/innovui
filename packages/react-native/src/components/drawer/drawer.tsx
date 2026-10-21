@@ -1,7 +1,7 @@
 /// <reference types="uniwind/types" />
 
 import { cva, type VariantProps } from 'class-variance-authority'
-import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, type ReactNode, useContext, useRef } from 'react'
 import {
   Animated,
   Pressable,
@@ -16,6 +16,8 @@ import { Backdrop } from '../_shared/backdrop'
 import { injectHandler, useOpenState } from '../_shared/overlay-state'
 import { CloseIcon } from '../_shared/status'
 import { useToken } from '../_shared/use-token'
+import { useTransition } from '../_shared/use-transition'
+import { useSwipeToClose } from './use-swipe-to-close'
 
 const drawerVariants = cva('overflow-hidden border-border-default bg-surface-elevated shadow-2xl', {
   variants: {
@@ -57,6 +59,16 @@ export type DrawerProps = VariantProps<typeof drawerVariants> & {
   footer?: ReactNode
   /** Elemento que abre o painel (ex.: um `<Button>`); recebe `onPress`. Dispensável no modo controlado. */
   trigger?: ReactNode
+  /**
+   * Arrastar o painel para a borda de onde ele veio fecha. Não toma o gesto da rolagem do corpo
+   * (só arrasta com o corpo no começo, no `top`/`bottom`) e o backdrop clareia junto. Padrão: `true`.
+   */
+  swipeToClose?: boolean
+  /**
+   * Barrinha de arraste na borda do painel. Só aparece em `top` e `bottom`, e só com
+   * `swipeToClose`. Padrão: `true`.
+   */
+  showHandle?: boolean
   /** Nome acessível do botão de fechar (×). */
   closeLabel?: string
   className?: string
@@ -76,6 +88,8 @@ export function Drawer({
   footer,
   trigger,
   closeLabel = 'Fechar',
+  swipeToClose = true,
+  showHandle = true,
   side,
   className,
   testID,
@@ -86,27 +100,41 @@ export function Drawer({
   const { width, height } = useWindowDimensions()
   const placement: Side = side ?? 'right'
   const horizontal = placement === 'left' || placement === 'right'
+  const isOpenRef = useRef(isOpen)
+  isOpenRef.current = isOpen
+  const swipe = useSwipeToClose({
+    side: placement,
+    enabled: swipeToClose,
+    fallbackSize: horizontal ? width : height,
+    onClose: close,
+    isOpen: () => isOpenRef.current,
+  })
+  const hasHandle = showHandle && swipeToClose && !horizontal
 
-  // O Modal fica montado durante a animação de saída.
-  const [mounted, setMounted] = useState(isOpen)
-  const progress = useRef(new Animated.Value(isOpen ? 1 : 0)).current
-
-  useEffect(() => {
-    if (isOpen) setMounted(true)
-    const animation = Animated.timing(progress, {
-      toValue: isOpen ? 1 : 0,
-      duration: 250,
-      useNativeDriver: true,
-    })
-    animation.start(({ finished }) => {
-      if (finished && !isOpen) setMounted(false)
-    })
-    return () => animation.stop()
-  }, [isOpen, progress])
+  // O Modal fica montado durante a animação de saída; o arraste zera quando ele desmonta.
+  const { mounted, progress } = useTransition(isOpen, {
+    duration: 250,
+    exitDuration: 250,
+    onClosed: swipe.resetDrag,
+  })
 
   const offset = horizontal ? width : height
   const sign = placement === 'right' || placement === 'bottom' ? 1 : -1
-  const translate = progress.interpolate({ inputRange: [0, 1], outputRange: [sign * offset, 0] })
+  // abrir/fechar + o que o dedo arrastou (`drag` vai no sentido de fechar)
+  const translate = Animated.add(
+    progress.interpolate({ inputRange: [0, 1], outputRange: [sign * offset, 0] }),
+    Animated.multiply(swipe.drag, sign),
+  )
+  const handle = hasHandle && (
+    // Figma "Drawer/navigation": traço de 4px em `border/strong` numa faixa de 24px (variante xl, 40px)
+    <View
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      className="h-6 shrink-0 items-center justify-center"
+    >
+      <View className="h-1 w-10 rounded-lg bg-border-strong" />
+    </View>
+  )
 
   return (
     <>
@@ -128,12 +156,15 @@ export function Drawer({
                 left: 0,
                 right: 0,
                 bottom: 0,
-                opacity: progress,
+                opacity: Animated.multiply(progress, swipe.dragFade),
               }}
             >
               <Backdrop onPress={close} testID={testID ? `${testID}-backdrop` : undefined} />
             </Animated.View>
             <Animated.View
+              {...swipe.panHandlers}
+              onLayout={swipe.onPanelLayout}
+              testID={testID ? `${testID}-sheet` : undefined}
               style={[
                 horizontal ? { width: '85%', maxWidth: 400 } : { width: '100%', maxHeight: '80%' },
                 { transform: [horizontal ? { translateX: translate } : { translateY: translate }] },
@@ -143,7 +174,14 @@ export function Drawer({
                 testID={testID}
                 className={cn(drawerVariants({ side }), horizontal && 'flex-1', className)}
               >
-                <View className="flex-row items-center gap-4 border-b border-border-default px-6 py-4">
+                {placement === 'bottom' && handle}
+                {/* ao lado da barrinha, o conteúdo vizinho encosta na faixa de 24px (sem somar o padding) */}
+                <View
+                  className={cn(
+                    'flex-row items-center gap-4 border-b border-border-default px-6 py-4',
+                    hasHandle && placement === 'bottom' && 'pt-0',
+                  )}
+                >
                   <Text
                     accessibilityRole="header"
                     className="flex-1 text-lg font-semibold leading-6 text-text-primary"
@@ -160,7 +198,14 @@ export function Drawer({
                     <CloseIcon color={iconColor} />
                   </Pressable>
                 </View>
-                <ScrollView className="shrink" contentContainerClassName="gap-4 p-6">
+                <ScrollView
+                  className="shrink"
+                  contentContainerClassName={cn(
+                    'gap-4 p-6',
+                    hasHandle && placement === 'top' && !footer && 'pb-2',
+                  )}
+                  {...swipe.scrollProps}
+                >
                   {typeof children === 'string' ? (
                     <Text className="text-sm leading-5 text-text-secondary">{children}</Text>
                   ) : (
@@ -168,10 +213,16 @@ export function Drawer({
                   )}
                 </ScrollView>
                 {footer && (
-                  <View className="flex-row items-center justify-end gap-2 border-t border-border-default px-6 py-4">
+                  <View
+                    className={cn(
+                      'flex-row items-center justify-end gap-2 border-t border-border-default px-6 py-4',
+                      hasHandle && placement === 'top' && 'pb-0',
+                    )}
+                  >
                     {footer}
                   </View>
                 )}
+                {placement === 'top' && handle}
               </View>
             </Animated.View>
           </View>

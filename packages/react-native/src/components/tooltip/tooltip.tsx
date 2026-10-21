@@ -21,6 +21,10 @@ export type TooltipProps = {
   side?: 'top' | 'bottom'
   /** Fecha sozinho depois deste tempo, em ms. `0` mantém aberto até tocar fora. Padrão: 3000. */
   duration?: number
+  /** Seta apontando para o gatilho. Padrão: `true`. */
+  showArrow?: boolean
+  /** Quanto tempo segurar o gatilho antes de abrir, em ms (o `delayLongPress` do RN, 500 por padrão). */
+  delayDuration?: number
   className?: string
   testID?: string
 }
@@ -28,8 +32,8 @@ export type TooltipProps = {
 /**
  * Dica contextual. No toque não há hover: abre ao pressionar e segurar o gatilho (`onLongPress`),
  * e fecha após `duration` ou ao tocar fora. Como o long press não é óbvio para leitores de tela,
- * o `content` (se for texto) vira o `accessibilityHint` do gatilho. Diferenças do web: sem
- * `delayDuration`, sem seta (`showArrow`) e sem lados `left`/`right`.
+ * o `content` (se for texto) vira o `accessibilityHint` do gatilho. Fica centrado no gatilho, com
+ * seta. Diferença do web: sem os lados `left`/`right`.
  */
 export function Tooltip({
   open,
@@ -40,6 +44,8 @@ export function Tooltip({
   title,
   side = 'top',
   duration = 3000,
+  showArrow = true,
+  delayDuration,
   className,
   testID,
 }: TooltipProps) {
@@ -61,7 +67,10 @@ export function Tooltip({
         anchorRef={ref}
         event="onLongPress"
         onTrigger={() => setOpen(true)}
-        extra={hint ? { accessibilityHint: hint } : undefined}
+        extra={{
+          ...(hint ? { accessibilityHint: hint } : null),
+          ...(delayDuration === undefined ? null : { delayLongPress: delayDuration }),
+        }}
       >
         {children}
       </AnchorTrigger>
@@ -71,6 +80,9 @@ export function Tooltip({
         onRequestClose={close}
         placement={side}
         estimatedHeight={80}
+        align="center"
+        offset={showArrow ? 8 : 4}
+        arrowClassName={showArrow ? 'bg-bg-inverse' : undefined}
         testID={testID}
         className={cn('max-w-[240px] gap-1 rounded-sm bg-bg-inverse px-3 py-2', className)}
       >

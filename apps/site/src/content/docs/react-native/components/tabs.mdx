@@ -83,6 +83,10 @@ Aceita as demais props de `Pressable`, exceto `style`.
 | `value` | `string` | n/a | **Obrigatória.** Aba à qual o painel pertence. |
 | `className` | `string` | n/a | Classes do painel. |
 
+## Indicador deslizante
+
+O sublinhado de 2px é um indicador único: ao trocar de aba ele desliza e se redimensiona até a nova (200 ms), como na web. Com a opção de acessibilidade "Reduzir movimento" ligada no sistema, ele pula direto. Ele usa a medição (`onLayout`) de cada aba; antes de a aba ativa ser medida, ela ainda desenha o próprio sublinhado.
+
 ## Diferenças em relação à web
 
 - Sem `orientation` e sem navegação por setas, `Home`/`End`: a troca é por toque.

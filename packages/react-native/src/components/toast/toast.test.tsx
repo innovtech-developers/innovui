@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native'
-import { Pressable, Text } from 'react-native'
+import { LayoutAnimation, Pressable, Text } from 'react-native'
+import { makeGesture } from '../../test/gesture'
 import { type ToastOptions, ToastProvider, useToast } from './toast'
 
 beforeEach(() => jest.useFakeTimers())
@@ -118,5 +119,92 @@ describe('Toast', () => {
     setup({ description: 'Um', duration: 0 })
     fireEvent.press(screen.getByText('disparar'))
     expect(screen.getAllByText('Um')).toHaveLength(2)
+  })
+
+  describe('swipe e reposicionamento', () => {
+    // O cartão que se arrasta: o `View` nativo que tem os handlers do PanResponder.
+    const card = () =>
+      screen.UNSAFE_root.findAll(
+        (node: { type: unknown; props: Record<string, unknown> }) =>
+          node.type === 'View' && typeof node.props.onMoveShouldSetResponder === 'function',
+      )[0]
+
+    // os handlers mudam estado: dentro de `act`, como um toque real dentro do React
+    const gestureOf = (element: ReturnType<typeof card>) => {
+      const g = makeGesture(element)
+      return {
+        down: g.down,
+        move: (x: number, y: number, t: number) => {
+          let owner = false
+          act(() => {
+            owner = g.move(x, y, t)
+          })
+          return owner
+        },
+        up: (x: number, y: number, t: number) => act(() => g.up(x, y, t)),
+      }
+    }
+
+    it('arrastar para o lado além de 50px dispensa o toast', () => {
+      setup({ description: 'Mensagem', duration: 0 })
+      const gesture = gestureOf(card())
+      gesture.down(200, 80)
+      expect(gesture.move(230, 80, 1000)).toBe(true)
+      gesture.move(300, 80, 2000)
+      gesture.up(300, 80, 2000)
+      settle()
+      expect(screen.queryByText('Mensagem')).toBeNull()
+    })
+
+    it('para a esquerda também, e um gesto rápido dispensa mesmo curto', () => {
+      setup({ description: 'Mensagem', duration: 0 })
+      const gesture = gestureOf(card())
+      gesture.down(200, 80, 0)
+      gesture.move(190, 80, 16)
+      gesture.move(170, 80, 32) // 30px em 16ms
+      gesture.up(170, 80, 32)
+      settle()
+      expect(screen.queryByText('Mensagem')).toBeNull()
+    })
+
+    it('um arraste curto e lento volta ao lugar e o toast continua', () => {
+      setup({ description: 'Mensagem', duration: 0 })
+      const gesture = gestureOf(card())
+      gesture.down(200, 80)
+      gesture.move(215, 80, 1000)
+      gesture.move(230, 80, 2000) // 30px
+      gesture.up(230, 80, 2000)
+      settle()
+      expect(screen.getByText('Mensagem')).toBeTruthy()
+    })
+
+    it('o gesto vertical é ignorado', () => {
+      setup({ description: 'Mensagem', duration: 0 })
+      const gesture = gestureOf(card())
+      gesture.down(200, 80)
+      expect(gesture.move(205, 160, 1000)).toBe(false)
+    })
+
+    it('o auto-fechar pausa enquanto o dedo arrasta', () => {
+      setup({ description: 'Mensagem', duration: 1000 })
+      const gesture = gestureOf(card())
+      gesture.down(200, 80)
+      gesture.move(215, 80, 1000)
+      gesture.move(225, 80, 2000)
+      act(() => jest.advanceTimersByTime(3000)) // passou do `duration`, mas o dedo segura
+      expect(screen.getByText('Mensagem')).toBeTruthy()
+      gesture.up(225, 80, 3000) // solta antes do limite: volta e o tempo corre de novo
+      settle(1500)
+      expect(screen.queryByText('Mensagem')).toBeNull()
+    })
+
+    it('quando um toast sai, os de baixo deslizam para o lugar (LayoutAnimation)', () => {
+      const configureNext = jest.spyOn(LayoutAnimation, 'configureNext')
+      setup({ description: 'Mensagem', duration: 0 })
+      fireEvent.press(screen.getByText('fechar-0'))
+      settle()
+      expect(configureNext).toHaveBeenCalled()
+      configureNext.mockRestore()
+    })
   })
 })

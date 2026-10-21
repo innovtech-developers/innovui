@@ -68,6 +68,10 @@ Aceita também as demais props do `Pressable`, exceto `style` e `onPress`. Usar 
 - Cada item usa `accessibilityRole="radio"`, com `accessibilityState.checked` e `disabled`.
 - Se o conteúdo do item não for texto (um ícone, por exemplo), passe `accessibilityLabel` no item.
 
+## Pill deslizante
+
+O fundo do item marcado é um único pill: ao escolher outro item ele desliza e se redimensiona até ele (200 ms), como na web. Com "Reduzir movimento" ligado no sistema, ele pula direto. Antes de o item marcado ser medido (`onLayout`), ele ainda desenha o próprio fundo.
+
 ## Diferenças em relação à web
 
 - Não há navegação por setas do teclado: cada item é um alvo de toque.

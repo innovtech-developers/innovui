@@ -2,12 +2,21 @@
 
 import { cva, type VariantProps } from 'class-variance-authority'
 import { createContext, type ReactNode, useContext } from 'react'
-import { Pressable, Modal as RNModal, ScrollView, Text, View } from 'react-native'
+import {
+  Animated,
+  Pressable,
+  Modal as RNModal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { cn } from '../../utils/cn'
 import { Backdrop } from '../_shared/backdrop'
 import { injectHandler, useOpenState } from '../_shared/overlay-state'
 import { CloseIcon } from '../_shared/status'
 import { useToken } from '../_shared/use-token'
+import { useTransition } from '../_shared/use-transition'
 
 const modalVariants = cva(
   'max-h-full w-full overflow-hidden rounded-lg border border-border-default bg-surface-elevated shadow-2xl',
@@ -69,6 +78,10 @@ export function Modal({
   const [isOpen, setOpen] = useOpenState({ open, defaultOpen, onOpenChange })
   const close = () => setOpen(false)
   const iconColor = useToken('--color-text-primary')
+  // Como no web: o fundo faz fade e o diálogo faz fade com zoom de 95%. O `Modal` nativo só fecha
+  // depois da saída, então a animação é nossa (`animationType="none"`).
+  const { mounted, progress } = useTransition(isOpen)
+  const scale = progress.interpolate({ inputRange: [0, 1], outputRange: [0.95, 1] })
 
   return (
     <>
@@ -76,56 +89,75 @@ export function Modal({
       <RNModal
         transparent
         statusBarTranslucent
-        animationType="fade"
-        visible={isOpen}
+        animationType="none"
+        visible={mounted}
         onRequestClose={close}
       >
         <CloseContext.Provider value={close}>
-          <View className="flex-1 items-center justify-center p-4" accessibilityViewIsModal>
-            <Backdrop onPress={close} testID={testID ? `${testID}-backdrop` : undefined} />
-            <View testID={testID} className={cn(modalVariants({ size }), className)}>
-              <View
-                className={cn(
-                  'flex-row items-center gap-4 px-6 py-4',
-                  showHeaderDivider && 'border-b border-border-default',
-                )}
-              >
-                <Text
-                  accessibilityRole="header"
-                  className="flex-1 text-lg font-semibold leading-6 text-text-primary"
-                >
-                  {title}
-                </Text>
-                {showClose && (
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={closeLabel}
-                    hitSlop={8}
-                    onPress={close}
-                    className="size-8 items-center justify-center rounded-full active:bg-button-secondary-bg-hover"
-                  >
-                    <CloseIcon color={iconColor} />
-                  </Pressable>
-                )}
-              </View>
-              <ScrollView className="shrink" contentContainerClassName="gap-4 p-6">
-                {typeof children === 'string' ? (
-                  <Text className="text-sm leading-5 text-text-secondary">{children}</Text>
-                ) : (
-                  children
-                )}
-              </ScrollView>
-              {footer && (
+          <View className="flex-1" accessibilityViewIsModal>
+            <Animated.View
+              pointerEvents="box-none"
+              style={[StyleSheet.absoluteFill, { opacity: progress }]}
+            >
+              <Backdrop onPress={close} testID={testID ? `${testID}-backdrop` : undefined} />
+            </Animated.View>
+            <Animated.View
+              pointerEvents="box-none"
+              style={[
+                StyleSheet.absoluteFill,
+                {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 16,
+                  opacity: progress,
+                  transform: [{ scale }],
+                },
+              ]}
+            >
+              <View testID={testID} className={cn(modalVariants({ size }), className)}>
                 <View
                   className={cn(
-                    'flex-row items-center justify-end gap-2 px-6 py-4',
-                    showFooterDivider && 'border-t border-border-default',
+                    'flex-row items-center gap-4 px-6 py-4',
+                    showHeaderDivider && 'border-b border-border-default',
                   )}
                 >
-                  {footer}
+                  <Text
+                    accessibilityRole="header"
+                    className="flex-1 text-lg font-semibold leading-6 text-text-primary"
+                  >
+                    {title}
+                  </Text>
+                  {showClose && (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={closeLabel}
+                      hitSlop={8}
+                      onPress={close}
+                      className="size-8 items-center justify-center rounded-full active:bg-button-secondary-bg-hover"
+                    >
+                      <CloseIcon color={iconColor} />
+                    </Pressable>
+                  )}
                 </View>
-              )}
-            </View>
+                <ScrollView className="shrink" contentContainerClassName="gap-4 p-6">
+                  {typeof children === 'string' ? (
+                    <Text className="text-sm leading-5 text-text-secondary">{children}</Text>
+                  ) : (
+                    children
+                  )}
+                </ScrollView>
+                {footer && (
+                  <View
+                    className={cn(
+                      'flex-row items-center justify-end gap-2 px-6 py-4',
+                      showFooterDivider && 'border-t border-border-default',
+                    )}
+                  >
+                    {footer}
+                  </View>
+                )}
+              </View>
+            </Animated.View>
           </View>
         </CloseContext.Provider>
       </RNModal>

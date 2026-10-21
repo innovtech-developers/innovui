@@ -10,7 +10,18 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Animated, Platform, Pressable, StatusBar, Text, View } from 'react-native'
+import {
+  Animated,
+  LayoutAnimation,
+  PanResponder,
+  Platform,
+  Pressable,
+  StatusBar,
+  Text,
+  UIManager,
+  View,
+} from 'react-native'
+import { useReducedMotion } from '../_shared/sliding-indicator'
 import {
   CloseIcon,
   type Status,
@@ -56,6 +67,15 @@ export type ToastProviderProps = {
   testID?: string
 }
 
+// No Android antigo o LayoutAnimation precisa ser habilitado. Na New Architecture a chamada é no-op.
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true)
+}
+
+/** Arrastar o toast para o lado além disto (px), ou mais rápido que isto (px/ms), o dispensa. */
+const SWIPE_DISTANCE = 50
+const SWIPE_VELOCITY = 0.5
+
 // Sem react-native-safe-area-context: margem fixa para o notch no iOS e a barra de status no Android.
 const topInset = Platform.OS === 'ios' ? 56 : (StatusBar.currentHeight ?? 24) + 8
 
@@ -78,9 +98,15 @@ export function ToastProvider({
       current.map((item) => (item.id === id ? { ...item, closing: true } : item)),
     )
   }, [])
-  const remove = useCallback((id: number) => {
-    setItems((current) => current.filter((item) => item.id !== id))
-  }, [])
+  const reduced = useReducedMotion()
+  const remove = useCallback(
+    (id: number) => {
+      // os de baixo deslizam para o lugar em vez de pular
+      if (!reduced) LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+      setItems((current) => current.filter((item) => item.id !== id))
+    },
+    [reduced],
+  )
   const toast = useCallback((options: ToastOptions) => {
     const id = nextId.current++
     setItems((current) => [...current, { ...options, id, closing: false }])
@@ -140,6 +166,42 @@ function ToastView({
     closing,
   } = item
   const progress = useRef(new Animated.Value(0)).current
+  // arrastar para o lado dispensa (como o swipe do Radix no web); o auto-fechar pausa enquanto isso
+  const dragX = useRef(new Animated.Value(0)).current
+  const [dragging, setDragging] = useState(false)
+  const latest = useRef({ id, onDismiss })
+  latest.current = { id, onDismiss }
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > 6 && Math.abs(g.dx) > Math.abs(g.dy),
+      onPanResponderTerminationRequest: () => false,
+      onPanResponderGrant: () => setDragging(true),
+      onPanResponderMove: (_, g) => dragX.setValue(g.dx),
+      onPanResponderRelease: (_, g) => {
+        setDragging(false)
+        if (Math.abs(g.dx) > SWIPE_DISTANCE || Math.abs(g.vx) > SWIPE_VELOCITY) {
+          // continua para o lado de onde o dedo ia, enquanto o toast some
+          Animated.timing(dragX, {
+            toValue: (g.dx || g.vx) > 0 ? 400 : -400,
+            duration: 150,
+            useNativeDriver: true,
+          }).start()
+          latest.current.onDismiss(latest.current.id)
+        } else {
+          Animated.timing(dragX, { toValue: 0, duration: 200, useNativeDriver: true }).start()
+        }
+      },
+      onPanResponderTerminate: () => {
+        setDragging(false)
+        Animated.timing(dragX, { toValue: 0, duration: 200, useNativeDriver: true }).start()
+      },
+    }),
+  ).current
+  const swipeFade = dragX.interpolate({
+    inputRange: [-150, 0, 150],
+    outputRange: [0.2, 1, 0.2],
+    extrapolate: 'clamp',
+  })
   const iconColor = useToken(statusTextToken[status])
   const closeColor = useToken('--color-text-primary')
 
@@ -166,15 +228,21 @@ function ToastView({
   }, [closing, id, onRemove, progress])
 
   useEffect(() => {
-    if (closing || duration <= 0) return
+    if (closing || dragging || duration <= 0) return
     const timer = setTimeout(() => onDismiss(id), duration)
     return () => clearTimeout(timer)
-  }, [closing, duration, id, onDismiss])
+  }, [closing, dragging, duration, id, onDismiss])
 
   const translateY = progress.interpolate({ inputRange: [0, 1], outputRange: [-16, 0] })
 
   return (
-    <Animated.View style={{ opacity: progress, transform: [{ translateY }] }}>
+    <Animated.View
+      {...panResponder.panHandlers}
+      style={{
+        opacity: Animated.multiply(progress, swipeFade),
+        transform: [{ translateY }, { translateX: dragX }],
+      }}
+    >
       <View
         accessibilityRole={statusRole(status)}
         // Erro e aviso interrompem o leitor de tela; o resto é anunciado com calma.

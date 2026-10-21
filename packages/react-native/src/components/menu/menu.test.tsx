@@ -1,12 +1,18 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { Text, View } from 'react-native'
 import { Button } from '../button/button'
 import { Menu, MenuItem, MenuLabel, MenuSeparator } from './menu'
 
+const settle = () => act(() => jest.advanceTimersByTime(500)) // a saída é animada
+
 beforeEach(() => {
+  jest.useFakeTimers()
   jest.spyOn(View.prototype, 'measureInWindow').mockImplementation((cb) => cb(20, 100, 80, 40))
 })
-afterEach(() => jest.restoreAllMocks())
+afterEach(() => {
+  jest.useRealTimers()
+  jest.restoreAllMocks()
+})
 
 function setup(props: Partial<React.ComponentProps<typeof Menu>> = {}) {
   const onEdit = jest.fn()
@@ -42,6 +48,7 @@ describe('Menu', () => {
     fireEvent.press(screen.getByRole('button', { name: 'Ações' }))
     fireEvent.press(screen.getByRole('menuitem', { name: 'Editar' }))
     expect(onEdit).toHaveBeenCalledTimes(1)
+    settle()
     expect(screen.queryByText('Editar')).toBeNull()
   })
 
@@ -59,6 +66,7 @@ describe('Menu', () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(true)
     fireEvent.press(screen.getByTestId('menu-backdrop'))
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    settle()
     expect(screen.queryByText('Editar')).toBeNull()
   })
 

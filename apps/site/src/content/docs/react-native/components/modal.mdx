@@ -70,6 +70,10 @@ Em telas estreitas o modal ocupa a largura disponível, com 16 de margem, e o co
 
 `ModalClose` recebe só `children` (o elemento que fecha o modal ao ser pressionado).
 
+## Animação
+
+Como na web: o fundo entra com fade e o diálogo entra com fade e zoom a partir de 95% (200 ms), e sai do mesmo jeito (150 ms). Com "Reduzir movimento" ligado no sistema, abre e fecha direto. Popover, Menu, Tooltip, Select, Combobox e DatePicker também entram com fade e zoom de 96%, a partir do gatilho (150 ms).
+
 ## Diferenças em relação à web
 
 - Sem `asChild`: o `trigger` e o filho de `ModalClose` recebem `onPress` por clonagem.

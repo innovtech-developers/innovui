@@ -1,7 +1,8 @@
 /// <reference types="uniwind/types" />
 
 import { type ReactNode, type RefObject, useCallback, useRef, useState } from 'react'
-import { Modal, Pressable, useWindowDimensions, View } from 'react-native'
+import { Animated, Modal, Pressable, useWindowDimensions, View } from 'react-native'
+import { useTransition } from './use-transition'
 
 export type Placement = 'bottom' | 'top'
 type Rect = { x: number; y: number; width: number; height: number }
@@ -45,6 +46,10 @@ export type AnchoredOverlayProps = {
   matchAnchorWidth?: boolean
   /** Altura máxima estimada do conteúdo, para decidir a inversão. Padrão: 320. */
   estimatedHeight?: number
+  /** Alinhamento com o gatilho: `start` (borda esquerda) ou `center` (centrado, como o Tooltip). */
+  align?: 'start' | 'center'
+  /** Seta apontando para o gatilho (classes do desenho, ex.: a cor do fundo do conteúdo). */
+  arrowClassName?: string
   /** Toque fora fecha. Padrão: true. */
   dismissOnPressOutside?: boolean
   className?: string
@@ -61,11 +66,17 @@ export function AnchoredOverlay({
   offset = 4,
   matchAnchorWidth = false,
   estimatedHeight = 320,
+  align = 'start',
+  arrowClassName,
   dismissOnPressOutside = true,
   className,
   testID,
 }: AnchoredOverlayProps) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  // Como no web: fade com zoom de 96% a partir do gatilho (o `Modal` nativo só fecha depois da saída)
+  const { mounted, progress } = useTransition(visible, { duration: 150, exitDuration: 100 })
+  // centrado precisa da largura do conteúdo: mede e só então mostra
+  const [contentWidth, setContentWidth] = useState(0)
   if (!rect) return null
 
   const spaceBelow = windowHeight - (rect.y + rect.height)
@@ -75,13 +86,20 @@ export function AnchoredOverlay({
     ? spaceAbove >= estimatedHeight || spaceAbove >= spaceBelow
     : spaceBelow < estimatedHeight && spaceAbove > spaceBelow
 
-  const left = Math.max(8, Math.min(rect.x, windowWidth - 8 - (matchAnchorWidth ? rect.width : 0)))
+  const anchorCenter = rect.x + rect.width / 2
+  const left =
+    align === 'center'
+      ? Math.max(8, Math.min(anchorCenter - contentWidth / 2, windowWidth - 8 - contentWidth))
+      : Math.max(8, Math.min(rect.x, windowWidth - 8 - (matchAnchorWidth ? rect.width : 0)))
+  const measured = align !== 'center' || contentWidth > 0
+  // seta de 6px girada 45° (um losango de ~8px de largura e ~4px para fora), sobre a borda do conteúdo
+  const arrowLeft = Math.max(8, Math.min(anchorCenter - left, Math.max(contentWidth, 16) - 8)) - 3
 
   return (
     <Modal
       transparent
-      visible={visible}
-      animationType="fade"
+      visible={mounted}
+      animationType="none"
       onRequestClose={onRequestClose}
       statusBarTranslucent
     >
@@ -91,9 +109,7 @@ export function AnchoredOverlay({
         onPress={dismissOnPressOutside ? onRequestClose : undefined}
         testID={testID ? `${testID}-backdrop` : undefined}
       >
-        <View
-          testID={testID}
-          className={className}
+        <Animated.View
           style={{
             position: 'absolute',
             left,
@@ -101,12 +117,30 @@ export function AnchoredOverlay({
               ? { bottom: windowHeight - rect.y + offset }
               : { top: rect.y + rect.height + offset }),
             ...(matchAnchorWidth ? { width: rect.width } : null),
+            opacity: measured ? progress : 0,
+            transform: [
+              { scale: progress.interpolate({ inputRange: [0, 1], outputRange: [0.96, 1] }) },
+            ],
+            transformOrigin: goTop ? 'bottom left' : 'top left',
           }}
-          // Toques dentro do conteúdo não chegam ao backdrop.
-          onStartShouldSetResponder={() => true}
+          onLayout={(e) => align === 'center' && setContentWidth(e.nativeEvent.layout.width)}
         >
-          {children}
-        </View>
+          <View
+            testID={testID}
+            className={className}
+            // Toques dentro do conteúdo não chegam ao backdrop.
+            onStartShouldSetResponder={() => true}
+          >
+            {children}
+          </View>
+          {arrowClassName && (
+            <View
+              pointerEvents="none"
+              className={`absolute size-1.5 rotate-45 ${arrowClassName}`}
+              style={{ left: arrowLeft, ...(goTop ? { bottom: -3 } : { top: -3 }) }}
+            />
+          )}
+        </Animated.View>
       </Pressable>
     </Modal>
   )
