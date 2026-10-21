@@ -1,7 +1,7 @@
 /// <reference types="uniwind/types" />
 
 import { cva, type VariantProps } from 'class-variance-authority'
-import type { ReactNode } from 'react'
+import { type ReactNode, useRef } from 'react'
 import { TextInput, type TextInputProps, View } from 'react-native'
 import { cn } from '../../utils/cn'
 import { useToken } from '../_shared/use-token'
@@ -38,9 +38,15 @@ export type InputProps = Omit<TextInputProps, 'style' | 'editable'> &
     /** Borda e foco em vermelho. */
     error?: boolean
     disabled?: boolean
-    /** Ícone antes do texto (o consumidor define a cor; o slot tem 24px). */
+    /**
+     * Ícone antes do texto (o consumidor define a cor; o slot tem 24px). Pode ser interativo
+     * (um `Pressable` recebe o próprio toque); se não tratar o toque, ele foca o campo.
+     */
     leadingIcon?: ReactNode
-    /** Ícone depois do texto (o consumidor define a cor; o slot tem 24px). */
+    /**
+     * Ícone depois do texto (o consumidor define a cor; o slot tem 24px). Pode ser interativo
+     * (ex.: um `Pressable` que mostra/oculta a senha); se não tratar o toque, ele foca o campo.
+     */
     trailingIcon?: ReactNode
   }
 
@@ -57,9 +63,19 @@ export function Input({
 }: InputProps) {
   const placeholderColor = useToken('--color-field-text-placeholder')
   const slot = iconSlot[size ?? 'md']
+  const ref = useRef<TextInput>(null)
+  // `box-none`: o slot não intercepta o toque (a área vazia cai no campo) mas os filhos recebem o
+  // deles, então um `Pressable` no ícone funciona. Um ícone que não trata o toque sobe para o slot,
+  // que foca o campo (o `pointerEvents="none"` de antes dava isso, mas bloqueava o `Pressable`).
+  const iconTouch = {
+    pointerEvents: 'box-none' as const,
+    onStartShouldSetResponder: () => !disabled,
+    onResponderRelease: () => ref.current?.focus(),
+  }
 
   const input = (
     <TextInput
+      ref={ref}
       editable={!disabled && !readOnly}
       readOnly={readOnly}
       placeholderTextColor={placeholderColor}
@@ -83,7 +99,7 @@ export function Input({
     <View className="justify-center">
       {leadingIcon ? (
         <View
-          pointerEvents="none"
+          {...iconTouch}
           className={cn(
             'absolute inset-y-0 z-10 items-center justify-center',
             slot.icon,
@@ -96,7 +112,7 @@ export function Input({
       {input}
       {trailingIcon ? (
         <View
-          pointerEvents="none"
+          {...iconTouch}
           className={cn(
             'absolute inset-y-0 z-10 items-center justify-center',
             slot.icon,

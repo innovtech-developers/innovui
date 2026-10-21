@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native'
-import { Text } from 'react-native'
+import { Pressable, Text, TextInput } from 'react-native'
 import { Input } from './input'
 
 const input = () => screen.getByPlaceholderText('voce@empresa.com')
@@ -65,5 +65,60 @@ describe('Input', () => {
     render(<Input placeholder="voce@empresa.com" className="h-20" />)
     expect(input().props.className).toContain('h-20')
     expect(input().props.className).not.toContain('h-12')
+  })
+
+  describe('ícones interativos', () => {
+    // o `View` do slot: o primeiro ancestral do ícone que define `pointerEvents`
+    const slotOf = (text: string) => {
+      let node = screen.getByText(text).parent
+      while (node && node.props.pointerEvents === undefined) node = node.parent
+      return node
+    }
+
+    it.each(['leadingIcon', 'trailingIcon'] as const)(
+      'um Pressable em %s recebe o próprio toque',
+      (slot) => {
+        const onPress = jest.fn()
+        const icon = (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Mostrar senha"
+            onPress={onPress}
+          >
+            <Text>olho</Text>
+          </Pressable>
+        )
+        render(<Input placeholder="voce@empresa.com" {...{ [slot]: icon }} />)
+        fireEvent.press(screen.getByRole('button', { name: 'Mostrar senha' }))
+        expect(onPress).toHaveBeenCalledTimes(1)
+      },
+    )
+
+    it('o slot não intercepta o toque (box-none), para a área vazia cair no campo', () => {
+      render(
+        <Input
+          placeholder="voce@empresa.com"
+          leadingIcon={<Text>L</Text>}
+          trailingIcon={<Text>T</Text>}
+        />,
+      )
+      expect(slotOf('L')?.props.pointerEvents).toBe('box-none')
+      expect(slotOf('T')?.props.pointerEvents).toBe('box-none')
+    })
+
+    it('tocar num ícone que não trata o toque foca o campo', () => {
+      const focus = jest.spyOn(TextInput.prototype, 'focus').mockImplementation(() => {})
+      render(<Input placeholder="voce@empresa.com" trailingIcon={<Text>T</Text>} />)
+      const slot = slotOf('T')
+      expect(slot?.props.onStartShouldSetResponder()).toBe(true)
+      slot?.props.onResponderRelease()
+      expect(focus).toHaveBeenCalledTimes(1)
+      focus.mockRestore()
+    })
+
+    it('desabilitado, o ícone não reivindica o toque', () => {
+      render(<Input placeholder="voce@empresa.com" disabled trailingIcon={<Text>T</Text>} />)
+      expect(slotOf('T')?.props.onStartShouldSetResponder()).toBe(false)
+    })
   })
 })

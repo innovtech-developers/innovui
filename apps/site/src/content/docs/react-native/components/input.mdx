@@ -46,7 +46,7 @@ O estado `error` colore a borda e o foco de vermelho. Use junto com o [Field](/r
 
 ## Com ícones
 
-Os ícones ficam em um slot de 24px, não recebem toque (`pointerEvents="none"`) e o componente recua o texto para abrir espaço. A cor do ícone é definida por você.
+Os ícones ficam em um slot de 24px, e o componente recua o texto para abrir espaço. A cor do ícone é definida por você. O ícone pode ser interativo: um `Pressable` em `trailingIcon` (por exemplo, o olho que mostra e oculta a senha) recebe o próprio toque. Um ícone que não trata o toque (só decorativo) foca o campo, e a área vazia do slot cai no campo.
 
 ```tsx
 import { Input } from '@innovui/react-native'
