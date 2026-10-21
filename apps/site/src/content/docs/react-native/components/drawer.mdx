@@ -75,9 +75,9 @@ const [open, setOpen] = useState(false)
 
 `DrawerClose` recebe só `children`. O botão × do cabeçalho é sempre exibido, e não há `size`.
 
-## Diferenças em relação à web
+## Particularidades
 
-- Sem `asChild`: o `trigger` e o filho de `DrawerClose` recebem `onPress`.
+- O `trigger` e o filho de `DrawerClose` recebem `onPress` por clonagem, então precisam aceitar essa prop.
 - Sem foco preso, sem `Esc` e sem devolução de foco. O botão voltar do Android e o toque no backdrop fecham o painel.
 - Sem blur no backdrop.
 - Fica acima do [Toast](/react-native/components/toast/), porque é uma janela nativa.

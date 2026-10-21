@@ -52,10 +52,10 @@ Aceita também as demais props do `Pressable` (`accessibilityLabel`, `accessibil
 - A área de toque tem no mínimo 44px de altura e inclui o rótulo.
 - Sem navegação por setas do teclado: cada opção é um alvo de toque independente.
 
-## Diferenças em relação à web
+## Particularidades
 
 - Não há `RadioGroup`, `name` nem `value`: o estado do grupo é seu, e cada Radio recebe `checked`.
-- `onChange` vira `onCheckedChange`, que só dispara ao selecionar.
+- O callback é `onCheckedChange`, que só dispara ao selecionar.
 - Não existe hover nem foco por teclado.
 
 ### Quando usar

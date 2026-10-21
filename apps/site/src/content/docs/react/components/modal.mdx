@@ -1,0 +1,83 @@
+---
+title: Modal
+description: Diálogo que bloqueia o conteúdo de trás, com backdrop, cabeçalho, corpo e rodapé.
+---
+
+import { ModalDemo, ModalControlledDemo } from '../../../../components/demos/OverlayDemos'
+
+Diálogo que **bloqueia a interação** com o conteúdo de trás, sobre um backdrop que o escurece. Tem cabeçalho (título e botão de fechar), corpo e um rodapé opcional com as ações.
+
+<ModalDemo client:load />
+
+```tsx
+import { Modal, ModalClose, Button } from '@innovui/react'
+
+<Modal
+  title="Excluir projeto"
+  trigger={<Button>Abrir modal</Button>}
+  footer={
+    <>
+      <ModalClose asChild>
+        <Button variant="ghost">Cancelar</Button>
+      </ModalClose>
+      <Button variant="destructive" onClick={handleDelete}>Excluir</Button>
+    </>
+  }
+>
+  Tem certeza de que quer excluir este projeto?
+</Modal>
+```
+
+O `trigger` abre o modal. Para fechar a partir do rodapé, envolva o botão em `ModalClose asChild`. Ações: primária à direita, secundária à esquerda dela.
+
+## Controlado e tamanhos
+
+<ModalControlledDemo client:load />
+
+```tsx
+const [open, setOpen] = useState(false)
+
+<Modal open={open} onOpenChange={setOpen} size="md" title="Convidar pessoas">
+  …
+</Modal>
+```
+
+| `size` | Largura máxima |
+|---|---|
+| `sm` (padrão) | 480px |
+| `md` | 640px |
+| `lg` | 800px |
+
+Em telas estreitas o modal ocupa a largura disponível, com 16px de margem, e o corpo rola se o conteúdo for alto.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `ReactNode` | — | **Obrigatória.** Título e nome acessível do diálogo. |
+| `children` | `ReactNode` | — | O corpo do diálogo. |
+| `footer` | `ReactNode` | — | Ações do rodapé. Sem ele, não há rodapé nem divisor. |
+| `trigger` | `ReactNode` | — | Elemento que abre o modal. Dispensável no modo controlado. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Largura máxima. |
+| `showClose` | `boolean` | `true` | Mostra o botão × no cabeçalho. |
+| `showHeaderDivider` | `boolean` | `true` | Linha entre o cabeçalho e o corpo. |
+| `showFooterDivider` | `boolean` | `true` | Linha entre o corpo e o rodapé (só aparece com `footer`). |
+| `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
+| `open` / `defaultOpen` / `onOpenChange` | — | — | Controle do estado de abertura. |
+| `className` | `string` | — | Mesclado com as classes internas via `tailwind-merge`. |
+
+## Acessibilidade
+
+- Foco preso dentro do modal enquanto aberto; ao fechar, volta ao elemento que o abriu.
+- `Esc` fecha o modal, e clicar no backdrop também.
+- `role="dialog"` com `aria-modal`, nomeado pelo `title`. O corpo é a descrição do diálogo (`aria-describedby`).
+- O conteúdo de trás fica inerte para leitores de tela enquanto o modal está aberto.
+- Mantenha o botão de fechar (×) no cabeçalho: é a saída óbvia para quem usa o mouse.
+
+### Quando usar
+
+Confirmações destrutivas, formulários curtos que não devem perder o contexto da página e decisões que precisam de atenção imediata.
+
+### Quando não usar
+
+Mensagens que não bloqueiam o fluxo ([Alert](/react/components/alert/) ou [Toast](/react/components/toast/)), dicas ([Tooltip](/react/components/tooltip/)) e conteúdo longo que merece a própria página.

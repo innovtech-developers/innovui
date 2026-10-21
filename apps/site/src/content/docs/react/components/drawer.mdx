@@ -1,0 +1,75 @@
+---
+title: Drawer
+description: Painel lateral que bloqueia o conteúdo de trás, para detalhes e formulários.
+---
+
+import { DrawerDemo, DrawerSidesDemo } from '../../../../components/demos/PanelDemos'
+
+Painel colado a uma borda da tela, sobre um backdrop. Serve para mostrar detalhes de um item ou um formulário sem tirar a pessoa da página. Tem a mesma estrutura do [Modal](/react/components/modal/): cabeçalho com título e ×, corpo e rodapé opcional.
+
+<DrawerDemo client:load />
+
+```tsx
+import { Drawer, DrawerClose, Button } from '@innovui/react'
+
+<Drawer
+  title="Detalhes do pedido"
+  trigger={<Button variant="secondary">Abrir painel</Button>}
+  footer={
+    <>
+      <DrawerClose asChild>
+        <Button variant="ghost">Fechar</Button>
+      </DrawerClose>
+      <Button>Reenviar</Button>
+    </>
+  }
+>
+  Pedido #1042, pago por Pix.
+</Drawer>
+```
+
+## Lados
+
+<DrawerSidesDemo client:load />
+
+```tsx
+<Drawer side="left" title="Menu" … />
+```
+
+`right` (padrão) e `left` têm largura máxima de 400px; `top` e `bottom` ocupam a largura toda, com altura máxima de 80% da tela. Em telas estreitas, o painel lateral deixa 16px de margem.
+
+## Arrastar para fechar
+
+No celular, arrastar o painel para a borda de onde ele veio fecha (para a direita no `right`, para baixo no `bottom`, e assim por diante). O painel acompanha o dedo, e o fundo escurecido clareia junto; passando de 40% do tamanho, ou soltando com um gesto rápido, ele fecha, e senão volta ao lugar. O gesto vale para o painel inteiro, mas não rouba a rolagem do conteúdo: se o corpo ainda rola no sentido de fechar, o dedo rola o conteúdo, e se ele chega ao começo no mesmo gesto, o painel assume dali (e devolve a rolagem se o dedo recuar). Também não pega o toque em campos de texto e sliders. Para tirar outro elemento do gesto, use `data-no-drag`.
+
+Nos painéis `top` e `bottom` aparece uma barrinha de arraste na borda, que avisa que o painel fecha arrastando (40px de largura, a variante discreta do Figma). Esconda com `showHandle={false}`; ela some sozinha com `swipeToClose={false}`, para não prometer um gesto que não existe.
+
+Só vale para toque: no mouse, continuam o `Esc`, o × e o clique no backdrop. Para um painel com formulário em edição, em que fechar sem querer perde dados, desligue com `swipeToClose={false}`.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `ReactNode` | — | **Obrigatória.** Título e nome acessível do painel. |
+| `children` | `ReactNode` | — | O corpo do painel; rola se for alto. |
+| `footer` | `ReactNode` | — | Ações do rodapé. Sem ele, não há rodapé. |
+| `trigger` | `ReactNode` | — | Elemento que abre o painel. Dispensável no modo controlado. |
+| `side` | `'right' \| 'left' \| 'top' \| 'bottom'` | `'right'` | Borda em que o painel fica. |
+| `swipeToClose` | `boolean` | `true` | Fecha arrastando o painel para a borda (só toque). |
+| `showHandle` | `boolean` | `true` | Barrinha de arraste em `top` e `bottom` (só com `swipeToClose`). |
+| `closeLabel` | `string` | `'Fechar'` | Nome acessível do botão ×. |
+| `open` / `defaultOpen` / `onOpenChange` | — | — | Controle do estado de abertura. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+## Acessibilidade
+
+- Igual ao [Modal](/react/components/modal/): `role="dialog"` nomeado pelo `title`, foco preso enquanto aberto e devolvido ao trigger ao fechar, `Esc` ou clique no backdrop fecham.
+- O corpo é a descrição do painel (`aria-describedby`), e o conteúdo de trás fica inerte.
+
+### Quando usar
+
+Detalhes de um item de lista, filtros avançados e formulários de edição que se beneficiam de ver a página ao fundo.
+
+### Quando não usar
+
+Confirmações e decisões curtas ([Modal](/react/components/modal/)), painéis pequenos ancorados a um botão ([Popover](/react/components/popover/)) e conteúdo que merece a própria página.

@@ -66,17 +66,17 @@ O RN não tem colunas automáticas. Cada célula é `flex-1` com largura mínima
 
 Todas aceitam `className` e as props de `View`. Em `TableCaption`, `TableHead` e `TableCell`, `children` é `ReactNode`.
 
-## Diferenças em relação à web
+## Particularidades
 
-- Sem CSS grid nem `<table>`: as células são `View` com flexbox, e a largura das colunas depende de `className` (veja acima).
-- Não há `aria-sort`: indique a ordenação no próprio conteúdo do `TableHead`, por exemplo com um ícone e texto.
+- As células são `View` com flexbox, e a largura das colunas depende de `className` (veja acima).
+- Para indicar a ordenação, use o próprio conteúdo do `TableHead`, por exemplo um ícone e texto.
 - Para muitas linhas, a tabela não virtualiza. Pagine com [Pagination](/react-native/components/pagination/) ou use `FlatList`.
 
 ## Acessibilidade
 
 - A tabela usa `role="grid"`, e cada `TableHead` é `accessible` com `accessibilityRole="header"`.
 - Dê um nome à tabela com `TableCaption` ou `accessibilityLabel` em `Table`.
-- Os leitores de tela do RN não anunciam linhas e colunas como na web: mantenha o conteúdo de cada célula compreensível sozinho.
+- Os leitores de tela não anunciam linhas e colunas: mantenha o conteúdo de cada célula compreensível sozinho.
 
 ### Quando usar
 

@@ -1,0 +1,36 @@
+---
+title: Stack
+description: Empilha filhos numa direção com espaçamento uniforme.
+---
+
+import { StackDemo } from '../../../../components/demos/ContentDemos'
+
+Organiza filhos em linha ou coluna com espaçamento uniforme, sem escrever flexbox à mão. O `gap` segue a escala de espaçamento do design system (múltiplos de 4px).
+
+<StackDemo client:load />
+
+```tsx
+import { Stack } from '@innovui/react'
+
+<Stack gap={4}>
+  <Stack direction="row" gap={2}>…</Stack>
+  <Stack direction="row" justify="between" align="center">…</Stack>
+</Stack>
+```
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `direction` | `'column' \| 'row'` | `'column'` | Eixo principal. |
+| `gap` | `0 \| 1 \| 2 \| 3 \| 4 \| 6 \| 8` | `4` | Espaço entre filhos: 0, 4, 8, 12, 16, 24, 32px. |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | — | `align-items`. |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between'` | — | `justify-content`. |
+| `wrap` | `boolean` | `false` | Quebra linha quando falta espaço. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+Aceita também as props nativas de `<div>`.
+
+## Acessibilidade
+
+Sem papel ARIA. A ordem do DOM é a ordem de leitura e de Tab: não use `direction` para inverter a ordem visual.

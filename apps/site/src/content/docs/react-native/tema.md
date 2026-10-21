@@ -3,7 +3,7 @@ title: Tema e modo escuro
 description: Como os tokens do InnovUI funcionam no React Native e como trocar entre claro e escuro.
 ---
 
-Os tokens são os mesmos da versão web, gerados do mesmo arquivo de origem. O `@innovui/react-native/theme.css` define cada token como uma variável por tema (`light` e `dark`), e cada variável vira um utilitário do Tailwind, que você também pode usar no seu código: `--color-button-primary-bg` vira `bg-button-primary-bg`.
+Os tokens do design system vêm de um arquivo de origem único. O `@innovui/react-native/theme.css` define cada token como uma variável por tema (`light` e `dark`), e cada variável vira um utilitário do Tailwind, que você também pode usar no seu código: `--color-button-primary-bg` vira `bg-button-primary-bg`.
 
 ```tsx
 import { Text, View } from 'react-native'
@@ -72,9 +72,8 @@ Sobrescreva uma variável no seu `global.css`, **depois** do import do `theme.cs
 
 Cores que não aceitam `className` (como a cor de um ícone SVG) podem ser lidas com `useCSSVariable('--color-nome-do-token')`, do Uniwind.
 
-## Diferenças em relação à web
+## Limitações
 
-- O tema não é uma classe no HTML, e sim `Uniwind.setTheme`.
-- Não há `prefers-color-scheme` automático além do modo `system`.
-- Não existe blur no fundo de Modal e Drawer.
+- O tema é trocado por `Uniwind.setTheme`; o modo `system` acompanha o do aparelho.
+- Não há blur no fundo de Modal e Drawer.
 - As sombras (`shadow-*`) não geram `elevation` no Android.

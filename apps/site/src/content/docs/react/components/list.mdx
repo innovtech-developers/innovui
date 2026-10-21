@@ -1,0 +1,53 @@
+---
+title: List
+description: Lista vertical de itens com título, descrição e elementos nas pontas.
+---
+
+import { ListDemo } from '../../../../components/demos/LayoutDemos'
+
+Lista de itens com o mesmo formato, como pessoas, arquivos ou configurações. Cada item tem título e, opcionalmente, descrição, um elemento antes (como um [Avatar](/react/components/avatar/)) e outro no fim (como um [Badge](/react/components/badge/) ou um [Menu](/react/components/menu/)).
+
+<ListDemo client:load />
+
+```tsx
+import { List, ListItem, Avatar, Badge } from '@innovui/react'
+
+<List divided>
+  <ListItem
+    leading={<Avatar name="Camila Souza" src="/camila.jpg" />}
+    title="Camila Souza"
+    description="Designer de produto"
+    trailing={<Badge status="success">Ativa</Badge>}
+  />
+</List>
+```
+
+## Props
+
+### List
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `divided` | `boolean` | `false` | Linha entre os itens. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+### ListItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `title` | `ReactNode` | — | **Obrigatória.** Título do item. |
+| `description` | `ReactNode` | — | Texto de apoio abaixo do título. |
+| `leading` | `ReactNode` | — | Elemento antes do texto (Avatar, ícone). |
+| `trailing` | `ReactNode` | — | Elemento no fim da linha (Badge, Menu, botão). |
+| `children` | `ReactNode` | — | Conteúdo extra abaixo do texto. |
+
+Aceitam também as props nativas de `<ul>` e `<li>`.
+
+## Acessibilidade
+
+- É uma lista semântica (`<ul>`/`<li>`): leitores de tela anunciam "lista, 3 itens".
+- A lista não é interativa. Se o item inteiro precisa ser clicável, ponha um [Link](/react/components/link/) ou botão no `title` ou no `trailing`, em vez de `onClick` no `<li>`.
+
+### Quando não usar
+
+Dados com várias colunas comparáveis (use [Table](/react/components/table/)) e opções de uma ação ([Menu](/react/components/menu/)).

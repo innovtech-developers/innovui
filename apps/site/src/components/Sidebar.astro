@@ -1,0 +1,46 @@
+---
+import Default from '@astrojs/starlight/components/Sidebar.astro'
+import FrameworkSelect from './FrameworkSelect.astro'
+---
+
+<FrameworkSelect />
+<Default><slot /></Default>
+
+<style is:global>
+  /* categorias de componentes: grupos do Starlight que ficam sempre abertos e se leem como títulos
+     (só o grupo "Componentes" abre e fecha). Selecionam o 2º nível de grupos da sidebar. */
+  .sidebar-content .top-level > li > details > ul > li:has(> details) {
+    margin-inline-start: 0;
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+  .sidebar-content .top-level > li > details > ul > li > details > summary {
+    pointer-events: none;
+    padding-block: 0.25rem;
+    margin-top: 0.75rem;
+  }
+  .sidebar-content .top-level > li > details > ul > li > details > summary .caret {
+    display: none;
+  }
+  .sidebar-content .top-level > li > details > ul > li > details > summary .large {
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sl-color-gray-3);
+  }
+</style>
+
+<script>
+  // sem isto, o foco por teclado ainda abriria/fecharia as categorias, e o estado restaurado pelo
+  // Starlight poderia fechá-las
+  for (const d of document.querySelectorAll<HTMLDetailsElement>(
+    '.sidebar-content .top-level > li > details > ul > li > details',
+  )) {
+    d.open = true
+    d.querySelector('summary')?.setAttribute('tabindex', '-1')
+    d.addEventListener('toggle', () => {
+      d.open = true
+    })
+  }
+</script>

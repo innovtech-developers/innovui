@@ -1,0 +1,86 @@
+---
+import { frameworks } from '../frameworks'
+
+// topics vem do starlight-sidebar-topics; só existe em páginas que pertencem a um tópico
+const { topics = [], isPageWithTopic } = Astro.locals.starlightSidebarTopics ?? {}
+const items = topics.map((t) => ({ ...t, ...frameworks[t.link.split('/')[1] ?? ''] }))
+const current = items.find((t) => t.isCurrent)
+---
+
+{
+  isPageWithTopic && current && (
+    <framework-select>
+      <details class="fw">
+        <summary class="fw__trigger">
+          <svg class="fw__logo" viewBox="0 0 24 24" aria-hidden="true" set:html={current.logo} />
+          <span class="fw__text">
+            <span class="fw__name">{current.label}</span>
+            <span class="fw__version">v{current.version}</span>
+          </span>
+          <svg class="fw__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+        </summary>
+        <ul class="fw__menu">
+          {items.map((t) => (
+            <li>
+              <a href={t.link} class="fw__item" aria-current={t.isCurrent ? 'page' : undefined}>
+                <svg class="fw__logo" viewBox="0 0 24 24" aria-hidden="true" set:html={t.logo} />
+                <span class="fw__text">
+                  <span class="fw__name">{t.label}</span>
+                  <span class="fw__version">v{t.version}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    </framework-select>
+  )
+}
+
+<style>
+  /* tudo nos tokens do design system (mesmos do Select/Input), claro e escuro juntos */
+  .fw { position: relative; margin-bottom: 1rem; }
+  .fw__trigger {
+    display: flex; align-items: center; gap: 0.75rem; cursor: pointer; list-style: none;
+    padding: 0.5rem 0.75rem; border-radius: var(--radius-md);
+    border: 1px solid var(--color-field-border); background: var(--color-field-bg);
+    color: var(--color-field-text); transition: border-color 0.15s;
+  }
+  .fw__trigger::-webkit-details-marker { display: none; }
+  .fw__trigger:hover { border-color: var(--color-field-border-hover); }
+  .fw__trigger:focus-visible,
+  .fw[open] .fw__trigger { outline: none; border-color: var(--color-field-focus-ring); box-shadow: inset 0 0 0 1px var(--color-field-focus-ring); }
+  .fw__logo { flex: none; width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 1.4; color: var(--color-text-brand); }
+  .fw__text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+  .fw__name { font-size: var(--sl-text-base); font-weight: 600; }
+  .fw__version { font-size: var(--sl-text-xs); color: var(--color-field-text-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fw__chevron { flex: none; margin-inline-start: auto; width: 1rem; height: 1rem; fill: none; stroke: var(--color-field-text-placeholder); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s; }
+  .fw[open] .fw__chevron { transform: rotate(180deg); }
+  .fw__menu {
+    position: absolute; inset-inline: 0; top: calc(100% + 0.25rem); z-index: 10; margin: 0; padding: 0.25rem; list-style: none;
+    border: 1px solid var(--color-select-dropdown-border); border-radius: var(--radius-md);
+    background: var(--color-select-dropdown-bg); box-shadow: var(--shadow-md);
+  }
+  .fw__item { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--color-select-option-text); }
+  .fw__item:hover { background: var(--color-select-option-bg-hover); }
+  .fw__item[aria-current] { background: var(--color-select-option-bg-selected); }
+</style>
+
+<script>
+  // fecha ao clicar fora ou ao escolher (a navegação recarrega a página, então só o clique fora importa)
+  class FrameworkSelect extends HTMLElement {
+    connectedCallback() {
+      const details = this.querySelector('details')
+      document.addEventListener('click', (e) => {
+        if (details?.open && e.target instanceof Node && !this.contains(e.target)) details.open = false
+      })
+      this.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && details?.open) {
+          details.open = false
+          details.querySelector('summary')?.focus()
+        }
+      })
+    }
+  }
+  customElements.define('framework-select', FrameworkSelect)
+</script>

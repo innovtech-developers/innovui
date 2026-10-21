@@ -1,0 +1,57 @@
+---
+title: Stepper
+description: Progresso de um fluxo de várias etapas.
+---
+
+import { StepperDemo } from '../../../../components/demos/NavigationDemos'
+
+Mostra o progresso de um **fluxo de 2 a 7 etapas** (checkout, onboarding, wizards): cada passo é concluído, atual ou pendente. Para a hierarquia de páginas, use o [Breadcrumb](/react/components/breadcrumb/).
+
+<StepperDemo client:load />
+
+```tsx
+import { Stepper, Step } from '@innovui/react'
+
+<Stepper current={1} aria-label="Etapas do cadastro">
+  <Step>Conta</Step>
+  <Step>Endereço</Step>
+  <Step>Pagamento</Step>
+</Stepper>
+```
+
+O estado de cada `Step` vem de `current` (índice a partir de 0): os anteriores ficam **concluídos** (✓ verde), o do índice fica **ativo** (roxo) e os seguintes ficam **pendentes** (cinza). O número vem da posição do passo.
+
+O Stepper só **mostra** o progresso: quem avança, volta e valida cada etapa é a sua tela.
+
+## Props
+
+### `Stepper`
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `current` | `number` | **Obrigatória.** Índice (a partir de 0) do passo atual. |
+| `className` | `string` | Mesclado com as classes internas via `tailwind-merge`. |
+
+Aceita também as props nativas de `<ol>`.
+
+### `Step`
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `children` | `ReactNode` | O rótulo do passo. |
+| `className` | `string` | Mesclado com as classes internas. |
+
+## Acessibilidade
+
+- É uma lista ordenada (`<ol>`), e o passo atual ganha `aria-current="step"`.
+- Passos concluídos ganham o texto "(concluído)" para leitores de tela, já que o ✓ é decorativo.
+- Dê um nome à lista com `aria-label` quando houver mais de um Stepper na página.
+- **Contraste:** o rótulo e o número dos passos pendentes usam `text/tertiary` e `interactive/disabled`, por design, e ficam abaixo de 4.5:1. Isso é aceitável porque o estado pendente não é interativo, mas não coloque informação essencial só nele.
+
+### Quando usar
+
+Checkout, onboarding, wizards e qualquer fluxo sequencial de 2 a 7 etapas.
+
+### Quando não usar
+
+Hierarquia de páginas ([Breadcrumb](/react/components/breadcrumb/)), alternar entre seções ([Tabs](/react/components/tabs/)) e fluxos com mais de 7 etapas.

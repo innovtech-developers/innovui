@@ -58,9 +58,9 @@ Aceita também as props do `TextInput` (`value`, `onChangeText`, `placeholder`, 
 - `disabled` é anunciado por `accessibilityState.disabled`; outros valores de `accessibilityState` são preservados.
 - Contraste mínimo 4.5:1 entre texto e fundo.
 
-## Diferenças em relação à web
+## Particularidades
 
-- `onChange` vira `onChangeText`, e `aria-*` vira `accessibilityLabel`, `accessibilityHint` e `accessibilityState`.
+- O callback é `onChangeText`, e a acessibilidade vai em `accessibilityLabel`, `accessibilityHint` e `accessibilityState`.
 - Não há `rows` nem redimensionamento: a altura mínima é fixa e o campo cresce com o conteúdo.
 - Não existe hover nem foco por teclado.
 

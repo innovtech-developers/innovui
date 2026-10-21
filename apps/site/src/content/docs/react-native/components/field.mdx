@@ -64,10 +64,10 @@ O Field clona o controle e define `disabled`, `readOnly`, `size`, `error`, `acce
 - Com `error`, a região do texto de apoio usa `accessibilityLiveRegion="polite"` (Android), então a mensagem é anunciada quando aparece.
 - O erro nunca depende só da cor: há ícone e texto.
 
-## Diferenças em relação à web
+## Particularidades
 
-- `label` é `string` (a web aceita `ReactNode`), porque o texto não herda estilo no React Native.
-- A associação rótulo/controle é por `accessibilityLabel` e `accessibilityHint`, não por `id`, `htmlFor` e `aria-describedby`.
+- `label` é `string`, porque o texto não herda estilo no React Native.
+- A associação rótulo/controle é por `accessibilityLabel` e `accessibilityHint`.
 - Não funciona com [Checkbox](/react-native/components/checkbox/), [Radio](/react-native/components/radio/) e [Switch](/react-native/components/switch/): eles têm o próprio `label`.
 
 ### Quando usar

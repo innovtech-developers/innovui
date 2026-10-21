@@ -1,0 +1,67 @@
+---
+title: Accordion
+description: Seções que expandem e recolhem, para perguntas frequentes e conteúdo longo.
+---
+
+import { AccordionDemo, AccordionMultipleDemo } from '../../../../components/demos/PanelDemos'
+
+Lista de seções em que só o cabeçalho fica visível até a pessoa expandir. Boa para perguntas frequentes e para esconder detalhes secundários.
+
+<AccordionDemo client:load />
+
+```tsx
+import { Accordion, AccordionItem } from '@innovui/react'
+
+<Accordion type="single" collapsible defaultValue="pagamento">
+  <AccordionItem value="pagamento" title="Quais formas de pagamento?">
+    Aceitamos cartão de crédito, boleto e Pix.
+  </AccordionItem>
+  <AccordionItem value="entrega" title="Qual o prazo de entrega?">
+    De 3 a 7 dias úteis, conforme o CEP.
+  </AccordionItem>
+</Accordion>
+```
+
+## Várias abertas
+
+Com `type="multiple"`, cada seção abre e fecha de forma independente.
+
+<AccordionMultipleDemo client:load />
+
+```tsx
+<Accordion type="multiple">…</Accordion>
+```
+
+## Props
+
+### Accordion
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `type` | `'single' \| 'multiple'` | — | **Obrigatória.** `single` abre uma seção por vez; `multiple` permite várias. |
+| `collapsible` | `boolean` | `false` | Só em `single`: permite fechar a seção aberta clicando nela de novo. |
+| `value` / `defaultValue` / `onValueChange` | `string` (`single`) ou `string[]` (`multiple`) | — | Controle das seções abertas, pelo `value` de cada item. |
+| `className` | `string` | — | Mesclado via `tailwind-merge`. |
+
+### AccordionItem
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `value` | `string` | — | **Obrigatória.** Identifica a seção. |
+| `title` | `ReactNode` | — | **Obrigatória.** Texto do cabeçalho, que é o botão que expande. |
+| `children` | `ReactNode` | — | O conteúdo da seção. |
+| `disabled` | `boolean` | `false` | Não expande nem recebe foco. |
+
+## Acessibilidade
+
+- Cada cabeçalho é um `<h3>` com um botão dentro, com `aria-expanded` e `aria-controls`; o conteúdo é uma região nomeada pelo cabeçalho.
+- `Tab` passa pelos cabeçalhos, as setas `↑`/`↓` os percorrem, `Home` e `End` vão ao primeiro e ao último, e `Enter` ou `Espaço` expandem.
+- A seta gira ao abrir, sem depender de cor. A rotação some com `prefers-reduced-motion`.
+
+### Quando usar
+
+Perguntas frequentes, configurações agrupadas e conteúdo longo que a maioria não precisa ler inteiro.
+
+### Quando não usar
+
+Alternar entre visões do mesmo conteúdo ([Tabs](/react/components/tabs/)) e passos de um fluxo ([Stepper](/react/components/stepper/)). Não esconda informação que todos precisam ver.

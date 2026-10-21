@@ -49,10 +49,10 @@ O filho é o gatilho: um único elemento React que aceite `onLongPress` (como `B
 | `className` | `string` | n/a | Mesclado com as classes do balão via `tailwind-merge`. |
 | `testID` | `string` | n/a | O fundo que captura o toque fora recebe `{testID}-backdrop`. |
 
-## Diferenças em relação à web
+## Particularidades
 
 - Abre com **toque longo** no gatilho, não com hover ou foco.
-- Sem os lados `left` e `right`. O balão fica centrado no gatilho, com seta, como na web; `delayDuration` é o tempo de segurar o gatilho (no toque não há hover).
+- Sem os lados `left` e `right`. O balão fica centrado no gatilho, com seta; `delayDuration` é o tempo de segurar o gatilho (no toque não há hover).
 - Fecha por `duration` (padrão 3 s) ou ao tocar fora.
 - O gatilho precisa ser um elemento que aceite `onLongPress`; um `Text` solto não funciona.
 
