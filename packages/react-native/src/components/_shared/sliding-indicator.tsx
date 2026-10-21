@@ -28,7 +28,8 @@ export function useReducedMotion() {
   const [reduced, setReduced] = useState(false)
   useEffect(() => {
     let alive = true
-    AccessibilityInfo.isReduceMotionEnabled?.()?.then((value) => alive && setReduced(value))
+    // só ligar quando o sistema pede (o padrão é `false`): evita um render à toa em todo overlay
+    AccessibilityInfo.isReduceMotionEnabled?.()?.then((value) => alive && value && setReduced(true))
     const subscription = AccessibilityInfo.addEventListener?.('reduceMotionChanged', setReduced)
     return () => {
       alive = false

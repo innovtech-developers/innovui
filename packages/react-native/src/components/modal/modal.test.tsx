@@ -1,8 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { useState } from 'react'
-import { Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { Button } from '../button/button'
 import { Modal, ModalClose } from './modal'
+
+beforeEach(() => jest.useFakeTimers())
+afterEach(() => jest.useRealTimers())
+
+// A saída é animada: o conteúdo só some depois dela.
+const settle = () => act(() => jest.advanceTimersByTime(500))
 
 describe('Modal', () => {
   it('não renderiza o conteúdo fechado', () => {
@@ -60,14 +66,17 @@ describe('Modal', () => {
 
     fireEvent.press(screen.getByRole('button', { name: 'Fechar' }))
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    settle()
     expect(screen.queryByText('x')).toBeNull()
 
     fireEvent.press(screen.getByRole('button', { name: 'Abrir' }))
     fireEvent.press(screen.getByTestId('m-backdrop'))
+    settle()
     expect(screen.queryByText('x')).toBeNull()
 
     fireEvent.press(screen.getByRole('button', { name: 'Abrir' }))
     fireEvent.press(screen.getByRole('button', { name: 'Ok' }))
+    settle()
     expect(screen.queryByText('x')).toBeNull()
   })
 
@@ -83,6 +92,33 @@ describe('Modal', () => {
     render(<Controlled />)
     expect(screen.queryByRole('button', { name: 'Fechar' })).toBeNull()
     fireEvent(screen.getByText('x'), 'requestClose')
+    settle()
+    expect(screen.queryByText('x')).toBeNull()
+  })
+
+  it('o diálogo entra com fade e zoom de 95% e fica montado durante a saída', () => {
+    function Controlled() {
+      const [open, setOpen] = useState(false)
+      return (
+        <>
+          <Button onPress={() => setOpen(true)}>Abrir</Button>
+          <Modal open={open} onOpenChange={setOpen} title="T" testID="m">
+            x
+          </Modal>
+        </>
+      )
+    }
+    render(<Controlled />)
+    fireEvent.press(screen.getByRole('button', { name: 'Abrir' }))
+    // começa menor e transparente (a animação é nativa: no Jest só se vê o valor inicial)
+    const style = StyleSheet.flatten(screen.getByTestId('m').parent?.parent?.parent?.props.style)
+    expect(style.opacity).toBe(0)
+    expect(style.transform[0].scale).toBeCloseTo(0.95)
+    act(() => jest.advanceTimersByTime(400))
+
+    fireEvent.press(screen.getByRole('button', { name: 'Fechar' }))
+    expect(screen.getByText('x')).toBeTruthy() // ainda saindo
+    settle()
     expect(screen.queryByText('x')).toBeNull()
   })
 

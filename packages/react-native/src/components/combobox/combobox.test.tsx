@@ -1,6 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { View } from 'react-native'
 import { Combobox, type ComboboxOption } from './combobox'
+
+beforeEach(() => jest.useFakeTimers())
+afterEach(() => jest.useRealTimers())
+
+// A saída é animada: o conteúdo só some depois dela.
+const settle = () => act(() => jest.advanceTimersByTime(500))
 
 beforeAll(() => {
   jest
@@ -38,6 +44,7 @@ describe('Combobox', () => {
     open()
     fireEvent.press(screen.getByRole('option', { name: 'Rio de Janeiro' }))
     expect(onValueChange).toHaveBeenCalledWith('rj')
+    settle()
     expect(screen.queryAllByRole('option')).toHaveLength(0)
     expect(screen.getByText('Rio de Janeiro')).toBeTruthy()
   })
@@ -75,6 +82,7 @@ describe('Combobox', () => {
     const { rerender } = renderCombobox({ value: 'sp' })
     open()
     fireEvent.press(screen.getByRole('option', { name: 'Rio de Janeiro' }))
+    settle()
     expect(screen.getByText('São Paulo')).toBeTruthy()
     rerender(<Combobox accessibilityLabel="Estado" options={options} value="rj" />)
     expect(screen.getByText('Rio de Janeiro')).toBeTruthy()

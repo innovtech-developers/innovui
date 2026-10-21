@@ -50,6 +50,7 @@ describe('Tooltip', () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(true)
     act(() => jest.advanceTimersByTime(1000))
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
+    act(() => jest.advanceTimersByTime(500)) // a saída é animada
     expect(screen.queryByText('Dica')).toBeNull()
   })
 
@@ -63,6 +64,7 @@ describe('Tooltip', () => {
     act(() => jest.advanceTimersByTime(60000))
     expect(screen.getByText('Dica')).toBeTruthy()
     fireEvent.press(screen.getByTestId('t-backdrop'))
+    act(() => jest.advanceTimersByTime(500))
     expect(screen.queryByText('Dica')).toBeNull()
   })
 

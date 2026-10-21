@@ -1,6 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { View } from 'react-native'
 import { Select, SelectOption } from './select'
+
+beforeEach(() => jest.useFakeTimers())
+afterEach(() => jest.useRealTimers())
+
+// A saída é animada: o conteúdo só some depois dela.
+const settle = () => act(() => jest.advanceTimersByTime(500))
 
 // O mock de View do Jest não mede nada; devolvemos um retângulo para o overlay abrir.
 beforeAll(() => {
@@ -39,6 +45,7 @@ describe('Select', () => {
     expect(trigger().props.accessibilityState.expanded).toBe(true)
     fireEvent.press(screen.getByRole('option', { name: 'Marketing' }))
     expect(onValueChange).toHaveBeenCalledWith('mkt')
+    settle()
     expect(screen.getByText('Marketing')).toBeTruthy()
     expect(trigger().props.accessibilityState.expanded).toBe(false)
   })
@@ -48,6 +55,7 @@ describe('Select', () => {
     expect(screen.getByText('Operações')).toBeTruthy()
     fireEvent.press(trigger())
     fireEvent.press(screen.getByRole('option', { name: 'Marketing' }))
+    settle()
     expect(screen.getByText('Operações')).toBeTruthy()
     rerender(
       <Select value="mkt" accessibilityLabel="Workspace">

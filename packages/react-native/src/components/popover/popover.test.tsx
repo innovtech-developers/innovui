@@ -1,13 +1,19 @@
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { act, fireEvent, render, screen } from '@testing-library/react-native'
 import { Text, View } from 'react-native'
 import { Button } from '../button/button'
 import { Popover, PopoverClose } from './popover'
 
+const settle = () => act(() => jest.advanceTimersByTime(500)) // a saída é animada
+
 beforeEach(() => {
+  jest.useFakeTimers()
   // O mock de View do Jest nunca chama o callback de medição.
   jest.spyOn(View.prototype, 'measureInWindow').mockImplementation((cb) => cb(20, 100, 80, 40))
 })
-afterEach(() => jest.restoreAllMocks())
+afterEach(() => {
+  jest.useRealTimers()
+  jest.restoreAllMocks()
+})
 
 describe('Popover', () => {
   it('não mostra o conteúdo fechado e abre pelo gatilho', () => {
@@ -44,10 +50,12 @@ describe('Popover', () => {
       </Popover>,
     )
     fireEvent.press(screen.getByTestId('p-backdrop'))
+    settle()
     expect(screen.queryByRole('button', { name: 'Fechar' })).toBeNull()
 
     fireEvent.press(screen.getByRole('button', { name: 'Abrir' }))
     fireEvent.press(screen.getByRole('button', { name: 'Fechar' }))
+    settle()
     expect(screen.queryByRole('button', { name: 'Fechar' })).toBeNull()
   })
 })

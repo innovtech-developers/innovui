@@ -1,7 +1,7 @@
 /// <reference types="uniwind/types" />
 
 import { cva, type VariantProps } from 'class-variance-authority'
-import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, type ReactNode, useContext, useRef } from 'react'
 import {
   Animated,
   Pressable,
@@ -16,6 +16,7 @@ import { Backdrop } from '../_shared/backdrop'
 import { injectHandler, useOpenState } from '../_shared/overlay-state'
 import { CloseIcon } from '../_shared/status'
 import { useToken } from '../_shared/use-token'
+import { useTransition } from '../_shared/use-transition'
 import { useSwipeToClose } from './use-swipe-to-close'
 
 const drawerVariants = cva('overflow-hidden border-border-default bg-surface-elevated shadow-2xl', {
@@ -110,25 +111,12 @@ export function Drawer({
   })
   const hasHandle = showHandle && swipeToClose && !horizontal
 
-  // O Modal fica montado durante a animação de saída.
-  const [mounted, setMounted] = useState(isOpen)
-  const progress = useRef(new Animated.Value(isOpen ? 1 : 0)).current
-
-  useEffect(() => {
-    if (isOpen) setMounted(true)
-    const animation = Animated.timing(progress, {
-      toValue: isOpen ? 1 : 0,
-      duration: 250,
-      useNativeDriver: true,
-    })
-    animation.start(({ finished }) => {
-      if (finished && !isOpen) {
-        setMounted(false)
-        swipe.resetDrag()
-      }
-    })
-    return () => animation.stop()
-  }, [isOpen, progress, swipe.resetDrag])
+  // O Modal fica montado durante a animação de saída; o arraste zera quando ele desmonta.
+  const { mounted, progress } = useTransition(isOpen, {
+    duration: 250,
+    exitDuration: 250,
+    onClosed: swipe.resetDrag,
+  })
 
   const offset = horizontal ? width : height
   const sign = placement === 'right' || placement === 'bottom' ? 1 : -1
