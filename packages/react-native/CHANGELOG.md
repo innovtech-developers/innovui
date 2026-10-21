@@ -1,5 +1,15 @@
 # @innovui/react-native
 
+## 0.2.0
+
+### Minor Changes
+
+- [#20](https://github.com/innovtech-developers/innovui/pull/20) [`bffd808`](https://github.com/innovtech-developers/innovui/commit/bffd80848fc43af05e58fb2cc028ac9cc1b7c1ae) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Paridade com o `@innovui/react`. Drawer: arrastar o painel para a borda fecha (`swipeToClose`, ligado por padrão), com o backdrop clareando junto e a rolagem do corpo respeitada, e uma barrinha de arraste nos painéis `top` e `bottom` (`showHandle`). Tabs e SegmentedControl: o sublinhado e o pill viram um indicador único que desliza e se redimensiona até o item ativo (pula direto com "Reduzir movimento"). Toast: arrastar para o lado dispensa (e pausa o auto-fechar enquanto o dedo segura), e os toasts de baixo deslizam para o lugar quando um sai. Modal entra com fade e zoom de 95%, e Popover, Menu, Tooltip, Select, Combobox e DatePicker com fade e zoom de 96% a partir do gatilho (antes só faziam fade). Tooltip: `showArrow` (seta, ligada por padrão), balão centrado no gatilho e `delayDuration`. Drawer, Modal e os overlays ancorados respeitam "Reduzir movimento".
+
+### Patch Changes
+
+- [#20](https://github.com/innovtech-developers/innovui/pull/20) [`d730720`](https://github.com/innovtech-developers/innovui/commit/d730720a126aa48ed0c0f8df4da722269a8a3eb5) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Input: um `Pressable` em `leadingIcon` ou `trailingIcon` volta a receber o toque (o slot do ícone tinha `pointerEvents="none"`, que bloqueava o ícone interativo, como o de mostrar/ocultar senha). O slot agora é `box-none`; um ícone que não trata o toque continua focando o campo.
+
 ## 0.1.0
 
 ### Minor Changes
