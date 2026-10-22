@@ -169,6 +169,28 @@ describe('AudioPlayer', () => {
     expect(slider().children).toHaveLength(30)
   })
 
+  it('em espaço estreito desenha só as barras que cabem, sem perder o progresso', () => {
+    let resize: (width: number) => void = () => {}
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: (entries: unknown[]) => void) {
+          resize = (width) => callback([{ contentRect: { width } }])
+        }
+        observe() {}
+        disconnect() {}
+      },
+    )
+    const { tick } = setup()
+    act(() => resize(100)) // 4px por barra (2px + 2px de espaço): cabem 25
+    expect(slider().children).toHaveLength(25)
+    tick(DURATION / 2)
+    expect(playedBars()).toHaveLength(13) // metade das barras desenhadas
+    act(() => resize(1000)) // sobra espaço: volta ao máximo, nunca passa de `bars`
+    expect(slider().children).toHaveLength(52)
+    vi.unstubAllGlobals()
+  })
+
   it('repassa className e props do contêiner', () => {
     setup({ className: 'minha-classe', 'data-testid': 'player' } as never)
     expect(screen.getByTestId('player')).toHaveClass('minha-classe')

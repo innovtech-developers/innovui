@@ -69,6 +69,19 @@ describe('AudioPlayer', () => {
     expect(bars()).toHaveLength(30)
   })
 
+  it('em espaço estreito desenha só as barras que cabem, sem perder o progresso', () => {
+    render(<AudioPlayer waveform={wave} position={50} duration={100} />)
+    fireEvent(screen.getByRole('adjustable'), 'layout', {
+      nativeEvent: { layout: { width: 100, height: 34 } },
+    })
+    expect(bars()).toHaveLength(25) // 4px por barra (2px + 2px de espaço)
+    expect(played()).toHaveLength(13) // metade das barras desenhadas
+    fireEvent(screen.getByRole('adjustable'), 'layout', {
+      nativeEvent: { layout: { width: 1000, height: 34 } },
+    })
+    expect(bars()).toHaveLength(52) // nunca passa de `bars`
+  })
+
   it('tocar e arrastar na onda posiciona em segundos', () => {
     const onSeek = jest.fn()
     render(<AudioPlayer duration={200} onSeek={onSeek} />)
