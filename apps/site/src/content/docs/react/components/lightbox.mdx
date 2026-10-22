@@ -1,0 +1,65 @@
+---
+title: Lightbox
+description: Foto ampliada sobre fundo escurecido, com setas, contador e Esc para fechar.
+---
+
+import { LightboxDemo } from '../../../../components/demos/MediaDemos'
+
+Mostra uma foto em tamanho grande sobre um fundo escurecido, com botão de fechar, setas para a foto anterior e a próxima, e o contador (`1 / 6`). O [Gallery](/react/components/gallery/) já usa o Lightbox; use-o direto quando a foto abrir de outro lugar (um botão, uma miniatura própria).
+
+<LightboxDemo client:load />
+
+```tsx
+import { Lightbox } from '@innovui/react'
+
+const [open, setOpen] = useState(false)
+const [index, setIndex] = useState(0)
+
+<Lightbox
+  items={fotos}
+  open={open}
+  onOpenChange={setOpen}
+  index={index}
+  onIndexChange={setIndex}
+/>
+```
+
+`open` e `index` são opcionais: sem eles o Lightbox guarda o próprio estado (`defaultOpen`, `defaultIndex`). As setas **dão a volta**: da última foto vai para a primeira. Com uma foto só, não aparecem setas nem contador.
+
+Clicar no fundo, no botão de fechar ou apertar `Esc` fecha. Em telas estreitas as setas ficam sobre as bordas da foto.
+
+## Foco ao fechar
+
+O Lightbox não tem um botão próprio que o abra, então o foco **não volta sozinho** para quem o abriu. Se o abre de um botão, devolva o foco em `onCloseAutoFocus`:
+
+```tsx
+<Lightbox
+  onCloseAutoFocus={(event) => {
+    event.preventDefault()
+    openerRef.current?.focus()
+  }}
+  …
+/>
+```
+
+O Gallery já faz isso, apontando para a miniatura da foto em que o usuário parou.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `items` | `{ src: string; alt: string }[]` | — | **Obrigatória.** As fotos. |
+| `open` / `defaultOpen` | `boolean` | `false` | Aberto (controlado ou inicial). |
+| `onOpenChange` | `(open: boolean) => void` | — | Chamado ao abrir ou fechar. |
+| `index` / `defaultIndex` | `number` | `0` | Foto exibida (controlado ou inicial). |
+| `onIndexChange` | `(index: number) => void` | — | Chamado ao trocar de foto. |
+| `label` | `string` | `"Visualizador de imagens"` | Nome acessível do diálogo. |
+| `closeLabel` / `previousLabel` / `nextLabel` | `string` | `"Fechar"` / `"Foto anterior"` / `"Próxima foto"` | Nomes acessíveis dos botões. |
+| `onCloseAutoFocus` | `(event: Event) => void` | — | Chamado quando o foco volta ao fechar. |
+
+## Acessibilidade
+
+- É um `role="dialog"` com o `label` como nome; o foco fica preso dentro e `Esc` fecha.
+- `←` `→` trocam de foto. O contador é anunciado por leitores de tela (`aria-live="polite"`).
+- Cada foto usa o `alt` de `items`: escreva uma descrição de verdade.
+- A troca de foto tem um fade curto, desligado com `prefers-reduced-motion`.

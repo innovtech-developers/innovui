@@ -11,6 +11,7 @@
     },
     "android": {
       "package": "br.com.innovui.playground"
-    }
+    },
+    "plugins": ["expo-audio", "expo-video", "expo-asset"]
   }
 }

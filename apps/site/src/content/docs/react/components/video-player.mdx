@@ -1,0 +1,89 @@
+---
+title: VideoPlayer
+description: Player de vídeo com controles próprios (play central, posição, tempo, volume e tela cheia).
+---
+
+import { VideoPlayerDemo } from '../../../../components/demos/MediaDemos'
+
+Toca um vídeo com controles do InnovUI no lugar dos nativos do navegador: botão de play grande no centro, barra de posição, reproduzir/pausar, tempo, mudo e volume, e tela cheia.
+
+<VideoPlayerDemo client:load />
+
+```tsx
+import { VideoPlayer } from '@innovui/react'
+
+<VideoPlayer src="/videos/apresentacao.mp4" poster="/videos/capa.jpg" label="Apresentação" />
+```
+
+## Comportamento
+
+- **Pausado:** o play central e os controles ficam sempre visíveis, com um leve véu escuro sobre o vídeo.
+- **Tocando:** os controles somem depois de 2,5 s sem interação (e o cursor também). Voltam ao mexer o mouse, tocar na tela ou usar o teclado, e **não somem** enquanto o foco está neles. Mude o tempo com `hideControlsAfter`.
+- **Clicar no vídeo** alterna entre tocar e pausar.
+- **Largura estreita:** abaixo de 560px o slider de volume some; o botão de mudo fica.
+- **Tela cheia:** o contêiner inteiro vai para tela cheia, então os controles do InnovUI continuam lá, e o ícone vira "sair da tela cheia".
+- **iPhone:** o Safari do iPhone não leva o contêiner para tela cheia, então o vídeo abre no player do iOS, com os controles dele. Lá o volume só se ajusta nos botões do aparelho: o slider não aparece (o mudo continua).
+
+O vídeo ocupa a largura do contêiner em 16:9. Troque a proporção com `className` (por exemplo `aspect-square`).
+
+## Legendas e fontes
+
+Tudo que você colocar dentro do componente vai para o `<video>`: use `<track>` para legendas e `<source>` para formatos alternativos.
+
+```tsx
+<VideoPlayer src="/videos/aula.mp4" label="Aula 1">
+  <track kind="captions" src="/videos/aula.pt.vtt" srcLang="pt" label="Português" default />
+</VideoPlayer>
+```
+
+## Personalização
+
+As cores vêm de tokens, então não há prop de cor: sobrescreva o token (veja [Tema e customização](/react/tema/)).
+
+| Parte | Token |
+|---|---|
+| Parte preenchida das barras de posição e de volume | `--color-media-accent` |
+| Fundo do vídeo e véu dos controles | `--color-media-surface` |
+| Ícones, tempo e botões sobre o vídeo | `--color-media-on-surface` |
+| Ícone do play central | `--color-interactive-primary` (o círculo é `--color-media-on-surface`) |
+| Anel de foco | `--color-border-focus` |
+
+O roxo das barras é só o padrão do design system. Para trocar só neste player:
+
+```css
+.video-azul {
+  --color-media-accent: #0ea5e9;
+  --color-interactive-primary: #0284c7;
+}
+```
+
+```tsx
+<VideoPlayer src="/videos/apresentacao.mp4" className="video-azul" />
+```
+
+`--color-media-accent` é exclusivo da mídia: trocá-lo em `:root` não afeta nenhum outro componente. Já `--color-interactive-primary` é usado em vários (como os pontos do Carousel), então prefira trocá-lo só na classe do player, como acima.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `src` | `string` | — | **Obrigatória.** Endereço do vídeo. |
+| `poster` | `string` | — | Imagem mostrada antes de começar. |
+| `label` | `string` | `"Vídeo"` | Nome acessível do player. |
+| `autoPlay` | `boolean` | `false` | Começa sozinho. Quase sempre exige `muted`. |
+| `muted` | `boolean` | `false` | Começa sem som. |
+| `loop` | `boolean` | `false` | Repete ao terminar. |
+| `preload` | `'none' \| 'metadata' \| 'auto'` | `'metadata'` | Quanto do vídeo o navegador carrega antes do play. |
+| `hideControlsAfter` | `number` | `2500` | Milissegundos sem interação até esconder os controles tocando. |
+| `children` | `ReactNode` | — | `<track>` de legendas e `<source>` extras. |
+| `onPlay` / `onPause` / `onEnded` / `onTimeUpdate` | eventos do `<video>` | — | Chamados pelos eventos do vídeo. |
+| `className`, `style`, `ref`… | props de `<div>` | — | Vão para o contêiner. |
+
+## Acessibilidade
+
+- O player é um `role="group"` com o `label`. Todos os botões têm nome e o estado muda o nome ("Reproduzir"/"Pausar", "Silenciar"/"Ativar o som", "Tela cheia"/"Sair da tela cheia").
+- A barra de posição é um `role="slider"` ("Posição do vídeo") com `aria-valuetext` como "2:14 de 5:32"; `←` `→` movem 5s, `Home` e `End` vão às pontas. O volume é um slider com o mesmo teclado do [Slider](/react/components/slider/).
+- Controles escondidos ficam inertes: não recebem foco nem toque.
+- O play central é um atalho para o mouse e o toque; o teclado usa o botão de reproduzir da barra.
+- Ofereça legendas (`<track>`) para o conteúdo falado.
+- Evite `autoPlay` com som. Os efeitos de transição respeitam `prefers-reduced-motion`.

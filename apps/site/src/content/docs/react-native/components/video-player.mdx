@@ -1,0 +1,121 @@
+---
+title: VideoPlayer
+description: Controles de vídeo (play central, posição, tempo, mudo e tela cheia) sobre o seu vídeo (expo-video).
+---
+
+Desenha os controles de um vídeo sobre a superfície que você colocar dentro dele: play grande no centro, barra de posição, reproduzir/pausar, tempo, mudo e tela cheia.
+
+O React Native não tem player de vídeo embutido, então o `VideoPlayer` é só a **casca**: ele recebe o vídeo como `children`, desenha o estado que você passa e avisa o que o usuário fez. Quem toca é o seu player; com o Expo, o [`expo-video`](https://docs.expo.dev/versions/latest/sdk/video/).
+
+```tsx
+import { VideoPlayer } from '@innovui/react-native'
+import { useEvent } from 'expo'
+import { useVideoPlayer, VideoView } from 'expo-video'
+import { useRef, useState } from 'react'
+
+export function VideoDoCliente({ uri }: { uri: string }) {
+  const view = useRef<VideoView>(null)
+  const player = useVideoPlayer(uri, (p) => {
+    p.timeUpdateEventInterval = 0.25
+  })
+  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing })
+  const { currentTime } = useEvent(player, 'timeUpdate', {
+    currentTime: player.currentTime,
+    currentLiveTimestamp: null,
+    currentOffsetFromLive: null,
+    bufferedPosition: player.bufferedPosition,
+  })
+  const { muted } = useEvent(player, 'mutedChange', { muted: player.muted, oldMuted: player.muted })
+  const [fullscreen, setFullscreen] = useState(false)
+
+  return (
+    <VideoPlayer
+      label="Vídeo enviado pelo cliente"
+      playing={isPlaying}
+      position={currentTime}
+      duration={player.duration}
+      muted={muted}
+      fullscreen={fullscreen}
+      onPlayPause={() => (isPlaying ? player.pause() : player.play())}
+      onSeek={(seconds) => {
+        player.currentTime = seconds
+      }}
+      onToggleMute={() => {
+        player.muted = !player.muted
+      }}
+      onToggleFullscreen={() => view.current?.enterFullscreen()}
+    >
+      <VideoView
+        ref={view}
+        player={player}
+        nativeControls={false}
+        contentFit="contain"
+        style={{ flex: 1 }}
+        onFullscreenEnter={() => setFullscreen(true)}
+        onFullscreenExit={() => setFullscreen(false)}
+      />
+    </VideoPlayer>
+  )
+}
+```
+
+Desligue os controles do próprio vídeo (`nativeControls={false}`) para não aparecerem dois conjuntos.
+
+## Comportamento
+
+- **Pausado:** o play central e os controles ficam sempre visíveis, com um leve véu escuro.
+- **Tocando:** os controles somem depois de 2,5 s sem toques (`hideControlsAfter`). **Tocar no vídeo** alterna play/pause e mostra os controles de novo. Com leitor de tela ligado, os controles não somem.
+- **Volume:** no celular o volume é o dos botões do aparelho, então só há o botão de mudo.
+- **Tela cheia:** o botão só aparece se você passar `onToggleFullscreen`.
+- **Proporção:** 16:9 na largura disponível; mude com `className` (ex.: `aspect-square`).
+
+## Personalização
+
+As cores vêm de tokens, então não há prop de cor: sobrescreva o token no `global.css` (veja [Tema e modo escuro](/react-native/tema/#customizando-os-tokens)).
+
+| Parte | Token |
+|---|---|
+| Parte preenchida da barra de posição | `--color-media-accent` |
+| Fundo do vídeo e véu dos controles | `--color-media-surface` |
+| Ícones, tempo e botões sobre o vídeo | `--color-media-on-surface` |
+| Ícone do play central | `--color-interactive-primary` (o círculo é `--color-media-on-surface`) |
+
+```css title="global.css"
+@layer theme {
+  :root {
+    @variant light {
+      --color-media-accent: #0ea5e9;
+    }
+    @variant dark {
+      --color-media-accent: #38bdf8;
+    }
+  }
+}
+```
+
+`--color-media-accent` é exclusivo da mídia: trocá-lo não afeta outros componentes. Já `--color-interactive-primary` é usado em vários (como os pontos do Carousel). No React Native os tokens valem para o app inteiro.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `children` | `ReactNode` | — | **Obrigatória.** A superfície do vídeo (ex.: `VideoView`). |
+| `playing` | `boolean` | `false` | Tocando agora: mostra pausar e esconde o play central. |
+| `position` | `number` | `0` | Posição atual, em segundos. |
+| `duration` | `number` | `0` | Duração total, em segundos. |
+| `muted` | `boolean` | `false` | Sem som: mostra o ícone de volume cortado. |
+| `fullscreen` | `boolean` | `false` | Em tela cheia: mostra o ícone de sair. |
+| `label` | `string` | `"Vídeo"` | Nome acessível do player. |
+| `hideControlsAfter` | `number` | `2500` | Milissegundos sem toques até esconder os controles tocando. |
+| `onPlayPause` | `() => void` | — | Play central, botão da barra ou toque no vídeo. |
+| `onSeek` | `(seconds: number) => void` | — | Toque ou arraste na barra, em segundos. |
+| `onToggleMute` | `() => void` | — | Toque no botão de mudo. |
+| `onToggleFullscreen` | `() => void` | — | Toque no botão de tela cheia (sem ele, o botão não aparece). |
+| `className`, `testID`… | props de `View` | — | Vão para o contêiner. |
+
+## Acessibilidade
+
+- O player tem o `label` como nome; os botões têm nome e o estado muda o nome ("Reproduzir"/"Pausar", "Silenciar"/"Ativar o som", "Tela cheia"/"Sair da tela cheia").
+- A barra é um elemento **ajustável** ("Posição do vídeo") com valor e texto ("2:14 de 5:32"); o leitor de tela avança e volta 5s por vez.
+- Controles escondidos ficam fora do alcance do leitor de tela e do toque.
+- Ofereça legendas pelo `expo-video` (`player.availableSubtitleTracks`) para o conteúdo falado.

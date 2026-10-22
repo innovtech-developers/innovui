@@ -43,7 +43,7 @@ Tipos aceitos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `buil
 3. Props estendem o elemento HTML nativo (`ComponentProps<'button'>`, etc.), aceitam `className` (mesclado com `cn()`) e repassam `ref`.
 4. Exporte o componente no barrel `packages/react/src/index.ts`.
 5. Escreva testes (Vitest + Testing Library) cobrindo render, interação e acessibilidade (`jest-axe`). O projeto exige 85% de cobertura mínima.
-6. Crie a página de doc em `apps/site/src/content/docs/components/<nome>.mdx`: demo viva, tabela de props, exemplos de uso e notas de acessibilidade — em pt-BR.
+6. Crie a página de doc em `apps/site/src/content/docs/react/components/<nome>.mdx` (e em `react-native/components/` se houver versão nativa): demo viva (em `apps/site/src/components/demos/`), tabela de props, exemplos de uso e notas de acessibilidade — em pt-BR. Registre o slug em uma categoria de `apps/site/components-nav.mjs` (o build falha sem isso) e acrescente o componente às listas dos `SKILL.md` e dos READMEs.
 7. Rode `pnpm changeset` e descreva a mudança (tipo `minor` para componente novo, `patch` para correção).
 
 ## Padrões de código

@@ -39,6 +39,7 @@ export function App() {
 - **Sem `asChild`:** gatilhos de Modal, Drawer, Popover, Menu e Tooltip recebem o elemento clonado com `onPress` (o Tooltip abre no `onLongPress`).
 - **Overlays:** Modal, Drawer, Popover, Menu, Select e Combobox usam o `Modal` nativo do RN. Sem blur no backdrop. Envolva o app em `ToastProvider` para usar `useToast()`.
 - **Upload:** o RN não tem `<input type="file">`. O `Upload` é controlado: o consumidor abre o seletor (ex. `expo-document-picker`) em `onPick` e passa a lista em `files`.
+- **AudioPlayer e VideoPlayer:** o React Native não tem player de mídia embutido, então são cascas controladas: você guarda o estado (por exemplo com `expo-audio` e `expo-video`) e o passa por props (`playing`, `position`, `duration`…), ligando `onPlayPause`, `onSeek` etc. ao player de verdade. A onda do AudioPlayer vem de `waveform` (ou da onda padrão): no native não há extração automática. Gallery, Lightbox e Carousel são completos.
 - **Grid e Table:** feitos com Views e flexbox (sem CSS grid). Breakpoints vêm de `useWindowDimensions`.
 - **Sombras no Android:** `shadow-*` não gera `elevation`.
 

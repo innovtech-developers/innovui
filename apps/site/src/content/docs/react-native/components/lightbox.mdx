@@ -1,0 +1,52 @@
+---
+title: Lightbox
+description: Foto ampliada sobre fundo escurecido, com contador, setas e deslizar para trocar.
+---
+
+Mostra uma foto em tamanho grande sobre um fundo escurecido, com botão de fechar, setas, o contador (`1 / 6`) e **deslizar para os lados** para trocar de foto. O [Gallery](/react-native/components/gallery/) já usa o Lightbox; use-o direto quando a foto abrir de outro lugar.
+
+```tsx
+import { useState } from 'react'
+import { Button, Lightbox } from '@innovui/react-native'
+
+export function Fotos({ fotos }: { fotos: { src: string; alt: string }[] }) {
+  const [open, setOpen] = useState(false)
+  const [index, setIndex] = useState(0)
+
+  return (
+    <>
+      <Button onPress={() => setOpen(true)}>Ver fotos</Button>
+      <Lightbox
+        items={fotos}
+        open={open}
+        onOpenChange={setOpen}
+        index={index}
+        onIndexChange={setIndex}
+      />
+    </>
+  )
+}
+```
+
+`open` e `index` são opcionais: sem eles o Lightbox guarda o próprio estado (`defaultOpen`, `defaultIndex`). As setas **dão a volta**: da última foto vão para a primeira. Com uma foto só, não aparecem setas nem contador.
+
+O botão voltar do Android, o botão de fechar e o toque no fundo fecham. Usa o `Modal` nativo do React Native.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `items` | `{ src: string; alt: string }[]` | — | **Obrigatória.** As fotos (endereços `uri`). |
+| `open` / `defaultOpen` | `boolean` | `false` | Aberto (controlado ou inicial). |
+| `onOpenChange` | `(open: boolean) => void` | — | Chamado ao abrir ou fechar. |
+| `index` / `defaultIndex` | `number` | `0` | Foto exibida (controlado ou inicial). |
+| `onIndexChange` | `(index: number) => void` | — | Chamado ao trocar de foto. |
+| `label` | `string` | `"Visualizador de imagens"` | Nome acessível do visualizador. |
+| `closeLabel` / `previousLabel` / `nextLabel` | `string` | `"Fechar"` / `"Foto anterior"` / `"Próxima foto"` | Nomes acessíveis dos botões. |
+
+## Acessibilidade
+
+- `accessibilityViewIsModal` mantém o leitor de tela dentro do visualizador, com o `label` como nome.
+- Cada foto usa o `alt` de `items` como descrição: escreva uma descrição de verdade.
+- O contador é uma região ao vivo (`accessibilityLiveRegion`, que só o Android anuncia).
+- Não há `Esc` nem foco preso (conceitos do teclado, que o React Native não tem).

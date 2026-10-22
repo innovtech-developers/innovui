@@ -93,6 +93,10 @@
       --color-selection-toggle-track-off: #ccd5e2;
       --color-selection-toggle-track-off-hover: #96a3b9;
       --color-selection-toggle-track-on-hover: #7b24d1;
+      --color-media-wave-rest: #ccd5e2;
+      --color-media-surface: #000000;
+      --color-media-on-surface: #ffffff;
+      --color-media-accent: #bd84ff;
     }
 
     @variant dark {
@@ -186,6 +190,10 @@
       --color-selection-toggle-track-off: #49556a;
       --color-selection-toggle-track-off-hover: #96a3b9;
       --color-selection-toggle-track-on-hover: #d6b4ff;
+      --color-media-wave-rest: #66748c;
+      --color-media-surface: #000000;
+      --color-media-on-surface: #ffffff;
+      --color-media-accent: #bd84ff;
     }
   }
 }

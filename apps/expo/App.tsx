@@ -6,6 +6,7 @@ import './global.css'
 import { Actions } from './sections/actions'
 import { Display } from './sections/display'
 import { Forms } from './sections/forms'
+import { Media } from './sections/media'
 import { Overlays } from './sections/overlays'
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
           <Actions />
           <Forms />
           <Display />
+          <Media />
           <Overlays />
         </ScrollView>
         <StatusBar style="auto" />

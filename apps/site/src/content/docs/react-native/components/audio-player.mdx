@@ -1,0 +1,108 @@
+---
+title: AudioPlayer
+description: Player de áudio com onda, posição, tempo e velocidade, para ligar ao seu player (expo-audio).
+---
+
+Mostra um áudio (mensagem de voz, gravação) com botão de reproduzir/pausar, **onda** em que se toca ou arrasta para avançar e voltar, tempo atual e total, e um botão de velocidade.
+
+O React Native não tem player de áudio embutido, então o `AudioPlayer` é só a **casca**: ele desenha o estado que você passa e avisa o que o usuário fez. Quem toca o som é o seu player; com o Expo, o [`expo-audio`](https://docs.expo.dev/versions/latest/sdk/audio/).
+
+```tsx
+import { AudioPlayer } from '@innovui/react-native'
+import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio'
+import { useEffect } from 'react'
+
+export function MensagemDeVoz({ uri }: { uri: string }) {
+  const player = useAudioPlayer(uri)
+  const status = useAudioPlayerStatus(player)
+
+  useEffect(() => {
+    // terminou: volta ao começo, pronto para ouvir de novo
+    if (status.didJustFinish) player.seekTo(0)
+  }, [status.didJustFinish, player])
+
+  return (
+    <AudioPlayer
+      label="Mensagem de voz"
+      playing={status.playing}
+      position={status.currentTime}
+      duration={status.duration}
+      onPlayPause={() => (status.playing ? player.pause() : player.play())}
+      onSeek={(seconds) => player.seekTo(seconds)}
+      onRateChange={(rate) => player.setPlaybackRate(rate)}
+    />
+  )
+}
+```
+
+## A onda
+
+Diferente do web, **não há extração automática** da onda no React Native (não existe Web Audio). Passe os picos em `waveform` (de 0 a 1; o componente reamostra para as 52 barras, de 6 a 34px) ou deixe sem: aparece uma onda padrão com o mesmo visual. O jeito mais simples de obter os picos é calcular uma vez no servidor (por exemplo com `ffmpeg` ou `audiowaveform`) e guardar junto do arquivo.
+
+```tsx
+<AudioPlayer waveform={mensagem.picos} … />
+```
+
+## Velocidade
+
+Cada toque no botão passa para a próxima velocidade e volta à primeira no fim; o padrão é `1`, `1.5` e `2`. O player guarda a escolhida e avisa em `onRateChange`; para controlar você mesmo, passe `rate`. Mude a lista com `speeds`.
+
+## Estados
+
+- **Pronta para ouvir:** `playing={false}`, `position={0}`.
+- **Em reprodução:** `playing`; as barras já tocadas ficam roxas.
+- **Pausada:** `playing={false}` com a posição guardada.
+- **Finalizada:** volte `position` a 0 (veja o `didJustFinish` acima).
+
+## Personalização
+
+As cores vêm de tokens, então não há prop de cor: sobrescreva o token no `global.css` (veja [Tema e modo escuro](/react-native/tema/#customizando-os-tokens)).
+
+| Parte | Token |
+|---|---|
+| Botão de reproduzir | `--color-button-primary-bg` e `-active` (pressionado) |
+| Ícone de play/pause | `--color-media-on-surface` |
+| Barras já tocadas | `--color-button-primary-bg` (a mesma do botão) |
+| Barras ainda não tocadas | `--color-media-wave-rest` |
+| Card (fundo e borda) | `--color-surface-elevated`, `--color-border-default` |
+| Tempo e botão de velocidade | `--color-text-secondary`, `--color-border-default` |
+
+```css title="global.css"
+@layer theme {
+  :root {
+    @variant light {
+      --color-button-primary-bg: #0ea5e9;
+      --color-button-primary-bg-active: #0369a1;
+    }
+    @variant dark {
+      --color-button-primary-bg: #38bdf8;
+      --color-button-primary-bg-active: #0284c7;
+    }
+  }
+}
+```
+
+No React Native os tokens valem para o app inteiro: trocar `--color-button-primary-bg` muda também todos os `Button` primários. Para mudar só o container, use `className` no `AudioPlayer` (por exemplo `bg-...` ou `border-...`).
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `playing` | `boolean` | `false` | Tocando agora: mostra pausar. |
+| `position` | `number` | `0` | Posição atual, em segundos. |
+| `duration` | `number` | `0` | Duração total, em segundos. Sem ela, a onda não é tocável. |
+| `waveform` | `number[]` | onda padrão | Picos de 0 a 1. |
+| `bars` | `number` | `52` | Quantidade de barras. |
+| `rate` | `number` | — | Velocidade atual (controlada). Sem ela, o player guarda a escolhida. |
+| `speeds` | `number[]` | `[1, 1.5, 2]` | Velocidades do botão, em ordem. |
+| `label` | `string` | `"Áudio"` | Nome acessível do player. |
+| `onPlayPause` | `() => void` | — | Toque no botão de reproduzir/pausar. |
+| `onSeek` | `(seconds: number) => void` | — | Toque ou arraste na onda, em segundos. |
+| `onRateChange` | `(rate: number) => void` | — | Toque no botão de velocidade. |
+| `className`, `testID`… | props de `View` | — | Vão para o contêiner (largura máxima de 480px). |
+
+## Acessibilidade
+
+- O player tem o `label` como nome; os botões têm nome ("Reproduzir", "Pausar", "Velocidade de reprodução: 1x").
+- A onda é um elemento **ajustável** ("Posição do áudio") com valor e texto ("2:21 de 6:12"): o leitor de tela avança e volta 5s por vez com deslizar para cima e para baixo.
+- O texto do tempo e as barras são decorativos para o leitor de tela (o valor está na onda).

@@ -24,6 +24,7 @@ const CATEGORIES = {
   Navegação: ['tabs', 'segmented-control', 'breadcrumb', 'pagination', 'stepper'],
   Sobreposições: ['modal', 'drawer', 'popover', 'menu', 'tooltip'],
   Layout: ['container', 'grid', 'stack', 'divider'],
+  Mídia: ['audio-player', 'video-player', 'gallery', 'lightbox', 'carousel'],
 }
 
 /**

@@ -1,0 +1,73 @@
+---
+title: Carousel
+description: Fileira de itens que desliza com arrasto, teclado ou setas, e encaixa item a item.
+---
+
+import { CarouselDemo } from '../../../../components/demos/MediaDemos'
+
+Coloca vários itens em uma fileira que rola na horizontal e **encaixa** em cada um. Mostra um pedaço do próximo item para indicar que há mais, pontos de posição e as setas anterior/próximo. O conteúdo de cada item é livre: cards, fotos, banners.
+
+<CarouselDemo client:load />
+
+```tsx
+import { Button, Card, Carousel, CarouselItem, Stack } from '@innovui/react'
+
+<Carousel label="Modelos de mensagem">
+  {modelos.map((modelo) => (
+    <CarouselItem key={modelo.id}>
+      <Card padding="none">
+        <img src={modelo.foto} alt="" />
+        <Stack gap={2} align="start" className="iu:p-4">
+          <strong>{modelo.titulo}</strong>
+          <p>{modelo.texto}</p>
+          <Button variant="ghost">Usar modelo</Button>
+        </Stack>
+      </Card>
+    </CarouselItem>
+  ))}
+</Carousel>
+```
+
+## Como navegar
+
+- **Toque:** arrastar com o dedo (a rolagem nativa, com encaixe).
+- **Mouse:** arrastar com o botão pressionado, ou usar a roda/trackpad.
+- **Setas e pontos:** os botões da base; cada ponto leva ao seu item. O ponto do item atual fica alongado.
+- **Teclado:** com o foco na fileira, `←` `→` passam de item, `Home` e `End` vão ao primeiro e ao último.
+
+Ao chegar ao fim, o último ponto fica ativo e a seta "próximo" fica desabilitada, mesmo que o último item não consiga alinhar à esquerda. No começo, a seta "anterior" fica desabilitada.
+
+## Largura dos itens
+
+Cada `CarouselItem` ocupa cerca de 78% da largura no celular e 52% a partir do tablet, o que deixa um pedaço do próximo à mostra. Mude com `className`:
+
+```tsx
+<CarouselItem className="iu:basis-full">…</CarouselItem>        {/* um item por vez */}
+<CarouselItem className="iu:basis-1/3">…</CarouselItem>         {/* três por vez */}
+```
+
+## Props
+
+### Carousel
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `string` | — | **Obrigatória.** Nome acessível do carrossel. |
+| `showDots` | `boolean` | `true` | Mostra os pontos de posição. |
+| `showArrows` | `boolean` | `true` | Mostra as setas anterior/próximo. |
+| `onIndexChange` | `(index: number) => void` | — | Chamado com o item em destaque quando ele muda. |
+| `previousLabel` / `nextLabel` | `string` | `"Item anterior"` / `"Próximo item"` | Nomes acessíveis das setas. |
+| `dotLabel` | `(index: number) => string` | `"Ir para o item N"` | Nome acessível de cada ponto. |
+| `className`, `style`… | props de `<section>` | — | Vão para o contêiner. |
+
+### CarouselItem
+
+Aceita as props de `<div>`. A largura padrão vem de `basis-[78%] tablet:basis-[52%]` e pode ser trocada por `className`.
+
+## Acessibilidade
+
+- O carrossel é uma região (`<section>`) com `aria-roledescription="carousel"` e o `label`; cada item é um `role="group"` com `aria-roledescription="slide"`.
+- A fileira recebe foco (Tab) para o uso das setas do teclado, com contorno visível.
+- Setas e pontos são botões com nome; a posição atual está em `aria-current` no ponto.
+- Coloque o texto de cada item em HTML normal (e `alt` nas fotos que dizem algo): o leitor de tela lê o conteúdo dos itens que estão fora da tela.
+- O movimento do ponto e a rolagem suave são desligados com `prefers-reduced-motion`.

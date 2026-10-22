@@ -1,0 +1,44 @@
+---
+title: Gallery
+description: Grade de miniaturas que abre a foto ampliada em um visualizador, com contador e setas.
+---
+
+Mostra várias fotos em uma grade de miniaturas (2 colunas no celular, 3 a partir de 768px de tela). Tocar em uma miniatura abre a foto ampliada no [Lightbox](/react-native/components/lightbox/), onde dá para deslizar para as outras.
+
+```tsx
+import { Gallery } from '@innovui/react-native'
+
+<Gallery
+  items={[
+    { src: 'https://exemplo.com/estrada.jpg', alt: 'Estrada entre montanhas' },
+    { src: 'https://exemplo.com/ceu.jpg', alt: 'Céu estrelado' },
+  ]}
+/>
+```
+
+Enquanto o dedo está sobre a miniatura, ela escurece e mostra o ícone de ampliar. As fotos são endereços (`uri`); para imagens locais do app, use `Image.resolveAssetSource(require('./foto.jpg')).uri`.
+
+## Miniaturas leves
+
+Passe uma imagem menor em `thumbSrc` para a grade não baixar as fotos grandes. O visualizador usa `src`.
+
+```tsx
+{ src: foto.grande, thumbSrc: foto.pequena, alt: 'Estrada entre montanhas' }
+```
+
+As miniaturas têm proporção 4:3.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `items` | `{ src: string; alt: string; thumbSrc?: string }[]` | — | **Obrigatória.** As fotos. |
+| `columns` | `number` | 2 (3 em telas largas) | Colunas da grade. |
+| `openLabel` | `(item, index) => string` | `"Ampliar foto N: descrição"` | Nome acessível do botão de cada miniatura. |
+| `lightboxLabel` | `string` | `"Visualizador de imagens"` | Nome acessível do visualizador. |
+| `className`, `testID`… | props de `View` | — | Vão para a grade. |
+
+## Acessibilidade
+
+- Cada miniatura é um botão de imagem com nome ("Ampliar foto 2: Céu estrelado"). **Escreva sempre o `alt`**: ele descreve a foto no visualizador e compõe o nome do botão.
+- O visualizador mantém o leitor de tela dentro dele e fecha com o botão voltar do Android (veja o [Lightbox](/react-native/components/lightbox/)).

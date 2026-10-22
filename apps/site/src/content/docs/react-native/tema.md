@@ -72,6 +72,21 @@ Sobrescreva uma variável no seu `global.css`, **depois** do import do `theme.cs
 
 Cores que não aceitam `className` (como a cor de um ícone SVG) podem ser lidas com `useCSSVariable('--color-nome-do-token')`, do Uniwind.
 
+Em `global.css` os tokens valem para o app inteiro: no React Native não dá para trocar um token só dentro de um componente. Quando o token tem versões `-hover` ou `-active`, troque as duas junto com o principal.
+
+## Tokens de mídia
+
+Os componentes de [Mídia](/react-native/components/audio-player/) usam os tokens do design system e mais quatro próprios. Eles têm o mesmo valor nos dois temas, exceto a onda em repouso:
+
+| Token | Claro | Escuro | Usado em |
+|---|---|---|---|
+| `--color-media-wave-rest` | `#ccd5e2` | `#66748c` | Barras da onda ainda não tocadas (AudioPlayer) |
+| `--color-media-accent` | `#bd84ff` | `#bd84ff` | Parte preenchida da barra de posição (VideoPlayer) |
+| `--color-media-surface` | `#000000` | `#000000` | Fundo do vídeo, véu dos controles e escurecimento da miniatura da Gallery |
+| `--color-media-on-surface` | `#ffffff` | `#ffffff` | Ícones e textos sobre o vídeo, a foto ou o botão primário |
+
+A tabela de cada parte está em "Personalização" no [AudioPlayer](/react-native/components/audio-player/#personalização) e no [VideoPlayer](/react-native/components/video-player/#personalização).
+
 ## Limitações
 
 - O tema é trocado por `Uniwind.setTheme`; o modo `system` acompanha o do aparelho.

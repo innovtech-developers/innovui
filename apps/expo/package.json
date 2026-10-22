@@ -12,7 +12,10 @@
   "dependencies": {
     "@innovui/react-native": "workspace:*",
     "expo": "~57.0.30",
+    "expo-asset": "~57.0.20",
+    "expo-audio": "~57.0.5",
     "expo-status-bar": "~57.0.1",
+    "expo-video": "~57.0.5",
     "react": "19.2.3",
     "react-native": "0.86.3",
     "react-native-svg": "15.15.4",
