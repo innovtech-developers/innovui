@@ -214,8 +214,8 @@ export function VideoPlayer({
         ref={controlsRef}
         inert={!visible}
         className={cn(
-          'iu:absolute iu:inset-x-0 iu:bottom-0 iu:flex iu:flex-col iu:gap-1 iu:bg-linear-to-t iu:from-[color-mix(in_srgb,var(--color-media-surface)_65%,transparent)] iu:to-transparent iu:px-4 iu:pt-[30px] iu:pb-3 iu:transition-opacity iu:duration-200 iu:motion-reduce:transition-none',
-          !visible && 'iu:pointer-events-none iu:opacity-0',
+          'iu:absolute iu:inset-x-0 iu:bottom-0 iu:flex iu:flex-col iu:gap-1 iu:bg-linear-to-t iu:from-[color-mix(in_srgb,var(--color-media-surface)_65%,transparent)] iu:to-transparent iu:pointer-events-none iu:px-4 iu:pt-[30px] iu:pb-3 iu:transition-opacity iu:duration-200 iu:motion-reduce:transition-none',
+          !visible && 'iu:opacity-0',
         )}
       >
         {/* biome-ignore lint/a11y/useFocusableInteractive: tabIndex e aria-value* vêm do useSeek */}
@@ -224,7 +224,7 @@ export function VideoPlayer({
           // biome-ignore lint/a11y/useAriaPropsForRole: aria-value* vêm do useSeek
           role="slider"
           aria-label="Posição do vídeo"
-          className="iu:group/seek iu:flex iu:h-4 iu:w-full iu:cursor-pointer iu:touch-none iu:items-center iu:outline-none"
+          className="iu:group/seek iu:pointer-events-auto iu:flex iu:h-4 iu:w-full iu:cursor-pointer iu:touch-none iu:items-center iu:outline-none"
         >
           <div className="iu:h-1 iu:w-full iu:rounded-full iu:bg-[color-mix(in_srgb,var(--color-media-on-surface)_30%,transparent)] iu:group-focus-visible/seek:ring-2 iu:group-focus-visible/seek:ring-[var(--color-border-focus)]">
             <div
@@ -233,7 +233,7 @@ export function VideoPlayer({
             />
           </div>
         </div>
-        <div className="iu:flex iu:h-9 iu:items-center iu:justify-between">
+        <div className="iu:pointer-events-auto iu:flex iu:h-9 iu:items-center iu:justify-between">
           <div className="iu:flex iu:items-center iu:gap-2">
             <button
               type="button"
