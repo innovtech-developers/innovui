@@ -1,5 +1,16 @@
 # @innovui/react
 
+## 1.1.1
+
+### Patch Changes
+
+- [#27](https://github.com/innovtech-developers/innovui/pull/27) [`d2ef1ce`](https://github.com/innovtech-developers/innovui/commit/d2ef1ceba22d648d24cd79405ca62611f59ce726) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - AudioPlayer: em cartões estreitos (menos de 26rem, ou 416px) o tempo desce para baixo da onda, que ganha a largura toda e mostra mais barras. Em cartões largos o layout do Figma não muda.
+
+- [#25](https://github.com/innovtech-developers/innovui/pull/25) [`47ad224`](https://github.com/innovtech-developers/innovui/commit/47ad224cf924738aecc9198c2bbf5955744f1054) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Corrige os players de mídia no celular.
+  
+  - **AudioPlayer (React e React Native):** em telas estreitas a onda passava por cima do tempo e do botão de velocidade. Agora ela mede a largura e desenha só as barras que cabem (no mínimo 2px, com 2px de espaço), nunca mais que `bars`.
+  - **VideoPlayer (React):** em vídeos pequenos a faixa de controles cobria o play central e engolia o toque, então o vídeo não tocava. A faixa deixa o toque passar; só a barra de posição e os botões o recebem.
+
 ## 1.1.0
 
 ### Minor Changes
