@@ -1,6 +1,6 @@
 {
   "name": "@innovui/react-native",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Componentes React Native do design system InnovUI.",
   "type": "module",
   "license": "MIT",

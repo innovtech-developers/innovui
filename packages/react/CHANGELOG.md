@@ -1,5 +1,15 @@
 # @innovui/react
 
+## 1.1.0
+
+### Minor Changes
+
+- [#23](https://github.com/innovtech-developers/innovui/pull/23) [`58530bf`](https://github.com/innovtech-developers/innovui/commit/58530bfe325c8b59f500779f9f511485a68d42a4) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Novos componentes de mídia: `AudioPlayer`, `VideoPlayer`, `Gallery`, `Lightbox` e `Carousel`, conforme o Figma "Componentes de mídia".
+  
+  - **React:** `AudioPlayer` só precisa do `src` (a onda é extraída do próprio áudio, com `waveform` como alternativa e uma onda padrão se a análise falhar); `VideoPlayer` com controles próprios (play central, posição, tempo, volume, tela cheia); `Gallery` e `Lightbox` (setas, contador, `Esc`); `Carousel` com encaixe, arrasto, pontos e setas.
+  - **React Native:** `Gallery`, `Lightbox` e `Carousel` completos. `AudioPlayer` e `VideoPlayer` são cascas controladas (`playing`, `position`, `duration`, `onPlayPause`, `onSeek`…) para ligar ao `expo-audio` e ao `expo-video`; a onda vem de `waveform` ou da onda padrão.
+  - Tokens novos de mídia: `--color-media-wave-rest`, `--color-media-surface`, `--color-media-on-surface` e `--color-media-accent`.
+
 ## 1.0.0
 
 ### Major Changes
