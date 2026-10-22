@@ -54,9 +54,13 @@ export function AudioPlayer({
   onPlayPause,
   onSeek,
   onRateChange,
+  onLayout,
   ...props
 }: AudioPlayerProps) {
   const [chosen, setChosen] = useState(speeds[0] ?? 1)
+  const [cardWidth, setCardWidth] = useState(0)
+  // abaixo de 416px (26rem) o tempo desce para baixo da onda, que ganha a largura toda
+  const stacked = cardWidth > 0 && cardWidth < 416
   const speed = rate ?? chosen
   const iconColor = useToken('--color-media-on-surface')
   const seek = useSeek({ position, duration, label: 'Posição do áudio', onSeek })
@@ -74,6 +78,10 @@ export function AudioPlayer({
   return (
     <View
       accessibilityLabel={label}
+      onLayout={(event) => {
+        setCardWidth(event.nativeEvent.layout.width)
+        onLayout?.(event)
+      }}
       className={cn(
         'w-full max-w-[480px] flex-row items-center gap-3 rounded-lg border border-border-default bg-surface-elevated p-4 shadow-sm',
         className,
@@ -88,8 +96,16 @@ export function AudioPlayer({
       >
         {playing ? <PauseIcon color={iconColor} /> : <PlayIcon color={iconColor} />}
       </Pressable>
-      <View className="min-w-0 flex-1 flex-row items-center gap-2">
-        <View {...seek.props} className="h-[34px] min-w-0 flex-1 justify-center">
+      <View
+        className={cn(
+          'min-w-0 flex-1',
+          stacked ? 'flex-col items-stretch gap-1' : 'flex-row items-center gap-2',
+        )}
+      >
+        <View
+          {...seek.props}
+          className={cn('h-[34px] min-w-0 justify-center', stacked ? 'w-full' : 'flex-1')}
+        >
           {/* Filhos ignoram toques para que `locationX` seja sempre relativo à onda. */}
           <View pointerEvents="none" className="h-full flex-row items-center gap-0.5">
             {peaks.map((peak, i) => (

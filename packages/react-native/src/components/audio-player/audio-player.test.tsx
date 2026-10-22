@@ -82,6 +82,26 @@ describe('AudioPlayer', () => {
     expect(bars()).toHaveLength(52) // nunca passa de `bars`
   })
 
+  it('em cartão estreito o tempo desce para baixo da onda', () => {
+    const onLayout = jest.fn()
+    render(<AudioPlayer label="Mensagem" onLayout={onLayout} />)
+    const stacked = () =>
+      screen.UNSAFE_root.findAll(
+        (node: Node) =>
+          typeof node.type === 'string' && String(node.props.className).includes('flex-col'),
+      )
+    expect(stacked()).toHaveLength(0)
+    const layoutCard = (width: number) =>
+      fireEvent(screen.getByLabelText('Mensagem'), 'layout', {
+        nativeEvent: { layout: { width, height: 76 } },
+      })
+    layoutCard(310)
+    expect(stacked()).toHaveLength(1)
+    expect(onLayout).toHaveBeenCalledTimes(1)
+    layoutCard(480)
+    expect(stacked()).toHaveLength(0)
+  })
+
   it('tocar e arrastar na onda posiciona em segundos', () => {
     const onSeek = jest.fn()
     render(<AudioPlayer duration={200} onSeek={onSeek} />)

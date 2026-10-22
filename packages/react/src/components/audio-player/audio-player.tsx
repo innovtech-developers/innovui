@@ -102,7 +102,7 @@ export function AudioPlayer({
       role="group"
       aria-label={label}
       className={cn(
-        'iu:flex iu:w-full iu:max-w-[480px] iu:items-center iu:gap-3 iu:rounded-lg iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:p-4 iu:shadow-sm',
+        'iu:@container iu:flex iu:w-full iu:max-w-[480px] iu:items-center iu:gap-3 iu:rounded-lg iu:border iu:border-[var(--color-border-default)] iu:bg-[var(--color-surface-elevated)] iu:p-4 iu:shadow-sm',
         className,
       )}
       {...props}
@@ -129,7 +129,8 @@ export function AudioPlayer({
       >
         {playing ? <PauseIcon /> : <PlayIcon />}
       </button>
-      <div className="iu:flex iu:min-w-0 iu:flex-1 iu:items-center iu:gap-2">
+      {/* abaixo de 26rem o tempo desce para baixo da onda, que ganha a largura toda */}
+      <div className="iu:flex iu:min-w-0 iu:flex-1 iu:items-center iu:gap-2 iu:@max-[26rem]:flex-col iu:@max-[26rem]:items-stretch iu:@max-[26rem]:gap-1">
         {/* biome-ignore lint/a11y/useFocusableInteractive: tabIndex e aria-value* vêm do useSeek */}
         <div
           {...seekProps}
@@ -139,7 +140,7 @@ export function AudioPlayer({
           aria-label="Posição do áudio"
           aria-busy={peaks === null || undefined}
           className={cn(
-            'iu:group/wave iu:relative iu:flex iu:h-[34px] iu:min-w-0 iu:flex-1 iu:cursor-pointer iu:touch-none iu:items-center iu:gap-0.5 iu:rounded-sm iu:outline-none iu:after:pointer-events-none iu:after:absolute iu:after:inset-0 iu:after:rounded-sm iu:after:border-[var(--color-border-strong)] iu:after:content-[""] iu:hover:after:border iu:focus-visible:after:border-2 iu:focus-visible:after:border-[var(--color-border-focus)]',
+            'iu:group/wave iu:relative iu:flex iu:h-[34px] iu:min-w-0 iu:flex-1 iu:@max-[26rem]:flex-none iu:cursor-pointer iu:touch-none iu:items-center iu:gap-0.5 iu:rounded-sm iu:outline-none iu:after:pointer-events-none iu:after:absolute iu:after:inset-0 iu:after:rounded-sm iu:after:border-[var(--color-border-strong)] iu:after:content-[""] iu:hover:after:border iu:focus-visible:after:border-2 iu:focus-visible:after:border-[var(--color-border-focus)]',
           )}
         >
           {Array.from({ length: shown }, (_, i) => (
