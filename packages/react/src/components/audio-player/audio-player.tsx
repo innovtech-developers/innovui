@@ -140,7 +140,7 @@ export function AudioPlayer({
           aria-label="Posição do áudio"
           aria-busy={peaks === null || undefined}
           className={cn(
-            'iu:group/wave iu:relative iu:flex iu:h-[34px] iu:min-w-0 iu:flex-1 iu:@max-[26rem]:flex-none iu:cursor-pointer iu:touch-none iu:items-center iu:gap-0.5 iu:rounded-sm iu:outline-none iu:after:pointer-events-none iu:after:absolute iu:after:inset-0 iu:after:rounded-sm iu:after:border-[var(--color-border-strong)] iu:after:content-[""] iu:hover:after:border iu:focus-visible:after:border-2 iu:focus-visible:after:border-[var(--color-border-focus)]',
+            'iu:group/wave iu:relative iu:flex iu:h-[34px] iu:overflow-hidden iu:min-w-0 iu:flex-1 iu:@max-[26rem]:flex-none iu:cursor-pointer iu:touch-none iu:items-center iu:gap-0.5 iu:rounded-sm iu:outline-none iu:after:pointer-events-none iu:after:absolute iu:after:inset-0 iu:after:rounded-sm iu:after:border-[var(--color-border-strong)] iu:after:content-[""] iu:hover:after:border iu:focus-visible:after:border-2 iu:focus-visible:after:border-[var(--color-border-focus)]',
           )}
         >
           {Array.from({ length: shown }, (_, i) => (

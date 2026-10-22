@@ -107,7 +107,10 @@ export function AudioPlayer({
           className={cn('h-[34px] min-w-0 justify-center', stacked ? 'w-full' : 'flex-1')}
         >
           {/* Filhos ignoram toques para que `locationX` seja sempre relativo à onda. */}
-          <View pointerEvents="none" className="h-full flex-row items-center gap-0.5">
+          <View
+            pointerEvents="none"
+            className="h-full flex-row items-center gap-0.5 overflow-hidden"
+          >
             {peaks.map((peak, i) => (
               <View
                 // biome-ignore lint/suspicious/noArrayIndexKey: as barras são posicionais e fixas
