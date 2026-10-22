@@ -174,7 +174,11 @@ export const lightColors = {
   "selectionTextDisabled": "#ccd5e2",
   "selectionToggleTrackOff": "#ccd5e2",
   "selectionToggleTrackOffHover": "#96a3b9",
-  "selectionToggleTrackOnHover": "#7b24d1"
+  "selectionToggleTrackOnHover": "#7b24d1",
+  "mediaWaveRest": "#ccd5e2",
+  "mediaSurface": "#000000",
+  "mediaOnSurface": "#ffffff",
+  "mediaAccent": "#bd84ff"
 } as const
 
 export const darkColors = {
@@ -267,7 +271,11 @@ export const darkColors = {
   "selectionTextDisabled": "#49556a",
   "selectionToggleTrackOff": "#49556a",
   "selectionToggleTrackOffHover": "#96a3b9",
-  "selectionToggleTrackOnHover": "#d6b4ff"
+  "selectionToggleTrackOnHover": "#d6b4ff",
+  "mediaWaveRest": "#66748c",
+  "mediaSurface": "#000000",
+  "mediaOnSurface": "#ffffff",
+  "mediaAccent": "#bd84ff"
 } as const
 
 export const radius = {

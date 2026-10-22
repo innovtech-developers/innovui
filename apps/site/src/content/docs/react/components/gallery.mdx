@@ -1,0 +1,49 @@
+---
+title: Gallery
+description: Grade de miniaturas que abre a foto ampliada em um visualizador, com setas e contador.
+---
+
+import { GalleryDemo } from '../../../../components/demos/MediaDemos'
+
+Mostra várias fotos em uma grade de miniaturas (2 colunas no celular, 3 a partir do tablet). Clicar em uma miniatura abre a foto ampliada no [Lightbox](/react/components/lightbox/), onde dá para passar para as outras.
+
+<GalleryDemo client:load />
+
+```tsx
+import { Gallery } from '@innovui/react'
+
+<Gallery
+  aria-label="Anexos da conversa"
+  items={[
+    { src: '/fotos/estrada.jpg', alt: 'Estrada entre montanhas' },
+    { src: '/fotos/ceu.jpg', alt: 'Céu estrelado' },
+  ]}
+/>
+```
+
+Ao passar o mouse ou focar uma miniatura (Tab), ela escurece e mostra o ícone de ampliar; o foco por teclado ganha também um contorno roxo. Ao fechar o visualizador, o foco volta para a miniatura da foto em que você parou.
+
+## Miniaturas leves
+
+Para a grade não baixar as fotos grandes, passe uma imagem menor em `thumbSrc`. O visualizador usa `src`.
+
+```tsx
+{ src: '/fotos/estrada.jpg', thumbSrc: '/fotos/estrada-p.jpg', alt: 'Estrada entre montanhas' }
+```
+
+As miniaturas têm proporção 4:3 e carregam sob demanda (`loading="lazy"`).
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `items` | `{ src: string; alt: string; thumbSrc?: string }[]` | — | **Obrigatória.** As fotos. |
+| `openLabel` | `(item, index) => string` | `"Ampliar foto N: descrição"` | Nome acessível do botão de cada miniatura. |
+| `lightboxLabel` | `string` | `"Visualizador de imagens"` | Nome acessível do visualizador. |
+| `className`, `aria-label`… | props de `<ul>` | — | Vão para a lista. |
+
+## Acessibilidade
+
+- A grade é uma lista (`<ul>`) e cada miniatura é um `<button>` com nome ("Ampliar foto 2: Céu estrelado"). Use `aria-label` na lista para dizer o que ela contém.
+- **Escreva sempre o `alt`**: ele descreve a foto no visualizador e compõe o nome do botão.
+- O visualizador prende o foco, fecha com `Esc` e as setas `←` `→` trocam de foto (veja o [Lightbox](/react/components/lightbox/)).

@@ -39,6 +39,7 @@ export function Example() {
 - **Navegação:** Tabs, SegmentedControl, Stepper, Breadcrumb, Pagination
 - **Sobreposições:** Modal, Drawer, Popover, Menu, Tooltip
 - **Layout e dados:** Card, Avatar, Divider, Stack, Container, Grid, List, Table, Accordion
+- **Mídia:** AudioPlayer, VideoPlayer, Gallery, Lightbox, Carousel
 
 ## Modo escuro
 

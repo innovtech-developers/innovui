@@ -12,6 +12,42 @@ Os componentes usam [CSS custom properties](https://developer.mozilla.org/pt-BR/
 }
 ```
 
+## Trocar a cor só em um lugar
+
+Um token sobrescrito em `:root` vale para o app inteiro. Para mudar só uma parte, sobrescreva dentro de um elemento: os componentes dentro dele herdam o valor.
+
+```css
+.player-da-marca {
+  --color-button-primary-bg: #0ea5e9;
+  --color-button-primary-bg-hover: #0284c7;
+  --color-button-primary-bg-active: #0369a1;
+}
+```
+
+```tsx
+<div className="player-da-marca">
+  <AudioPlayer src="/audios/mensagem.m4a" />
+</div>
+
+// ou direto no elemento, sem CSS (em TypeScript, o objeto precisa do `as CSSProperties`)
+<div style={{ '--color-button-primary-bg': '#0ea5e9' } as CSSProperties}>…</div>
+```
+
+Quando um token tem versões `-hover` e `-active`, troque as três juntas, senão o hover volta para a cor antiga. No escuro, repita o bloco dentro de `.dark .player-da-marca`.
+
+## Tokens de mídia
+
+Os componentes de [Mídia](/react/components/audio-player/) usam os tokens do design system e mais quatro próprios. Eles têm o mesmo valor nos dois temas, exceto a onda em repouso:
+
+| Token | Claro | Escuro | Usado em |
+|---|---|---|---|
+| `--color-media-wave-rest` | `#ccd5e2` | `#66748c` | Barras da onda ainda não tocadas (AudioPlayer) |
+| `--color-media-accent` | `#bd84ff` | `#bd84ff` | Parte preenchida das barras de posição e de volume (VideoPlayer) |
+| `--color-media-surface` | `#000000` | `#000000` | Fundo do vídeo, véu dos controles e escurecimento da miniatura da Gallery |
+| `--color-media-on-surface` | `#ffffff` | `#ffffff` | Ícones e textos sobre o vídeo, a foto ou o botão primário |
+
+Para ver qual token pinta cada parte, veja a seção "Personalização" de [AudioPlayer](/react/components/audio-player/#personalização) e [VideoPlayer](/react/components/video-player/#personalização).
+
 ## className e Tailwind
 
 Todo componente aceita `className` e mescla com as classes internas sem conflito (usamos [tailwind-merge](https://github.com/dcastil/tailwind-merge) por baixo dos panos):

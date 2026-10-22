@@ -1,0 +1,66 @@
+---
+title: Carousel
+description: Fileira de itens que desliza com o dedo e encaixa item a item, com pontos e setas.
+---
+
+Coloca vários itens em uma fileira que rola na horizontal e **encaixa** em cada um. Mostra um pedaço do próximo item para indicar que há mais, pontos de posição e as setas anterior/próximo. O conteúdo de cada item é livre: cards, fotos, banners.
+
+```tsx
+import { Button, Card, Carousel, CarouselItem, Stack } from '@innovui/react-native'
+import { Image, Text } from 'react-native'
+
+<Carousel label="Modelos de mensagem">
+  {modelos.map((modelo) => (
+    <CarouselItem key={modelo.id}>
+      <Card padding="none" className="flex-1 overflow-hidden">
+        <Image source={{ uri: modelo.foto }} className="aspect-[16/10] w-full" />
+        <Stack gap={2} align="start" className="p-4">
+          <Text className="text-lg font-semibold text-text-primary">{modelo.titulo}</Text>
+          <Text className="text-sm text-text-secondary">{modelo.texto}</Text>
+          <Button variant="ghost">Usar modelo</Button>
+        </Stack>
+      </Card>
+    </CarouselItem>
+  ))}
+</Carousel>
+```
+
+## Como navegar
+
+- **Dedo:** arrastar e soltar; a fileira encaixa no item mais perto.
+- **Setas e pontos:** os botões da base; cada ponto leva ao seu item. O ponto do item atual fica alongado.
+
+Ao chegar ao fim, o último ponto fica ativo e a seta "próximo" fica desabilitada, mesmo que o último item não consiga alinhar à esquerda. No começo, a seta "anterior" fica desabilitada.
+
+## Largura dos itens
+
+Cada item ocupa cerca de 78% da largura do carrossel no celular e 52% a partir de 768px de tela, o que deixa um pedaço do próximo à mostra. Mude com `itemRatio` (de 0 a 1):
+
+```tsx
+<Carousel label="Banners" itemRatio={1}>…</Carousel> {/* um item por vez */}
+```
+
+## Props
+
+### Carousel
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `label` | `string` | — | **Obrigatória.** Nome acessível do carrossel. |
+| `showDots` | `boolean` | `true` | Mostra os pontos de posição. |
+| `showArrows` | `boolean` | `true` | Mostra as setas anterior/próximo. |
+| `itemRatio` | `number` | `0.78` (`0.52` em telas largas) | Largura de cada item, de 0 a 1 da largura do carrossel. |
+| `onIndexChange` | `(index: number) => void` | — | Chamado com o item em destaque quando ele muda. |
+| `previousLabel` / `nextLabel` | `string` | `"Item anterior"` / `"Próximo item"` | Nomes acessíveis das setas. |
+| `dotLabel` | `(index: number) => string` | `"Ir para o item N"` | Nome acessível de cada ponto. |
+| `className`, `testID`… | props de `View` | — | Vão para o contêiner. |
+
+### CarouselItem
+
+Aceita as props de `View`. A largura vem do carrossel (`itemRatio`) e o item preenche toda a altura da fileira.
+
+## Acessibilidade
+
+- A fileira tem o `label` como nome; cada item é anunciado como "N de total".
+- Setas e pontos são botões com nome; o ponto do item atual está marcado como selecionado.
+- Coloque o texto de cada item em `Text` normal (e `accessibilityLabel` nas fotos que dizem algo).

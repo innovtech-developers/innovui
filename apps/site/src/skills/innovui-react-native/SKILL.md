@@ -38,5 +38,6 @@ Documentação: https://innovui.innovtechsolutions.com.br/react-native/instalaca
 - **Navegação:** Tabs, SegmentedControl, Breadcrumb, Pagination, Stepper
 - **Sobreposições:** Modal, Drawer, Popover, Menu, Tooltip
 - **Layout:** Container, Grid, Stack, Divider
+- **Mídia:** AudioPlayer, VideoPlayer, Gallery, Lightbox, Carousel
 
 Se a necessidade não está na lista, use `View`, `Text` e Uniwind normais em vez de inventar um componente do InnovUI.

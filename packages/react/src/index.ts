@@ -5,6 +5,7 @@ export {
   type AccordionProps,
 } from './components/accordion'
 export { Alert, type AlertProps } from './components/alert'
+export { AudioPlayer, type AudioPlayerProps } from './components/audio-player'
 export { Avatar, type AvatarProps } from './components/avatar'
 export { Badge, type BadgeProps } from './components/badge'
 export { Banner, type BannerProps } from './components/banner'
@@ -16,6 +17,7 @@ export {
 } from './components/breadcrumb'
 export { Button, type ButtonProps } from './components/button'
 export { Card, type CardProps } from './components/card'
+export { Carousel, CarouselItem, type CarouselProps } from './components/carousel'
 export { Checkbox, type CheckboxProps } from './components/checkbox'
 export { Combobox, type ComboboxOption, type ComboboxProps } from './components/combobox'
 export { Container, type ContainerProps } from './components/container'
@@ -33,9 +35,11 @@ export {
 export { Divider, type DividerProps } from './components/divider'
 export { Drawer, DrawerClose, type DrawerProps } from './components/drawer'
 export { Field, type FieldProps } from './components/field'
+export { Gallery, type GalleryItem, type GalleryProps } from './components/gallery'
 export { Grid, GridItem, type GridItemProps, type GridProps } from './components/grid'
 export { IconButton, type IconButtonProps } from './components/icon-button'
 export { Input, type InputProps } from './components/input'
+export { Lightbox, type LightboxItem, type LightboxProps } from './components/lightbox'
 export { Link, type LinkProps } from './components/link'
 export { List, ListItem, type ListItemProps, type ListProps } from './components/list'
 export {
@@ -106,4 +110,5 @@ export {
 } from './components/toast'
 export { Tooltip, type TooltipProps } from './components/tooltip'
 export { Upload, type UploadProps } from './components/upload'
+export { VideoPlayer, type VideoPlayerProps } from './components/video-player'
 export { cn } from './utils/cn'

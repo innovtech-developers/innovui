@@ -1,0 +1,103 @@
+---
+title: AudioPlayer
+description: Player de áudio com onda, posição, tempo e velocidade. Basta passar o endereço do áudio.
+---
+
+import { AudioPlayerDemo, AudioPlayerSpeedsDemo } from '../../../../components/demos/MediaDemos'
+
+Toca um áudio (mensagem de voz, gravação, podcast curto) com botão de reproduzir/pausar, **onda** clicável para avançar e voltar, tempo atual e total, e um botão de velocidade. Só precisa do endereço do arquivo: a onda é calculada a partir dele.
+
+<AudioPlayerDemo client:load />
+
+```tsx
+import { AudioPlayer } from '@innovui/react'
+
+<AudioPlayer src="/audios/mensagem.m4a" label="Mensagem de voz" />
+```
+
+O navegador só toca o som (o `<audio>` fica sem os controles nativos); o visual é todo do InnovUI, claro e escuro.
+
+## A onda
+
+O componente baixa o arquivo, decodifica e desenha **52 barras**, de 6 a 34px, com o pico de cada trecho. Enquanto calcula, as barras ficam baixas e pulsando. Se não der para calcular (rede, formato, CORS), mostra uma onda padrão e o áudio toca normalmente.
+
+- Áudio de **outra origem** precisa responder com `Access-Control-Allow-Origin`; sem isso, vale a onda padrão.
+- O arquivo é decodificado na memória (a 8 kHz, cerca de 1 MB por minuto): serve bem para áudios de alguns minutos. Para os longos, calcule os picos no servidor e passe em `waveform`, o que também evita o download extra.
+- O mesmo áudio usado em vários players é analisado uma vez só.
+
+```tsx
+// picos de 0 a 1; o componente reamostra para a quantidade de barras
+<AudioPlayer src={url} waveform={[0.1, 0.4, 0.9, 0.6, 0.2]} />
+```
+
+## Velocidade
+
+Cada clique no botão passa para a próxima velocidade e volta à primeira no fim. O padrão é `1`, `1.5` e `2`.
+
+<AudioPlayerSpeedsDemo client:load />
+
+```tsx
+<AudioPlayer src={url} speeds={[0.75, 1, 1.25, 1.5]} />
+```
+
+## Estados
+
+- **Pronta para ouvir:** pausada, no início, com a velocidade escolhida.
+- **Em reprodução:** botão de pausar; as barras já tocadas ficam roxas.
+- **Pausada:** guarda a posição.
+- **Finalizada:** volta ao começo, com o progresso zerado, pronta para tocar de novo.
+
+## Personalização
+
+As cores vêm de tokens, então não há prop de cor: sobrescreva o token (veja [Tema e customização](/react/tema/)).
+
+| Parte | Token |
+|---|---|
+| Botão de reproduzir | `--color-button-primary-bg`, `-hover` e `-active` |
+| Ícone de play/pause | `--color-media-on-surface` |
+| Barras já tocadas | `--color-button-primary-bg` (a mesma do botão) |
+| Barras ainda não tocadas | `--color-media-wave-rest` |
+| Card (fundo e borda) | `--color-surface-elevated`, `--color-border-default` |
+| Tempo e botão de velocidade | `--color-text-secondary`, `--color-border-default` |
+| Anel de foco | `--color-border-focus` |
+
+Para trocar só neste player, sobrescreva os tokens do botão numa classe sua. As barras tocadas acompanham o botão:
+
+```css
+.player-azul {
+  --color-button-primary-bg: #0ea5e9;
+  --color-button-primary-bg-hover: #0284c7;
+  --color-button-primary-bg-active: #0369a1;
+}
+```
+
+```tsx
+<AudioPlayer src="/audios/mensagem.m4a" className="player-azul" />
+```
+
+Trocar `--color-button-primary-bg` em `:root` muda também todos os `Button` primários do app. Use a classe acima quando a cor for só do player.
+
+## Props
+
+| Prop | Tipo | Padrão | Descrição |
+|---|---|---|---|
+| `src` | `string` | — | **Obrigatória.** Endereço do áudio. |
+| `label` | `string` | `"Áudio"` | Nome acessível do player. |
+| `bars` | `number` | `52` | Quantidade de barras da onda. |
+| `speeds` | `number[]` | `[1, 1.5, 2]` | Velocidades do botão, em ordem. |
+| `waveform` | `number[]` | — | Picos de 0 a 1. Pula o download e a análise do áudio. |
+| `preload` | `'none' \| 'metadata' \| 'auto'` | `'metadata'` | Quanto do áudio o navegador carrega antes do play. |
+| `onPlay` / `onPause` / `onEnded` / `onTimeUpdate` | eventos do `<audio>` | — | Chamados pelos eventos do áudio. |
+| `className`, `style`, `ref`… | props de `<div>` | — | Vão para o contêiner (largura máxima de 480px). |
+
+## Acessibilidade
+
+- O player é um `role="group"` com o `label`; os botões têm nome ("Reproduzir", "Pausar", "Velocidade de reprodução: 1x").
+- A onda é um `role="slider"` ("Posição do áudio") com `aria-valuenow` em segundos e `aria-valuetext` como "2:21 de 6:12". `←` `→` movem 5s, `Home` e `End` vão ao início e ao fim.
+- O foco aparece como contorno de 2px em roxo, na onda, no botão de velocidade e no de reproduzir.
+- As barras e o texto do tempo são decorativos para leitores de tela (o valor está no slider).
+- A animação de carregamento é desligada com `prefers-reduced-motion`.
+
+### Quando não usar
+
+Música ou podcasts longos, com lista de faixas e capa: o AudioPlayer é um controle compacto para um áudio só. Para vídeo, use o [VideoPlayer](/react/components/video-player/).
