@@ -58,10 +58,12 @@ export function AudioPlayer({
 }: AudioPlayerProps) {
   const [chosen, setChosen] = useState(speeds[0] ?? 1)
   const speed = rate ?? chosen
-  const peaks = resamplePeaks(waveform ?? DEFAULT_WAVEFORM, bars)
-  const played = duration ? Math.round((position / duration) * bars) : 0
   const iconColor = useToken('--color-media-on-surface')
   const seek = useSeek({ position, duration, label: 'Posição do áudio', onSeek })
+  // Em telas estreitas a onda perde barras (2px + 2px de espaço), em vez de invadir o tempo.
+  const shown = seek.width ? Math.min(bars, Math.max(1, Math.floor((seek.width + 2) / 4))) : bars
+  const peaks = resamplePeaks(waveform ?? DEFAULT_WAVEFORM, shown)
+  const played = duration ? Math.round((position / duration) * shown) : 0
 
   function nextSpeed() {
     const next = speeds[(speeds.indexOf(speed) + 1) % speeds.length] ?? 1

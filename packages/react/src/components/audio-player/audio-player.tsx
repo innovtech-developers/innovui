@@ -4,11 +4,13 @@ import { type ComponentProps, useEffect, useRef, useState } from 'react'
 import { cn } from '../../utils/cn'
 import { formatTime, togglePlayback, useMediaPlayback, useSeek } from '../_shared/media'
 import { PauseIcon, PlayIcon } from '../_shared/media-icons'
-import { useWaveform } from '../_shared/waveform'
+import { resamplePeaks, useWaveform } from '../_shared/waveform'
 
 // Alturas das barras no Figma: de 6px (silêncio) a 34px (pico).
 const BAR_MIN = 6
 const BAR_RANGE = 28
+// Cada barra tem no mínimo 2px, com 2px de espaço entre elas.
+const BAR_SLOT = 4
 
 export type AudioPlayerProps = Omit<
   ComponentProps<'div'>,
@@ -56,6 +58,8 @@ export function AudioPlayer({
   const audioRef = useRef<HTMLAudioElement>(null)
   const { playing, currentTime, duration } = useMediaPlayback(audioRef)
   const peaks = useWaveform(src, bars, waveform)
+  const waveRef = useRef<HTMLDivElement>(null)
+  const [fit, setFit] = useState(bars)
   const [speedIndex, setSpeedIndex] = useState(0)
   const speed = speeds[speedIndex % speeds.length] ?? 1
 
@@ -67,6 +71,19 @@ export function AudioPlayer({
     audio.playbackRate = speed
   }, [speed])
 
+  // Em telas estreitas a onda perde barras, em vez de passar por cima do tempo e da velocidade.
+  useEffect(() => {
+    const wave = waveRef.current
+    if (!wave || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setFit(Math.max(1, Math.floor((entry.contentRect.width + 2) / BAR_SLOT)))
+    })
+    observer.observe(wave)
+    return () => observer.disconnect()
+  }, [])
+  const shown = Math.min(bars, fit)
+  const shownPeaks = peaks && resamplePeaks(peaks, shown)
+
   const seekProps = useSeek({
     currentTime,
     duration,
@@ -75,7 +92,7 @@ export function AudioPlayer({
     },
   })
   const progress = duration ? currentTime / duration : 0
-  const played = Math.round(progress * bars)
+  const played = Math.round(progress * shown)
   const controlFocus =
     'iu:outline-none iu:focus-visible:border-2 iu:focus-visible:border-[var(--color-border-focus)]'
 
@@ -116,6 +133,7 @@ export function AudioPlayer({
         {/* biome-ignore lint/a11y/useFocusableInteractive: tabIndex e aria-value* vêm do useSeek */}
         <div
           {...seekProps}
+          ref={waveRef}
           // biome-ignore lint/a11y/useAriaPropsForRole: aria-value* vêm do useSeek
           role="slider"
           aria-label="Posição do áudio"
@@ -124,11 +142,11 @@ export function AudioPlayer({
             'iu:group/wave iu:relative iu:flex iu:h-[34px] iu:min-w-0 iu:flex-1 iu:cursor-pointer iu:touch-none iu:items-center iu:gap-0.5 iu:rounded-sm iu:outline-none iu:after:pointer-events-none iu:after:absolute iu:after:inset-0 iu:after:rounded-sm iu:after:border-[var(--color-border-strong)] iu:after:content-[""] iu:hover:after:border iu:focus-visible:after:border-2 iu:focus-visible:after:border-[var(--color-border-focus)]',
           )}
         >
-          {Array.from({ length: bars }, (_, i) => (
+          {Array.from({ length: shown }, (_, i) => (
             <span
               // biome-ignore lint/suspicious/noArrayIndexKey: as barras são posicionais e fixas
               key={i}
-              style={{ height: BAR_MIN + (peaks?.[i] ?? 0) * BAR_RANGE }}
+              style={{ height: BAR_MIN + (shownPeaks?.[i] ?? 0) * BAR_RANGE }}
               className={cn(
                 'iu:min-w-0.5 iu:flex-1 iu:rounded-full',
                 peaks === null && 'iu:animate-pulse iu:motion-reduce:animate-none',

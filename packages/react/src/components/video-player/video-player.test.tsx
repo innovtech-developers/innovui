@@ -198,6 +198,14 @@ describe('VideoPlayer', () => {
   })
 
   describe('controles', () => {
+    it('a faixa dos controles deixa o toque passar: o play central fica clicável em telas pequenas', () => {
+      const { container } = setup()
+      const controls = controlsOf(container)
+      expect(controls).toHaveClass('iu:pointer-events-none')
+      // só a barra e a fileira de botões recebem o toque
+      for (const part of controls.children) expect(part).toHaveClass('iu:pointer-events-auto')
+    })
+
     it('somem depois do tempo sem interação enquanto toca, e voltam ao mexer o mouse', () => {
       vi.useFakeTimers()
       const { container, root } = setup()
