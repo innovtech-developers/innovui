@@ -191,6 +191,16 @@ describe('AudioPlayer', () => {
     vi.unstubAllGlobals()
   })
 
+  it('em cartão estreito (container query) o tempo desce para baixo da onda', () => {
+    const { container } = setup()
+    const card = screen.getByRole('group')
+    expect(card).toHaveClass('iu:@container')
+    const inner = slider().parentElement as HTMLElement
+    expect(inner).toHaveClass('iu:@max-[26rem]:flex-col')
+    expect(inner.lastElementChild).toHaveTextContent('0:00 / 6:12')
+    expect(container.contains(inner)).toBe(true)
+  })
+
   it('repassa className e props do contêiner', () => {
     setup({ className: 'minha-classe', 'data-testid': 'player' } as never)
     expect(screen.getByTestId('player')).toHaveClass('minha-classe')
