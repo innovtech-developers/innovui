@@ -123,7 +123,7 @@ export function VideoPlayer({
     <View
       accessibilityLabel={label}
       className={cn(
-        'aspect-video w-full overflow-hidden rounded-lg bg-media-surface shadow-lg',
+        'aspect-video w-full overflow-hidden rounded-[12px] bg-media-surface shadow-lg',
         className,
       )}
       {...props}

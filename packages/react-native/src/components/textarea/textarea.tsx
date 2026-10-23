@@ -6,7 +6,7 @@ import { cn } from '../../utils/cn'
 import { useToken } from '../_shared/use-token'
 
 const textareaVariants = cva(
-  'min-h-30 w-full rounded-md border border-field-border bg-field-bg text-field-text focus:border-field-focus-ring',
+  'min-h-30 w-full rounded-[8px] border border-field-border bg-field-bg text-field-text focus:border-field-focus-ring',
   {
     variants: {
       size: {

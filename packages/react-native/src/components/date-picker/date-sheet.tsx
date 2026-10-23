@@ -32,7 +32,7 @@ export function DateSheet({
         <Backdrop onPress={onRequestClose} testID={testID ? `${testID}-backdrop` : undefined} />
         <View
           testID={testID}
-          className="max-w-full rounded-lg border border-border-default bg-surface-elevated p-3 shadow-md"
+          className="max-w-full rounded-[12px] border border-border-default bg-surface-elevated p-3 shadow-md"
         >
           {children}
         </View>

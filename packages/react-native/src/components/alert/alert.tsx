@@ -60,7 +60,7 @@ export function Alert({
     <View
       accessibilityRole={statusRole(status)}
       className={cn(
-        'flex-row items-start gap-3 rounded-md border-l-[3px] py-3 pr-3 pl-4',
+        'flex-row items-start gap-3 rounded-[8px] border-l-[3px] py-3 pr-3 pl-4',
         statusBg[status],
         border[status],
         className,

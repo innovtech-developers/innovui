@@ -6,15 +6,19 @@ import { TextInput, type TextInputProps, View } from 'react-native'
 import { cn } from '../../utils/cn'
 import { useToken } from '../_shared/use-token'
 
-/** Estilo do campo, compartilhado com o Textarea (não faz parte da API pública). */
+/**
+ * Estilo do campo, compartilhado com o Textarea (não faz parte da API pública).
+ * O tamanho da fonte vai em px (`text-[16px]`) e não em `text-base`: este também define
+ * `line-height`, e no iOS um `TextInput` de uma linha com `line-height` maior que a fonte desce o texto.
+ */
 export const inputVariants = cva(
-  'w-full rounded-md border border-field-border bg-field-bg py-0 text-field-text focus:border-field-focus-ring',
+  'w-full rounded-[8px] border border-field-border bg-field-bg py-0 text-field-text focus:border-field-focus-ring',
   {
     variants: {
       size: {
-        lg: 'h-14 px-4 text-base',
-        md: 'h-12 px-3 text-base',
-        sm: 'h-10 px-2 text-sm',
+        lg: 'h-14 px-4 text-[16px]',
+        md: 'h-12 px-3 text-[16px]',
+        sm: 'h-10 px-2 text-[14px]',
       },
       error: {
         true: 'border-field-border-error focus:border-field-border-error',

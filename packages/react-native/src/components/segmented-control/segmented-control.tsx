@@ -51,13 +51,13 @@ export function SegmentedControl({
       <View
         accessibilityRole="radiogroup"
         className={cn(
-          'flex-row items-start gap-1 self-start rounded-md bg-bg-tertiary p-1',
+          'flex-row items-start gap-1 self-start rounded-[8px] bg-bg-tertiary p-1',
           className,
         )}
         {...props}
       >
         {/* o fundo do item marcado é do indicador: fica sob os itens e desliza para o próximo */}
-        <SlidingIndicator target={active} className="rounded-md bg-surface-primary shadow-sm" />
+        <SlidingIndicator target={active} className="rounded-[8px] bg-surface-primary shadow-sm" />
         {children}
       </View>
     </Context.Provider>
@@ -96,7 +96,7 @@ export function SegmentedItem({
         onLayout?.(event)
       }}
       className={cn(
-        'items-center justify-center rounded-md px-4 py-2',
+        'items-center justify-center rounded-[8px] px-4 py-2',
         checked ? !group.slid && 'bg-surface-primary shadow-sm' : 'active:bg-bg-secondary',
         className,
       )}

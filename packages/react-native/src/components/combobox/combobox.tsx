@@ -110,7 +110,7 @@ export function Combobox({
         onRequestClose={close}
         matchAnchorWidth
         testID={testID ? `${testID}-list` : undefined}
-        className="overflow-hidden rounded-md border border-select-dropdown-border bg-select-dropdown-bg shadow-md"
+        className="overflow-hidden rounded-[8px] border border-select-dropdown-border bg-select-dropdown-bg shadow-md"
       >
         <TextInput
           autoFocus
@@ -121,7 +121,7 @@ export function Combobox({
           placeholder={searchPlaceholder}
           placeholderTextColor={placeholderColor}
           accessibilityLabel={searchPlaceholder}
-          className="h-11 border-b border-select-dropdown-border px-3 text-base text-field-text"
+          className="h-11 border-b border-select-dropdown-border px-3 text-[16px] text-field-text"
         />
         <ScrollView className="max-h-60 p-1" keyboardShouldPersistTaps="handled">
           {shown.length === 0 ? (

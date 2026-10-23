@@ -132,7 +132,7 @@ export function Drawer({
       importantForAccessibility="no-hide-descendants"
       className="h-6 shrink-0 items-center justify-center"
     >
-      <View className="h-1 w-10 rounded-lg bg-border-strong" />
+      <View className="h-1 w-10 rounded-[12px] bg-border-strong" />
     </View>
   )
 

@@ -94,7 +94,7 @@ describe('Drawer', () => {
   })
 
   describe('barrinha de arraste', () => {
-    const HANDLE = { className: 'h-1 w-10 rounded-lg bg-border-strong' }
+    const HANDLE = { className: 'h-1 w-10 rounded-[12px] bg-border-strong' }
     const handles = () => screen.UNSAFE_queryAllByProps(HANDLE).length
 
     it.each(['top', 'bottom'] as const)('aparece em %s', (side) => {

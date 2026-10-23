@@ -11,7 +11,7 @@ import { useToken } from '../_shared/use-token'
 export type FieldSize = 'sm' | 'md' | 'lg'
 
 const triggerVariants = cva(
-  'w-full flex-row items-center justify-between gap-2 rounded-md border',
+  'w-full flex-row items-center justify-between gap-2 rounded-[8px] border',
   {
     variants: {
       size: {
