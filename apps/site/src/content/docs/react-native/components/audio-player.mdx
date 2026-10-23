@@ -37,7 +37,7 @@ export function MensagemDeVoz({ uri }: { uri: string }) {
 
 ## A onda
 
-Diferente do web, **não há extração automática** da onda no React Native (não existe Web Audio). Passe os picos em `waveform` (de 0 a 1; o componente reamostra para as 52 barras, de 6 a 34px) ou deixe sem: aparece uma onda padrão com o mesmo visual. O jeito mais simples de obter os picos é calcular uma vez no servidor (por exemplo com `ffmpeg` ou `audiowaveform`) e guardar junto do arquivo.
+Diferente do web, **não há extração automática** da onda no React Native (não existe Web Audio). Passe os picos em `waveform` (de 0 a 1; o componente reamostra para as 52 barras, de 6 a 34px) ou deixe sem: aparece uma onda padrão com o mesmo visual. Calcule o **volume (RMS)** de cada trecho, não o pico: o pico fica alto mesmo no ruído e deixa toda onda parecida. Divida pelo valor da segunda ou terceira barra mais alta (e limite em 1), para um estouro não achatar o resto. O jeito mais simples é calcular uma vez no servidor (por exemplo com `ffmpeg` ou `audiowaveform`) e guardar junto do arquivo.
 
 ```tsx
 <AudioPlayer waveform={mensagem.picos} … />

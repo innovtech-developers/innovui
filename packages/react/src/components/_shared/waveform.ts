@@ -9,19 +9,26 @@ export const DEFAULT_WAVEFORM = [
   16, 24, 18,
 ].map((height) => (height - 6) / 28)
 
-/** Maior valor absoluto de cada um dos `bars` trechos, normalizado de 0 a 1 pelo maior de todos. */
+/**
+ * Volume (RMS) de cada um dos `bars` trechos, de 0 a 1. O RMS acompanha o volume que se ouve; o
+ * maior valor do trecho (o pico) fica quase sempre alto, mesmo no ruído, e deixa toda onda igual.
+ * Normaliza pela segunda ou terceira barra mais alta, não pela maior: um estouro (tosse, batida)
+ * não achata o resto, e as poucas barras acima disso ficam no topo.
+ */
 export function computePeaks(data: ArrayLike<number>, bars: number) {
-  const peaks = Array.from({ length: bars }, (_, i) => {
+  const levels = Array.from({ length: bars }, (_, i) => {
     const start = Math.floor((i * data.length) / bars)
     const end = Math.max(Math.floor(((i + 1) * data.length) / bars), start + 1)
-    let peak = 0
+    let sum = 0
+    let count = 0
     for (let j = start; j < end && j < data.length; j++) {
-      peak = Math.max(peak, Math.abs(data[j] as number))
+      sum += (data[j] as number) ** 2
+      count++
     }
-    return peak
+    return count ? Math.sqrt(sum / count) : 0
   })
-  const max = Math.max(...peaks)
-  return max > 0 ? peaks.map((peak) => peak / max) : peaks
+  const reference = [...levels].sort((a, b) => a - b)[Math.ceil(bars * 0.95) - 1] ?? 0
+  return reference > 0 ? levels.map((level) => Math.min(level / reference, 1)) : levels
 }
 
 /** Leva uma lista de picos para `bars` barras (pega o maior de cada trecho, ou repete se faltar). */

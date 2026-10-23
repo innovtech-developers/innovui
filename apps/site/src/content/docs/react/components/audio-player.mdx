@@ -19,7 +19,7 @@ O navegador só toca o som (o `<audio>` fica sem os controles nativos); o visual
 
 ## A onda
 
-O componente baixa o arquivo, decodifica e desenha **52 barras**, de 6 a 34px, com o pico de cada trecho. Enquanto calcula, as barras ficam baixas e pulsando. Se não der para calcular (rede, formato, CORS), mostra uma onda padrão e o áudio toca normalmente.
+O componente baixa o arquivo, decodifica e desenha **52 barras**, de 6 a 34px, com o volume (RMS) de cada trecho, como nos mensageiros: pausas e voz baixa ficam baixas, e um estouro isolado não achata o resto. Enquanto calcula, as barras ficam baixas e pulsando. Se não der para calcular (rede, formato, CORS), mostra uma onda padrão e o áudio toca normalmente.
 
 - Áudio de **outra origem** precisa responder com `Access-Control-Allow-Origin`; sem isso, vale a onda padrão.
 - O arquivo é decodificado na memória (a 8 kHz, cerca de 1 MB por minuto): serve bem para áudios de alguns minutos. Para os longos, calcule os picos no servidor e passe em `waveform`, o que também evita o download extra.
