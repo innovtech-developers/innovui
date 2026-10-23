@@ -6,5 +6,5 @@
       "@innovui/react-native": ["../../packages/react-native/src/index.ts"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "css.d.ts", "uniwind-types.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "css.d.ts", "uniwind-env.d.ts", "uniwind-types.d.ts"]
 }
