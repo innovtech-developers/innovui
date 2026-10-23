@@ -83,7 +83,7 @@ export function AudioPlayer({
         onLayout?.(event)
       }}
       className={cn(
-        'w-full max-w-[480px] flex-row items-center gap-3 rounded-lg border border-border-default bg-surface-elevated p-4 shadow-sm',
+        'w-full max-w-[480px] flex-row items-center gap-3 rounded-[12px] border border-border-default bg-surface-elevated p-4 shadow-sm',
         className,
       )}
       {...props}

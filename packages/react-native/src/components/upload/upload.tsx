@@ -104,7 +104,7 @@ function FileRow({
   return (
     <View
       className={cn(
-        'gap-2 rounded-md border bg-field-bg px-3 py-2',
+        'gap-2 rounded-[8px] border bg-field-bg px-3 py-2',
         isError ? 'border-field-border-error' : 'border-field-border',
       )}
     >
@@ -194,7 +194,7 @@ export function Upload({
         onPress={onPick}
         testID={testID}
         className={cn(
-          'items-center gap-1 rounded-md border border-dashed bg-field-bg px-6 py-8',
+          'items-center gap-1 rounded-[8px] border border-dashed bg-field-bg px-6 py-8',
           error ? 'border-field-border-error' : 'border-field-border',
           'active:border-interactive-primary active:bg-button-secondary-bg',
           'disabled:border-field-border-disabled disabled:bg-field-bg-disabled',

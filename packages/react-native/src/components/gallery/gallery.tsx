@@ -62,7 +62,7 @@ export function Gallery({
             accessibilityRole="imagebutton"
             accessibilityLabel={openLabel(item, i)}
             onPress={() => setOpened(i)}
-            className="overflow-hidden rounded-md bg-bg-skeleton"
+            className="overflow-hidden rounded-[8px] bg-bg-skeleton"
             style={{ width: size, aspectRatio: 4 / 3 }}
           >
             {({ pressed }) => (

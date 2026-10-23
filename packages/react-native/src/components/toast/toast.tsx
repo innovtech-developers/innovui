@@ -247,7 +247,7 @@ function ToastView({
         accessibilityRole={statusRole(status)}
         // Erro e aviso interrompem o leitor de tela; o resto é anunciado com calma.
         accessibilityLiveRegion={statusRole(status) ? 'assertive' : 'polite'}
-        className="flex-row items-start gap-3 rounded-md border border-border-default bg-surface-elevated py-3 pr-3 pl-4 shadow-md"
+        className="flex-row items-start gap-3 rounded-[8px] border border-border-default bg-surface-elevated py-3 pr-3 pl-4 shadow-md"
         style={{ elevation: 6 }}
       >
         {showIcon && <StatusIcon status={status} color={iconColor} />}

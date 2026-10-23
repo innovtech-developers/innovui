@@ -111,7 +111,7 @@ export function Select({
         onRequestClose={anchor.close}
         matchAnchorWidth
         testID={testID ? `${testID}-list` : undefined}
-        className="overflow-hidden rounded-md border border-select-dropdown-border bg-select-dropdown-bg p-1 shadow-md"
+        className="overflow-hidden rounded-[8px] border border-select-dropdown-border bg-select-dropdown-bg p-1 shadow-md"
       >
         <SelectContext.Provider value={{ value: selected, onSelect }}>
           <ScrollView className="max-h-60">{children}</ScrollView>

@@ -4,12 +4,15 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { View, type ViewProps } from 'react-native'
 import { cn } from '../../utils/cn'
 
-const cardVariants = cva('rounded-md border border-border-default bg-surface-elevated shadow-md', {
-  variants: {
-    padding: { none: '', md: 'p-4', lg: 'p-6' },
+const cardVariants = cva(
+  'rounded-[8px] border border-border-default bg-surface-elevated shadow-md',
+  {
+    variants: {
+      padding: { none: '', md: 'p-4', lg: 'p-6' },
+    },
+    defaultVariants: { padding: 'md' },
   },
-  defaultVariants: { padding: 'md' },
-})
+)
 
 export type CardProps = ViewProps & VariantProps<typeof cardVariants> & { className?: string }
 

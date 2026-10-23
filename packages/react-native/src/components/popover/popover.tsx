@@ -58,7 +58,7 @@ export function Popover({
         offset={8}
         testID={testID}
         className={cn(
-          'max-w-xs rounded-md border border-border-default bg-surface-elevated p-4 shadow-md',
+          'max-w-xs rounded-[8px] border border-border-default bg-surface-elevated p-4 shadow-md',
           className,
         )}
       >

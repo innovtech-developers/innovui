@@ -54,7 +54,7 @@ export function Menu({
         placement={side}
         testID={testID}
         className={cn(
-          'min-w-[180px] rounded-md border border-border-default bg-surface-elevated p-1 shadow-md',
+          'min-w-[180px] rounded-[8px] border border-border-default bg-surface-elevated p-1 shadow-md',
           className,
         )}
       >

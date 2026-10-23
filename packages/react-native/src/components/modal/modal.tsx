@@ -19,7 +19,7 @@ import { useToken } from '../_shared/use-token'
 import { useTransition } from '../_shared/use-transition'
 
 const modalVariants = cva(
-  'max-h-full w-full overflow-hidden rounded-lg border border-border-default bg-surface-elevated shadow-2xl',
+  'max-h-full w-full overflow-hidden rounded-[12px] border border-border-default bg-surface-elevated shadow-2xl',
   {
     variants: {
       size: { sm: 'max-w-[480px]', md: 'max-w-[640px]', lg: 'max-w-[800px]' },
