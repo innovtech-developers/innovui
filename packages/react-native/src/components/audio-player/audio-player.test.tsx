@@ -102,6 +102,15 @@ describe('AudioPlayer', () => {
     expect(stacked()).toHaveLength(0)
   })
 
+  it('corta as barras no limite da onda, antes mesmo de medir o espaço', () => {
+    render(<AudioPlayer waveform={wave} />)
+    const row = screen.UNSAFE_root.findAll(
+      (node: Node) =>
+        typeof node.type === 'string' && String(node.props.className).includes('gap-0.5'),
+    )
+    expect(row[0]?.props.className).toContain('overflow-hidden')
+  })
+
   it('tocar e arrastar na onda posiciona em segundos', () => {
     const onSeek = jest.fn()
     render(<AudioPlayer duration={200} onSeek={onSeek} />)

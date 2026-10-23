@@ -201,6 +201,11 @@ describe('AudioPlayer', () => {
     expect(container.contains(inner)).toBe(true)
   })
 
+  it('corta as barras no limite da onda: antes de medir o espaço elas não invadem o tempo', () => {
+    setup()
+    expect(slider()).toHaveClass('iu:overflow-hidden')
+  })
+
   it('repassa className e props do contêiner', () => {
     setup({ className: 'minha-classe', 'data-testid': 'player' } as never)
     expect(screen.getByTestId('player')).toHaveClass('minha-classe')
