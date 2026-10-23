@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 1.1.2
+
+### Patch Changes
+
+- [#28](https://github.com/innovtech-developers/innovui/pull/28) [`a2486dd`](https://github.com/innovtech-developers/innovui/commit/a2486dd515a977f3c974fdb277b333a5fe3f170f) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - AudioPlayer: a onda corta as barras no limite dela. Antes de medir o espaço (no HTML do servidor, antes de hidratar) as 52 barras passavam por cima do botão de velocidade no celular.
+
 ## 1.1.1
 
 ### Patch Changes
