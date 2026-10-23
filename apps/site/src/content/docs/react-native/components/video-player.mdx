@@ -27,11 +27,6 @@ export function VideoDoCliente({ uri }: { uri: string }) {
   })
   const [fullscreen, setFullscreen] = useState(false)
 
-  // No iOS, o vídeo em tela cheia só mostra controles se `nativeControls` já estiver ligado ao entrar.
-  useEffect(() => {
-    if (fullscreen) view.current?.enterFullscreen()
-  }, [fullscreen])
-
   return (
     <VideoPlayer
       label="Vídeo enviado pelo cliente"
@@ -43,14 +38,15 @@ export function VideoDoCliente({ uri }: { uri: string }) {
       onSeek={(seconds) => {
         player.currentTime = seconds
       }}
-      onToggleFullscreen={() => setFullscreen(true)}
+      onToggleFullscreen={() => view.current?.enterFullscreen()}
     >
       <VideoView
         ref={view}
         player={player}
-        nativeControls={fullscreen}
+        nativeControls={false}
         contentFit="contain"
         style={{ flex: 1 }}
+        onFullscreenEnter={() => setFullscreen(true)}
         onFullscreenExit={() => setFullscreen(false)}
       />
     </VideoPlayer>
@@ -58,7 +54,7 @@ export function VideoDoCliente({ uri }: { uri: string }) {
 }
 ```
 
-Fora da tela cheia, deixe os controles do próprio vídeo desligados (`nativeControls={false}`) para não aparecerem dois conjuntos. Em tela cheia o vídeo sai do `VideoPlayer` e passa para o player do sistema, então os controles do InnovUI não aparecem lá: ligue `nativeControls` ao entrar (`nativeControls={fullscreen}`), senão no iOS a tela cheia fica sem play, barra e tempo. Entre em tela cheia pelo estado, como no exemplo, para o `nativeControls` já estar ligado quando o vídeo abrir.
+Deixe os controles do próprio vídeo desligados (`nativeControls={false}`) para não aparecerem dois conjuntos. Em tela cheia o vídeo sai do `VideoPlayer` e passa para o player do sistema, então o `VideoPlayer` liga o `nativeControls` do `VideoView` sozinho ao entrar (ele precisa estar ligado antes de abrir, senão o iOS mostra a tela cheia sem play, barra e tempo). Para isso, o `VideoView` deve ser o filho direto, com a prop `nativeControls`, e `fullscreen` deve acompanhar `onFullscreenEnter`/`onFullscreenExit`.
 
 ## Comportamento
 
