@@ -13,9 +13,20 @@ describe('computePeaks', () => {
     expect(computePeaks(new Float32Array(100), 4)).toEqual([0, 0, 0, 0])
   })
 
-  it('pega o pico (em módulo) de cada trecho e normaliza pelo maior', () => {
-    const data = new Float32Array([0.1, -0.2, 0.4, 0.1, -0.8, 0.2, 0, 0.05])
-    expect(computePeaks(data, 4)).toEqual([0.25, 0.5, 1, 0.0625])
+  it('mede o volume (RMS) de cada trecho e normaliza pelo mais alto', () => {
+    expect(computePeaks(new Float32Array([0.5, -0.5, 0, 0]), 2)).toEqual([1, 0])
+    const quiet = computePeaks(new Float32Array([0.2, -0.2, 0.1, -0.1]), 2)
+    expect(quiet[0]).toBe(1)
+    expect(quiet[1]).toBeCloseTo(0.5)
+  })
+
+  it('um estouro não achata o resto', () => {
+    const data = new Float32Array(200)
+    for (let bar = 0; bar < 20; bar++) data.fill(bar % 2 ? 0.05 : 0.1, bar * 10, bar * 10 + 10)
+    data.fill(1, 0, 10)
+    const peaks = computePeaks(data, 20)
+    expect(peaks[0]).toBe(1)
+    expect(peaks[1]).toBeCloseTo(0.5)
   })
 
   it('com menos amostras que barras, repete as amostras em vez de quebrar', () => {
@@ -85,7 +96,9 @@ describe('useWaveform', () => {
     decodeAudioData.mockResolvedValue(decoded([0.5, -1, 0.25, 0.1]))
     const { result } = renderHook(() => useWaveform('/a.mp3', 2))
     expect(result.current).toBeNull()
-    await waitFor(() => expect(result.current).toEqual([1, 0.25]))
+    // RMS de cada metade: [√((0.25+1)/2), √((0.0625+0.01)/2)], normalizado pelo maior
+    await waitFor(() => expect(result.current?.[0]).toBe(1))
+    expect(result.current?.[1]).toBeCloseTo(Math.sqrt(0.03625) / Math.sqrt(0.625))
     expect(fetchMock).toHaveBeenCalledWith('/a.mp3')
   })
 
