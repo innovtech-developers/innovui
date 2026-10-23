@@ -1,5 +1,11 @@
 # @innovui/react-native
 
+## 0.4.1
+
+### Patch Changes
+
+- [#32](https://github.com/innovtech-developers/innovui/pull/32) [`fbaba4c`](https://github.com/innovtech-developers/innovui/commit/fbaba4c0aa2b8490d344a4acc98bd08742ea5eaf) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - VideoPlayer: em tela cheia no iOS os controles do sistema (play, barra e tempo) agora ligam sozinhos. O `VideoPlayer` liga o `nativeControls` do `VideoView` (filho direto, com a prop `nativeControls`) antes de chamar `onToggleFullscreen`, então não é preciso mais controlar isso no app. Mantenha `fullscreen` ligado a `onFullscreenEnter` e `onFullscreenExit`.
+
 ## 0.4.0
 
 ### Minor Changes
