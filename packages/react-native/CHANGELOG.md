@@ -1,5 +1,13 @@
 # @innovui/react-native
 
+## 0.4.2
+
+### Patch Changes
+
+- [#35](https://github.com/innovtech-developers/innovui/pull/35) [`01fc88f`](https://github.com/innovtech-developers/innovui/commit/01fc88f65c6867139730c21d95b3b89000925d16) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Input e busca do Combobox: no iOS o texto digitado e o placeholder ficavam mais baixos que no web. O tamanho da fonte agora não traz `line-height` (que desce o texto num `TextInput` de uma linha), então o texto fica centralizado no campo.
+
+- [#35](https://github.com/innovtech-developers/innovui/pull/35) [`01fc88f`](https://github.com/innovtech-developers/innovui/commit/01fc88f65c6867139730c21d95b3b89000925d16) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - Raios de borda iguais aos do web e do design system. `rounded-md` e `rounded-lg` vinham do Tailwind (6px e 8px), e o design system usa 8px e 12px. Afetava Input, Textarea, Select, Combobox, Card, Alert, Modal, Drawer, Toast, Popover, Menu, Upload, VideoPlayer e outros. Os componentes passam a usar 8px e 12px direto, sem mudar o `rounded-*` do app consumidor.
+
 ## 0.4.1
 
 ### Patch Changes

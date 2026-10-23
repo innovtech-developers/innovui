@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 1.1.4
+
+### Patch Changes
+
+- [#34](https://github.com/innovtech-developers/innovui/pull/34) [`0156d5a`](https://github.com/innovtech-developers/innovui/commit/0156d5a26bfe4c7c54259de74b3a930602bc3466) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - AudioPlayer: a onda extraída do áudio agora usa o volume (RMS) de cada trecho, normalizado pela segunda ou terceira barra mais alta, em vez do pico. Antes qualquer ruído levantava as barras e os áudios ficavam todos com a mesma onda; agora as pausas e a voz baixa aparecem, como nos mensageiros.
+
 ## 1.1.3
 
 ### Patch Changes
