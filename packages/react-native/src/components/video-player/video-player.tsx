@@ -1,18 +1,10 @@
 /// <reference types="uniwind/types" />
 
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { AccessibilityInfo, Pressable, StyleSheet, Text, View, type ViewProps } from 'react-native'
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg'
+import { AccessibilityInfo, Pressable, Text, View, type ViewProps } from 'react-native'
 import { cn } from '../../utils/cn'
 import { formatTime, useSeek } from '../_shared/media'
-import {
-  MaximizeIcon,
-  MinimizeIcon,
-  PauseIcon,
-  PlayIcon,
-  VolumeIcon,
-  VolumeMutedIcon,
-} from '../_shared/media-icons'
+import { MaximizeIcon, MinimizeIcon, PauseIcon, PlayIcon } from '../_shared/media-icons'
 import { useToken } from '../_shared/use-token'
 
 export type VideoPlayerProps = Omit<ViewProps, 'style'> & {
@@ -27,28 +19,26 @@ export type VideoPlayerProps = Omit<ViewProps, 'style'> & {
   position?: number
   /** Duração total, em segundos. */
   duration?: number
-  /** Sem som: mostra o ícone de volume cortado. */
-  muted?: boolean
   /** Em tela cheia: mostra o ícone de sair. Só vale com `onToggleFullscreen`. */
   fullscreen?: boolean
   onPlayPause?: () => void
   /** Chamado com a posição (em segundos) tocada ou arrastada na barra. */
   onSeek?: (seconds: number) => void
-  onToggleMute?: () => void
   /** Sem ele, o botão de tela cheia não aparece. */
   onToggleFullscreen?: () => void
   /** Tempo sem interação, em ms, até esconder os controles durante a reprodução. Padrão: 2500. */
   hideControlsAfter?: number
 }
 
+// 44px: o mínimo de área de toque recomendado no iOS (Apple HIG) e perto dos 48dp do Android.
 const button =
-  'size-9 shrink-0 items-center justify-center rounded-full active:bg-media-on-surface/15'
+  'size-11 shrink-0 items-center justify-center rounded-full active:bg-media-on-surface/15'
 
 /**
- * Casca de player de vídeo: play central, posição, tempo, mudo e tela cheia sobre o seu vídeo.
+ * Casca de player de vídeo: play/pause central, posição, tempo e tela cheia sobre o seu vídeo.
  * Não toca nada: quem usa guarda o estado (por exemplo com `expo-video`) e o passa por props,
- * ligando os `on…` ao player de verdade. Tocar no vídeo alterna play/pause e mostra os controles,
- * que somem depois de um tempo sem toques enquanto toca (com leitor de tela ligado, ficam).
+ * ligando os `on…` ao player de verdade. Tocar no vídeo mostra ou esconde os controles, que também
+ * somem sozinhos depois de um tempo sem toques enquanto toca (com leitor de tela ligado, ficam).
  */
 export function VideoPlayer({
   className,
@@ -57,11 +47,9 @@ export function VideoPlayer({
   playing = false,
   position = 0,
   duration = 0,
-  muted = false,
   fullscreen = false,
   onPlayPause,
   onSeek,
-  onToggleMute,
   onToggleFullscreen,
   hideControlsAfter = 2500,
   ...props
@@ -71,16 +59,21 @@ export function VideoPlayer({
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const onSurface = useToken('--color-media-on-surface')
   const accent = useToken('--color-interactive-primary')
-  const scrim = useToken('--color-media-surface') ?? '#000000'
   const seek = useSeek({ position, duration, label: 'Posição do vídeo', onSeek })
   const visible = active || !playing || screenReader
   const progress = duration ? Math.min(position / duration, 1) * 100 : 0
+  const ended = !playing && duration > 0 && position >= duration - 0.1
 
   useEffect(() => {
     AccessibilityInfo.isScreenReaderEnabled().then(setScreenReader)
     const subscription = AccessibilityInfo.addEventListener('screenReaderChanged', setScreenReader)
     return () => subscription.remove()
   }, [])
+
+  const hide = () => {
+    clearTimeout(timer.current)
+    setActive(false)
+  }
 
   const show = useCallback(() => {
     setActive(true)
@@ -94,6 +87,12 @@ export function VideoPlayer({
     return () => clearTimeout(timer.current)
   }, [playing, show])
 
+  // No expo-video, `play()` no fim do vídeo não faz nada: volta ao começo antes.
+  const playPause = () => {
+    if (ended) onSeek?.(0)
+    onPlayPause?.()
+  }
+
   return (
     <View
       accessibilityLabel={label}
@@ -106,65 +105,46 @@ export function VideoPlayer({
       <View pointerEvents="none" className="absolute inset-0">
         {children}
       </View>
+      {/* Tocar no vídeo só mostra/esconde os controles: pausar sem querer é o erro mais comum no celular. */}
       <Pressable
         accessible={false}
         onPress={() => {
-          onPlayPause?.()
-          show()
+          if (!playing) return
+          if (visible) hide()
+          else show()
         }}
         className="absolute inset-0"
       >
-        {!playing && <View pointerEvents="none" className="absolute inset-0 bg-media-surface/30" />}
+        {visible && <View pointerEvents="none" className="absolute inset-0 bg-media-surface/40" />}
       </Pressable>
-      {!playing && (
-        <View pointerEvents="box-none" className="absolute inset-0 items-center justify-center">
-          <Pressable
-            accessible={false}
-            importantForAccessibility="no"
-            onPress={onPlayPause}
-            className="size-16 items-center justify-center rounded-full bg-media-on-surface shadow-lg"
-          >
-            <PlayIcon filled size={28} color={accent} />
-          </Pressable>
-        </View>
-      )}
       <View
         pointerEvents={visible ? 'box-none' : 'none'}
         importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'}
         accessibilityElementsHidden={!visible}
-        className={cn('absolute inset-x-0 bottom-0 px-4 pb-3 pt-[30px]', !visible && 'opacity-0')}
+        className={cn('absolute inset-0', !visible && 'opacity-0')}
       >
-        <Svg pointerEvents="none" style={StyleSheet.absoluteFill} preserveAspectRatio="none">
-          <Defs>
-            <LinearGradient id="scrim" x1="0" y1="1" x2="0" y2="0">
-              <Stop offset="0" stopColor={scrim} stopOpacity={0.65} />
-              <Stop offset="1" stopColor={scrim} stopOpacity={0} />
-            </LinearGradient>
-          </Defs>
-          <Rect width="100%" height="100%" fill="url(#scrim)" />
-        </Svg>
-        <View {...seek.props} className="mb-1 h-4 w-full justify-center">
-          {/* Filhos ignoram toques para que `locationX` seja sempre relativo à barra. */}
-          <View pointerEvents="none" className="h-1 w-full rounded-full bg-media-on-surface/30">
-            <View
-              className="h-full rounded-full bg-media-accent"
-              style={{ width: `${progress}%` }}
-            />
-          </View>
+        <View pointerEvents="box-none" className="absolute inset-0 items-center justify-center">
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={playing ? 'Pausar' : 'Reproduzir'}
+            onPress={() => {
+              playPause()
+              show()
+            }}
+            className="size-14 items-center justify-center rounded-full bg-media-on-surface shadow-lg active:opacity-80"
+          >
+            {playing ? (
+              <PauseIcon filled size={24} color={accent} />
+            ) : (
+              <PlayIcon filled size={24} color={accent} />
+            )}
+          </Pressable>
         </View>
-        <View className="h-9 flex-row items-center justify-between">
-          <View className="flex-row items-center gap-2">
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={playing ? 'Pausar' : 'Reproduzir'}
-              onPress={() => {
-                onPlayPause?.()
-                show()
-              }}
-              className={button}
-            >
-              {playing ? <PauseIcon color={onSurface} /> : <PlayIcon color={onSurface} />}
-            </Pressable>
+        <View pointerEvents="box-none" className="absolute inset-x-0 bottom-0">
+          <View
+            pointerEvents="box-none"
+            className="h-11 flex-row items-center justify-between pl-4 pr-1"
+          >
             <Text
               accessible={false}
               className="text-xs font-medium leading-4 text-media-on-surface"
@@ -172,19 +152,6 @@ export function VideoPlayer({
             >
               {formatTime(position)} / {formatTime(duration)}
             </Text>
-          </View>
-          <View className="flex-row items-center gap-2">
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={muted ? 'Ativar o som' : 'Silenciar'}
-              onPress={() => {
-                onToggleMute?.()
-                show()
-              }}
-              className={button}
-            >
-              {muted ? <VolumeMutedIcon color={onSurface} /> : <VolumeIcon color={onSurface} />}
-            </Pressable>
             {onToggleFullscreen && (
               <Pressable
                 accessibilityRole="button"
@@ -199,6 +166,20 @@ export function VideoPlayer({
                 )}
               </Pressable>
             )}
+          </View>
+          {/* 32px de altura para o dedo acertar a barra de 4px; sobe 8px sobre a folga do botão acima. */}
+          <View {...seek.props} className="-mt-2 mx-4 h-8 justify-center">
+            {/* Filhos ignoram toques para que `locationX` seja sempre relativo à barra. */}
+            <View pointerEvents="none" className="h-1 w-full rounded-full bg-media-on-surface/30">
+              <View
+                className="h-full rounded-full bg-media-accent"
+                style={{ width: `${progress}%` }}
+              />
+              <View
+                className="absolute -top-1 size-3 rounded-full bg-media-accent"
+                style={{ left: `${progress}%`, marginLeft: -6 }}
+              />
+            </View>
           </View>
         </View>
       </View>

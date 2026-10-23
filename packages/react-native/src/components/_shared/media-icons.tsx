@@ -18,8 +18,6 @@ const strokeProps = {
 
 const playPath =
   'M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z'
-const speakerPath =
-  'M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z'
 
 function Icon({
   color,
@@ -43,31 +41,12 @@ export function PlayIcon({ filled, color, ...props }: IconProps & { filled?: boo
   )
 }
 
-export function PauseIcon(props: IconProps) {
+/** Duas barras de pausar; `filled` preenche com `color` (botão central do vídeo). */
+export function PauseIcon({ filled, color, ...props }: IconProps & { filled?: boolean }) {
   return (
-    <Icon {...props}>
+    <Icon color={color} fill={filled ? color : 'none'} {...props}>
       <Rect x="14" y="3" width="5" height="18" rx="1" />
       <Rect x="5" y="3" width="5" height="18" rx="1" />
-    </Icon>
-  )
-}
-
-export function VolumeIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <Path d={speakerPath} />
-      <Path d="M16 9a5 5 0 0 1 0 6" />
-      <Path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
-    </Icon>
-  )
-}
-
-export function VolumeMutedIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <Path d={speakerPath} />
-      <Path d="M22 9l-6 6" />
-      <Path d="M16 9l6 6" />
     </Icon>
   )
 }

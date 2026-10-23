@@ -1,9 +1,9 @@
 ---
 title: VideoPlayer
-description: Controles de vídeo (play central, posição, tempo, mudo e tela cheia) sobre o seu vídeo (expo-video).
+description: Controles de vídeo (play central, posição, tempo e tela cheia) sobre o seu vídeo (expo-video).
 ---
 
-Desenha os controles de um vídeo sobre a superfície que você colocar dentro dele: play grande no centro, barra de posição, reproduzir/pausar, tempo, mudo e tela cheia.
+Desenha os controles de um vídeo sobre a superfície que você colocar dentro dele, no estilo dos players de celular: play/pause grande no centro e, embaixo, o tempo com a tela cheia à direita e a barra de posição.
 
 O React Native não tem player de vídeo embutido, então o `VideoPlayer` é só a **casca**: ele recebe o vídeo como `children`, desenha o estado que você passa e avisa o que o usuário fez. Quem toca é o seu player; com o Expo, o [`expo-video`](https://docs.expo.dev/versions/latest/sdk/video/).
 
@@ -25,8 +25,12 @@ export function VideoDoCliente({ uri }: { uri: string }) {
     currentOffsetFromLive: null,
     bufferedPosition: player.bufferedPosition,
   })
-  const { muted } = useEvent(player, 'mutedChange', { muted: player.muted, oldMuted: player.muted })
   const [fullscreen, setFullscreen] = useState(false)
+
+  // No iOS, o vídeo em tela cheia só mostra controles se `nativeControls` já estiver ligado ao entrar.
+  useEffect(() => {
+    if (fullscreen) view.current?.enterFullscreen()
+  }, [fullscreen])
 
   return (
     <VideoPlayer
@@ -34,24 +38,19 @@ export function VideoDoCliente({ uri }: { uri: string }) {
       playing={isPlaying}
       position={currentTime}
       duration={player.duration}
-      muted={muted}
       fullscreen={fullscreen}
       onPlayPause={() => (isPlaying ? player.pause() : player.play())}
       onSeek={(seconds) => {
         player.currentTime = seconds
       }}
-      onToggleMute={() => {
-        player.muted = !player.muted
-      }}
-      onToggleFullscreen={() => view.current?.enterFullscreen()}
+      onToggleFullscreen={() => setFullscreen(true)}
     >
       <VideoView
         ref={view}
         player={player}
-        nativeControls={false}
+        nativeControls={fullscreen}
         contentFit="contain"
         style={{ flex: 1 }}
-        onFullscreenEnter={() => setFullscreen(true)}
         onFullscreenExit={() => setFullscreen(false)}
       />
     </VideoPlayer>
@@ -59,13 +58,15 @@ export function VideoDoCliente({ uri }: { uri: string }) {
 }
 ```
 
-Desligue os controles do próprio vídeo (`nativeControls={false}`) para não aparecerem dois conjuntos.
+Fora da tela cheia, deixe os controles do próprio vídeo desligados (`nativeControls={false}`) para não aparecerem dois conjuntos. Em tela cheia o vídeo sai do `VideoPlayer` e passa para o player do sistema, então os controles do InnovUI não aparecem lá: ligue `nativeControls` ao entrar (`nativeControls={fullscreen}`), senão no iOS a tela cheia fica sem play, barra e tempo. Entre em tela cheia pelo estado, como no exemplo, para o `nativeControls` já estar ligado quando o vídeo abrir.
 
 ## Comportamento
 
-- **Pausado:** o play central e os controles ficam sempre visíveis, com um leve véu escuro.
-- **Tocando:** os controles somem depois de 2,5 s sem toques (`hideControlsAfter`). **Tocar no vídeo** alterna play/pause e mostra os controles de novo. Com leitor de tela ligado, os controles não somem.
-- **Volume:** no celular o volume é o dos botões do aparelho, então só há o botão de mudo.
+- **Pausado:** os controles ficam sempre visíveis, com um véu escuro por cima do vídeo.
+- **Tocando:** os controles somem depois de 2,5 s sem toques (`hideControlsAfter`). **Tocar no vídeo** mostra ou esconde os controles; para pausar, use o botão central. Assim um toque sem querer não pausa o vídeo. Com leitor de tela ligado, os controles não somem.
+- **Reproduzir no fim:** volta ao começo antes de tocar (chama `onSeek(0)` e depois `onPlayPause`).
+- **Área de toque:** botões de 44px e barra de posição com 32px de altura, com o marcador na posição atual.
+- **Volume:** no celular o volume é o dos botões do aparelho, então o player não tem controle de som.
 - **Tela cheia:** o botão só aparece se você passar `onToggleFullscreen`.
 - **Proporção:** 16:9 na largura disponível; mude com `className` (ex.: `aspect-square`).
 
@@ -103,19 +104,17 @@ As cores vêm de tokens, então não há prop de cor: sobrescreva o token no `gl
 | `playing` | `boolean` | `false` | Tocando agora: mostra pausar e esconde o play central. |
 | `position` | `number` | `0` | Posição atual, em segundos. |
 | `duration` | `number` | `0` | Duração total, em segundos. |
-| `muted` | `boolean` | `false` | Sem som: mostra o ícone de volume cortado. |
 | `fullscreen` | `boolean` | `false` | Em tela cheia: mostra o ícone de sair. |
 | `label` | `string` | `"Vídeo"` | Nome acessível do player. |
 | `hideControlsAfter` | `number` | `2500` | Milissegundos sem toques até esconder os controles tocando. |
-| `onPlayPause` | `() => void` | — | Play central, botão da barra ou toque no vídeo. |
+| `onPlayPause` | `() => void` | — | Toque no botão central de reproduzir/pausar. |
 | `onSeek` | `(seconds: number) => void` | — | Toque ou arraste na barra, em segundos. |
-| `onToggleMute` | `() => void` | — | Toque no botão de mudo. |
 | `onToggleFullscreen` | `() => void` | — | Toque no botão de tela cheia (sem ele, o botão não aparece). |
 | `className`, `testID`… | props de `View` | — | Vão para o contêiner. |
 
 ## Acessibilidade
 
-- O player tem o `label` como nome; os botões têm nome e o estado muda o nome ("Reproduzir"/"Pausar", "Silenciar"/"Ativar o som", "Tela cheia"/"Sair da tela cheia").
+- O player tem o `label` como nome; os botões têm nome e o estado muda o nome ("Reproduzir"/"Pausar", "Tela cheia"/"Sair da tela cheia").
 - A barra é um elemento **ajustável** ("Posição do vídeo") com valor e texto ("2:14 de 5:32"); o leitor de tela avança e volta 5s por vez.
 - Controles escondidos ficam fora do alcance do leitor de tela e do toque.
 - Ofereça legendas pelo `expo-video` (`player.availableSubtitleTracks`) para o conteúdo falado.
