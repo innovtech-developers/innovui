@@ -62,7 +62,8 @@ const control =
  * Player de vídeo com controles próprios: play central, posição, tempo, volume e tela cheia.
  * Os controles somem depois de {@link VideoPlayerProps.hideControlsAfter} sem interação enquanto
  * toca, e voltam ao mexer o mouse, tocar na tela ou usar o teclado. Abaixo de 560px de largura o
- * slider de volume some (o botão de mudo fica). No iPhone, a tela cheia abre o player do iOS.
+ * slider de volume some (o botão de mudo fica) e a barra de posição desce para a borda de baixo,
+ * abaixo dos botões. No iPhone, a tela cheia abre o player do iOS.
  */
 export function VideoPlayer({
   className,
@@ -204,9 +205,9 @@ export function VideoPlayer({
             aria-hidden="true"
             tabIndex={-1}
             onClick={() => togglePlayback(videoRef.current)}
-            className="iu:absolute iu:top-1/2 iu:left-1/2 iu:flex iu:size-16 iu:-translate-x-1/2 iu:-translate-y-1/2 iu:items-center iu:justify-center iu:rounded-full iu:bg-[var(--color-media-on-surface)] iu:text-[var(--color-interactive-primary)] iu:shadow-lg iu:outline-none iu:transition-transform iu:hover:scale-105 iu:motion-reduce:transition-none"
+            className="iu:absolute iu:top-1/2 iu:left-1/2 iu:flex iu:size-12 iu:@[560px]:size-16 iu:-translate-x-1/2 iu:-translate-y-1/2 iu:items-center iu:justify-center iu:rounded-full iu:bg-[var(--color-media-on-surface)] iu:text-[var(--color-interactive-primary)] iu:shadow-lg iu:outline-none iu:transition-transform iu:hover:scale-105 iu:motion-reduce:transition-none"
           >
-            <PlayIcon filled className="iu:size-7" />
+            <PlayIcon filled className="iu:size-6 iu:@[560px]:size-7" />
           </button>
         </>
       )}
@@ -214,26 +215,11 @@ export function VideoPlayer({
         ref={controlsRef}
         inert={!visible}
         className={cn(
-          'iu:absolute iu:inset-x-0 iu:bottom-0 iu:flex iu:flex-col iu:gap-1 iu:bg-linear-to-t iu:from-[color-mix(in_srgb,var(--color-media-surface)_65%,transparent)] iu:to-transparent iu:pointer-events-none iu:px-4 iu:pt-[30px] iu:pb-3 iu:transition-opacity iu:duration-200 iu:motion-reduce:transition-none',
+          'iu:absolute iu:inset-x-0 iu:bottom-0 iu:flex iu:flex-col iu:bg-linear-to-t iu:from-[color-mix(in_srgb,var(--color-media-surface)_65%,transparent)] iu:to-transparent iu:pointer-events-none iu:pt-6 iu:@[560px]:pb-2 iu:transition-opacity iu:duration-200 iu:motion-reduce:transition-none',
           !visible && 'iu:opacity-0',
         )}
       >
-        {/* biome-ignore lint/a11y/useFocusableInteractive: tabIndex e aria-value* vêm do useSeek */}
-        <div
-          {...seekProps}
-          // biome-ignore lint/a11y/useAriaPropsForRole: aria-value* vêm do useSeek
-          role="slider"
-          aria-label="Posição do vídeo"
-          className="iu:group/seek iu:pointer-events-auto iu:flex iu:h-4 iu:w-full iu:cursor-pointer iu:touch-none iu:items-center iu:outline-none"
-        >
-          <div className="iu:h-1 iu:w-full iu:rounded-full iu:bg-[color-mix(in_srgb,var(--color-media-on-surface)_30%,transparent)] iu:group-focus-visible/seek:ring-2 iu:group-focus-visible/seek:ring-[var(--color-border-focus)]">
-            <div
-              style={{ width: `${progress}%` }}
-              className="iu:h-full iu:rounded-full iu:bg-[var(--color-media-accent)]"
-            />
-          </div>
-        </div>
-        <div className="iu:pointer-events-auto iu:flex iu:h-9 iu:items-center iu:justify-between">
+        <div className="iu:pointer-events-auto iu:flex iu:h-9 iu:items-center iu:justify-between iu:px-2">
           <div className="iu:flex iu:items-center iu:gap-2">
             <button
               type="button"
@@ -288,6 +274,22 @@ export function VideoPlayer({
                 {fullscreen ? <MinimizeIcon /> : <MaximizeIcon />}
               </button>
             )}
+          </div>
+        </div>
+        {/* Estreito: barra rente à borda de baixo (YouTube mobile), com margem para o canto arredondado não cortá-la. Largo: acima dos botões (YouTube desktop, Netflix). */}
+        {/* biome-ignore lint/a11y/useFocusableInteractive: tabIndex e aria-value* vêm do useSeek */}
+        <div
+          {...seekProps}
+          // biome-ignore lint/a11y/useAriaPropsForRole: aria-value* vêm do useSeek
+          role="slider"
+          aria-label="Posição do vídeo"
+          className="iu:group/seek iu:pointer-events-auto iu:order-last iu:mx-4 iu:mb-1 iu:flex iu:@[560px]:order-first iu:@[560px]:mb-0 iu:h-4 iu:cursor-pointer iu:touch-none iu:items-center iu:outline-none"
+        >
+          <div className="iu:h-1 iu:w-full iu:rounded-full iu:bg-[color-mix(in_srgb,var(--color-media-on-surface)_30%,transparent)] iu:group-focus-visible/seek:ring-2 iu:group-focus-visible/seek:ring-[var(--color-border-focus)]">
+            <div
+              style={{ width: `${progress}%` }}
+              className="iu:h-full iu:rounded-full iu:bg-[var(--color-media-accent)]"
+            />
           </div>
         </div>
       </div>
