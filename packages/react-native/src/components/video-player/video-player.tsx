@@ -1,6 +1,14 @@
 /// <reference types="uniwind/types" />
 
-import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import {
+  cloneElement,
+  isValidElement,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { AccessibilityInfo, Pressable, Text, View, type ViewProps } from 'react-native'
 import { cn } from '../../utils/cn'
 import { formatTime, useSeek } from '../_shared/media'
@@ -19,7 +27,11 @@ export type VideoPlayerProps = Omit<ViewProps, 'style'> & {
   position?: number
   /** Duração total, em segundos. */
   duration?: number
-  /** Em tela cheia: mostra o ícone de sair. Só vale com `onToggleFullscreen`. */
+  /**
+   * Em tela cheia: mostra o ícone de sair. Só vale com `onToggleFullscreen`. Ligue ao estado do
+   * vídeo (`onFullscreenEnter`/`onFullscreenExit` do `VideoView`): no iOS, é com ele que o
+   * `VideoPlayer` liga os controles do sistema na tela cheia.
+   */
   fullscreen?: boolean
   onPlayPause?: () => void
   /** Chamado com a posição (em segundos) tocada ou arrastada na barra. */
@@ -63,6 +75,12 @@ export function VideoPlayer({
   const visible = active || !playing || screenReader
   const progress = duration ? Math.min(position / duration, 1) * 100 : 0
   const ended = !playing && duration > 0 && position >= duration - 0.1
+  // Em tela cheia o vídeo sai do player e os nossos controles não vão junto: ligamos os do sistema.
+  // No iOS eles precisam estar ligados antes de abrir, então `entering` vem antes do `onToggleFullscreen`.
+  const [entering, setEntering] = useState(false)
+  const toggleFullscreen = useRef(onToggleFullscreen)
+  toggleFullscreen.current = onToggleFullscreen
+  const nativeControls = entering || fullscreen
 
   useEffect(() => {
     AccessibilityInfo.isScreenReaderEnabled().then(setScreenReader)
@@ -87,6 +105,14 @@ export function VideoPlayer({
     return () => clearTimeout(timer.current)
   }, [playing, show])
 
+  useEffect(() => {
+    if (!entering) return
+    toggleFullscreen.current?.()
+    // ponytail: se `fullscreen` nunca for ligado ao estado, os controles do sistema voltam a sumir após 2s
+    const done = setTimeout(() => setEntering(false), 2000)
+    return () => clearTimeout(done)
+  }, [entering])
+
   // No expo-video, `play()` no fim do vídeo não faz nada: volta ao começo antes.
   const playPause = () => {
     if (ended) onSeek?.(0)
@@ -103,7 +129,12 @@ export function VideoPlayer({
       {...props}
     >
       <View pointerEvents="none" className="absolute inset-0">
-        {children}
+        {isValidElement<{ nativeControls?: boolean }>(children) &&
+        children.props.nativeControls !== undefined
+          ? cloneElement(children, {
+              nativeControls: nativeControls || children.props.nativeControls,
+            })
+          : children}
       </View>
       {/* Tocar no vídeo só mostra/esconde os controles: pausar sem querer é o erro mais comum no celular. */}
       <Pressable
@@ -156,7 +187,7 @@ export function VideoPlayer({
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={fullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
-                onPress={onToggleFullscreen}
+                onPress={() => (fullscreen ? onToggleFullscreen() : setEntering(true))}
                 className={button}
               >
                 {fullscreen ? (

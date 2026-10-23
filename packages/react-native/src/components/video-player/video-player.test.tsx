@@ -102,6 +102,64 @@ describe('VideoPlayer', () => {
     expect(screen.getByRole('button', { name: 'Sair da tela cheia' })).toBeOnTheScreen()
   })
 
+  describe('tela cheia', () => {
+    let nativeControls: boolean | undefined
+    const Surface = (props: { nativeControls?: boolean }) => {
+      nativeControls = props.nativeControls
+      return <Text>vídeo</Text>
+    }
+
+    it('liga os controles do vídeo antes de pedir a tela cheia', () => {
+      const seen: (boolean | undefined)[] = []
+      render(
+        <VideoPlayer onToggleFullscreen={() => seen.push(nativeControls)}>
+          <Surface nativeControls={false} />
+        </VideoPlayer>,
+      )
+      expect(nativeControls).toBe(false)
+      fireEvent.press(screen.getByRole('button', { name: 'Tela cheia' }))
+      expect(seen).toEqual([true])
+    })
+
+    it('mantém ligados em tela cheia e desliga se ela não abrir', () => {
+      const { rerender } = render(
+        <VideoPlayer onToggleFullscreen={() => {}}>
+          <Surface nativeControls={false} />
+        </VideoPlayer>,
+      )
+      fireEvent.press(screen.getByRole('button', { name: 'Tela cheia' }))
+      settle(2000)
+      expect(nativeControls).toBe(false)
+      rerender(
+        <VideoPlayer fullscreen onToggleFullscreen={() => {}}>
+          <Surface nativeControls={false} />
+        </VideoPlayer>,
+      )
+      expect(nativeControls).toBe(true)
+    })
+
+    it('sair da tela cheia avisa direto', () => {
+      const onToggleFullscreen = jest.fn()
+      render(
+        <VideoPlayer fullscreen onToggleFullscreen={onToggleFullscreen}>
+          <Surface nativeControls={false} />
+        </VideoPlayer>,
+      )
+      fireEvent.press(screen.getByRole('button', { name: 'Sair da tela cheia' }))
+      expect(onToggleFullscreen).toHaveBeenCalledTimes(1)
+    })
+
+    it('não mexe em filho sem a prop nativeControls', () => {
+      render(
+        <VideoPlayer onToggleFullscreen={() => {}}>
+          <Surface />
+        </VideoPlayer>,
+      )
+      fireEvent.press(screen.getByRole('button', { name: 'Tela cheia' }))
+      expect(nativeControls).toBeUndefined()
+    })
+  })
+
   describe('controles', () => {
     it('somem depois do tempo sem toques enquanto toca, e voltam ao tocar no vídeo', () => {
       setup({ playing: true })

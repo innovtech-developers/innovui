@@ -99,11 +99,6 @@ function Video() {
   })
   const [fullscreen, setFullscreen] = useState(false)
 
-  // No iOS, o vídeo em tela cheia só mostra controles se `nativeControls` já estiver ligado ao entrar.
-  useEffect(() => {
-    if (fullscreen) view.current?.enterFullscreen()
-  }, [fullscreen])
-
   return (
     <VideoPlayer
       label="Vídeo enviado pelo cliente"
@@ -115,14 +110,15 @@ function Video() {
       onSeek={(seconds) => {
         player.currentTime = seconds
       }}
-      onToggleFullscreen={() => setFullscreen(true)}
+      onToggleFullscreen={() => view.current?.enterFullscreen()}
     >
       <VideoView
         ref={view}
         player={player}
-        nativeControls={fullscreen}
+        nativeControls={false}
         contentFit="contain"
         style={{ flex: 1 }}
+        onFullscreenEnter={() => setFullscreen(true)}
         onFullscreenExit={() => setFullscreen(false)}
       />
     </VideoPlayer>
