@@ -5,15 +5,15 @@ import { useEffect, useRef } from 'react'
 import { Animated, Easing, StyleSheet, View, type ViewProps } from 'react-native'
 import { cn } from '../../utils/cn'
 
-// Dimensões padrão do Figma; sobrescreva com className (ex.: `w-full`) para casar com o conteúdo real.
+// Altura do Figma; a largura ocupa o contêiner (como um View comum). Para largura fixa, use className (ex.: `w-[200px]`).
 const skeletonVariants = cva('overflow-hidden', {
   variants: {
     variant: {
-      text: 'h-3 w-[200px] rounded-sm',
-      title: 'h-5 w-[160px] rounded-sm',
+      text: 'h-3 w-full rounded-sm',
+      title: 'h-5 w-full rounded-sm',
       avatar: 'size-10 rounded-full',
-      card: 'h-[120px] w-[300px] rounded-[8px]',
-      rectangle: 'h-6 w-[200px] rounded-[8px]',
+      card: 'h-[120px] w-full rounded-[8px]',
+      rectangle: 'h-6 w-full rounded-[8px]',
     },
   },
   defaultVariants: { variant: 'text' },

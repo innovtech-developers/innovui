@@ -18,14 +18,14 @@ import { Skeleton, Stack } from '@innovui/react-native'
 ## Variantes
 
 ```tsx
-<Skeleton variant="text" />      {/* 200 x 12 */}
-<Skeleton variant="title" />     {/* 160 x 20 */}
+<Skeleton variant="text" />      {/* 100% x 12 */}
+<Skeleton variant="title" />     {/* 100% x 20 */}
 <Skeleton variant="avatar" />    {/* 40 x 40, redondo */}
-<Skeleton variant="card" />      {/* 300 x 120 */}
-<Skeleton variant="rectangle" /> {/* 200 x 24 */}
+<Skeleton variant="card" />      {/* 100% x 120 */}
+<Skeleton variant="rectangle" /> {/* 100% x 24 */}
 ```
 
-Sobrescreva as dimensões com `className` (por exemplo, `w-full`) para casar com o conteúdo real.
+A largura ocupa o contêiner. Sobrescreva as dimensões com `className` (por exemplo, `w-[200px]`) para casar com o conteúdo real.
 
 ## Props
 

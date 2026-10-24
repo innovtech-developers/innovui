@@ -11,7 +11,7 @@ describe('Skeleton', () => {
 
   it('usa a variante text por padrão', () => {
     const { container } = render(<Skeleton />)
-    expect(container.firstChild).toHaveClass('iu:h-3', 'iu:w-[200px]', 'iu:rounded-sm')
+    expect(container.firstChild).toHaveClass('iu:h-3', 'iu:w-full', 'iu:rounded-sm')
   })
 
   it.each([
@@ -31,9 +31,9 @@ describe('Skeleton', () => {
   })
 
   it('className sobrescreve a largura padrão sem duplicar', () => {
-    const { container } = render(<Skeleton className="iu:w-full" />)
-    expect(container.firstChild).toHaveClass('iu:w-full')
-    expect(container.firstChild).not.toHaveClass('iu:w-[200px]')
+    const { container } = render(<Skeleton className="iu:w-[200px]" />)
+    expect(container.firstChild).toHaveClass('iu:w-[200px]')
+    expect(container.firstChild).not.toHaveClass('iu:w-full')
   })
 
   it('repassa props HTML', () => {
