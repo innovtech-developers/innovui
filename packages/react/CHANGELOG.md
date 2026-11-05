@@ -1,5 +1,11 @@
 # @innovui/react
 
+## 1.1.5
+
+### Patch Changes
+
+- [#39](https://github.com/innovtech-developers/innovui/pull/39) [`ae615b5`](https://github.com/innovtech-developers/innovui/commit/ae615b506a335d8d4c38fb15d697a7391263ad06) Thanks [@lucas-bogos](https://github.com/lucas-bogos)! - O Skeleton ocupa a largura do contêiner por padrão, igual ao React Native. Antes as variantes vinham com largura fixa (200, 160 ou 300 px). Para largura fixa, passe `className="iu:w-[200px]"`. O avatar continua com 40 x 40.
+
 ## 1.1.4
 
 ### Patch Changes
