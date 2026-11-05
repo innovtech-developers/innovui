@@ -42,7 +42,29 @@ const photos = ids.map((id, i) => ({
   thumbSrc: unsplash(id, 480),
   alt: alts[i] as string,
 }))
-const AUDIO = 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3'
+// Gravações de teste (só locais, fora do git). A onda é o RMS de 52 trechos, calculado fora do app:
+// no React Native não há como extrair a onda do áudio.
+const AUDIOS = [
+  {
+    label: 'Mensagem de voz 1',
+    source: require('../assets/mensagem-teste.m4a'),
+    waveform: [
+      0, 0, 0, 0, 0, 0, 0, 0, 0.66, 0.85, 0.71, 0.2, 0.05, 0.03, 0.01, 0.08, 0.15, 0.26, 0.2, 0.17,
+      0.06, 0, 0.03, 0.1, 0.11, 0.23, 0.38, 0.86, 1, 1, 1, 0.49, 0.18, 0.06, 0.13, 0.13, 0.1, 0.01,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ],
+  },
+  {
+    label: 'Mensagem de voz 2',
+    source: require('../assets/mensagem-teste-2.m4a'),
+    waveform: [
+      0.33, 0.39, 0.41, 0.48, 0.34, 0.28, 0.01, 0, 0.17, 1, 0.37, 0.58, 0.26, 0.66, 0.42, 0.44,
+      0.69, 0.52, 0.39, 0.49, 0.48, 0.35, 0.13, 0.43, 0.52, 0.42, 0.4, 0.84, 0.52, 0.45, 0.02, 0.02,
+      0.01, 0.48, 1, 0.61, 0.6, 0.89, 0.82, 0.8, 0.48, 0.02, 0.55, 1, 0.72, 0.25, 0.78, 0.74, 0.37,
+      0.17, 0.01, 0.01,
+    ],
+  },
+]
 const VIDEO = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'
 
 const templates = [
@@ -63,8 +85,8 @@ const templates = [
   },
 ]
 
-function Audio() {
-  const player = useAudioPlayer(AUDIO)
+function Audio({ label, source, waveform }: (typeof AUDIOS)[number]) {
+  const player = useAudioPlayer(source)
   const status = useAudioPlayerStatus(player)
 
   useEffect(() => {
@@ -74,10 +96,11 @@ function Audio() {
 
   return (
     <AudioPlayer
-      label="Mensagem de voz"
+      label={label}
       playing={status.playing}
       position={status.currentTime}
       duration={status.duration}
+      waveform={waveform}
       onPlayPause={() => (status.playing ? player.pause() : player.play())}
       onSeek={(seconds) => player.seekTo(seconds)}
       onRateChange={(rate) => player.setPlaybackRate(rate)}
@@ -130,7 +153,9 @@ export function Media() {
 
   return (
     <Section title="Mídia">
-      <Audio />
+      {AUDIOS.map((audio) => (
+        <Audio key={audio.label} {...audio} />
+      ))}
       <Video />
       <Gallery items={photos} />
       <Button variant="secondary" onPress={() => setLightbox(true)}>

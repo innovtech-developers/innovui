@@ -119,10 +119,13 @@ describe('Calendar', () => {
 
   describe('modo range', () => {
     it('primeiro toque define o início; o segundo, o fim', () => {
+      // sem valor o calendário abre no mês de hoje: trava a data para o teste não depender do mês
+      jest.useFakeTimers({ now: new Date(2026, 9, 21, 12) })
       const onValueChange = jest.fn()
       render(<Calendar mode="range" value={{}} onValueChange={onValueChange} />)
       fireEvent.press(day('10 de outubro'))
       expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 9, 10) })
+      jest.useRealTimers()
     })
 
     it('segundo toque completa o período e a faixa aparece entre as pontas', () => {

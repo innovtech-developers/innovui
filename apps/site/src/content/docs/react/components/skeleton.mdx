@@ -21,11 +21,11 @@ import { Skeleton } from '@innovui/react'
 
 | Variante | Tamanho padrão | Raio |
 |---|---|---|
-| `text` | 200 × 12 px | 4px |
-| `title` | 160 × 20 px | 4px |
+| `text` | 100% × 12 px | 4px |
+| `title` | 100% × 20 px | 4px |
 | `avatar` | 40 × 40 px | circular |
-| `rectangle` | 200 × 24 px | 8px |
-| `card` | 300 × 120 px | 8px |
+| `rectangle` | 100% × 24 px | 8px |
+| `card` | 100% × 120 px | 8px |
 
 ## Ajustando ao conteúdo
 
@@ -39,7 +39,7 @@ Os tamanhos acima são os padrão. Sobrescreva com `className` para casar com o 
     <>
       <Skeleton variant="avatar" />
       <Skeleton variant="title" className="iu:w-3/5" />
-      <Skeleton className="iu:w-full" />
+      <Skeleton />
     </>
   ) : (
     <Profile user={user} />

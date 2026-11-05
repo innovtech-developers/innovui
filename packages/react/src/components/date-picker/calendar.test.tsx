@@ -171,10 +171,14 @@ describe('Calendar', () => {
     const cell = (n: number) => day(`${n} de outubro`).closest('td') as HTMLElement
 
     it('o primeiro clique define o início e avisa só com from', async () => {
+      // sem valor o calendário abre no mês de hoje: trava a data para o teste não depender do mês
+      vi.useFakeTimers({ toFake: ['Date'] })
+      vi.setSystemTime(new Date(2026, 9, 21))
       const onValueChange = vi.fn()
       render(<Calendar mode="range" value={{}} onValueChange={onValueChange} />)
       await userEvent.click(day('12 de outubro'))
       expect(onValueChange).toHaveBeenCalledWith({ from: new Date(2026, 9, 12) })
+      vi.useRealTimers()
     })
 
     it('o segundo clique completa o período e avisa com from e to', async () => {

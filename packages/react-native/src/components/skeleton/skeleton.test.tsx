@@ -6,7 +6,7 @@ describe('Skeleton', () => {
     render(<Skeleton testID="s" />)
     const el = screen.getByTestId('s', { hidden: true })
     expect(el.props.className).toContain('h-3')
-    expect(el.props.className).toContain('w-[200px]')
+    expect(el.props.className).toContain('w-full')
     expect(el.props.accessibilityElementsHidden).toBe(true)
     expect(el.props.importantForAccessibility).toBe('no-hide-descendants')
   })
@@ -22,10 +22,10 @@ describe('Skeleton', () => {
   })
 
   it('className do consumidor vence', () => {
-    render(<Skeleton testID="s" className="w-full" />)
+    render(<Skeleton testID="s" className="w-[200px]" />)
     const cls = screen.getByTestId('s', { hidden: true }).props.className
-    expect(cls).toContain('w-full')
-    expect(cls).not.toContain('w-[200px]')
+    expect(cls).toContain('w-[200px]')
+    expect(cls).not.toContain('w-full')
   })
 
   it('desmonta sem erro (para o loop)', () => {

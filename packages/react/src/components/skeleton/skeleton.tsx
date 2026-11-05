@@ -2,17 +2,17 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import type { ComponentProps } from 'react'
 import { cn } from '../../utils/cn'
 
-// Dimensões padrão do Figma; sobrescreva com className (ex.: `iu:w-full`) para casar com o conteúdo real.
+// Altura do Figma; a largura ocupa o contêiner. Para largura fixa, use className (ex.: `iu:w-[200px]`).
 const skeletonVariants = cva(
   'iu:animate-pulse iu:bg-[var(--color-bg-skeleton)] iu:motion-reduce:animate-none',
   {
     variants: {
       variant: {
-        text: 'iu:h-3 iu:w-[200px] iu:rounded-sm',
-        title: 'iu:h-5 iu:w-[160px] iu:rounded-sm',
+        text: 'iu:h-3 iu:w-full iu:rounded-sm',
+        title: 'iu:h-5 iu:w-full iu:rounded-sm',
         avatar: 'iu:size-10 iu:rounded-full',
-        card: 'iu:h-[120px] iu:w-[300px] iu:rounded-md',
-        rectangle: 'iu:h-6 iu:w-[200px] iu:rounded-md',
+        card: 'iu:h-[120px] iu:w-full iu:rounded-md',
+        rectangle: 'iu:h-6 iu:w-full iu:rounded-md',
       },
     },
     defaultVariants: { variant: 'text' },
