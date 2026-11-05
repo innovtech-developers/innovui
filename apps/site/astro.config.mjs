@@ -59,6 +59,7 @@ export default defineConfig({
       },
       components: {
         Sidebar: './src/components/Sidebar.astro',
+        Search: './src/components/Search.astro',
         Hero: './src/components/HerbariumHero.astro',
         // pictograma de categoria ao lado do H1 nas páginas de componente — cumpre o
         // direction contract original ("cada categoria de componente leva um pictograma
