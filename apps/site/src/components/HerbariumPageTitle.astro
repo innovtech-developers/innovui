@@ -7,8 +7,11 @@ const title = entry.data.title
 // para o skip-link e o TOC âncora no H1 (não há export público para importar a constante).
 const match = entry.id.match(/^(?:react-native\/)?components\/([\w-]+)$/)
 const componentName = match?.[1]
+// filtro do Pagefind: a busca mostra só o framework da página em que o usuário está
+const framework = entry.id.match(/^(react-native|react)\//)?.[1]
 ---
 
+{framework && <meta data-pagefind-filter="framework[content]" content={framework} />}
 <h1 id="_top" class:list={{ 'specimen-page-title': Boolean(componentName) }}>
   {componentName && <ComponentPictogram name={componentName} />}
   <span>{title}</span>
